@@ -5,25 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MVVM_Refregator.View"
         xmlns:vm="clr-namespace:MVVM_Refregator.ViewModel"
+        xmlns:common="clr-namespace:MVVM_Refregator.Common"
         mc:Ignorable="d"
         Title="StartupWindow" Height="600" Width="900">
     <Window.DataContext>
         <vm:StartupViewModel/>
     </Window.DataContext>
+    <Window.Resources>
+        <common:RadioButtonUriConverter x:Key="RadioButtonUriConverter"/>
+    </Window.Resources>
     <Grid>
 
         <DockPanel Margin="5">
             <Border Margin="5" DockPanel.Dock="Left" BorderThickness="2" BorderBrush="Blue">
                 <StackPanel Background="Azure" DockPanel.Dock="Left" Width="100">
                     <TextBlock Margin="10" Text="Menu" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <RadioButton HorizontalAlignment="Center" Margin="0,20" Content="1Page目"/>
-                    <RadioButton HorizontalAlignment="Center" Margin="0,20" Content="2Page目"/>
-                    <RadioButton HorizontalAlignment="Center" Margin="0,20" Content="3Page目"/>
+                    <RadioButton HorizontalAlignment="Center" GroupName="MenuDash" Margin="0,10" Content="ダッシュボード" Command="{Binding NavigationViewModel}" CommandParameter="{Binding ElementName=frame, Path=NavigationService}" IsChecked="{Binding CheckedPage.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource RadioButtonUriConverter}, ConverterParameter=DashBoard}"/>
+                    <RadioButton HorizontalAlignment="Center" Margin="0,10" GroupName="MenuCalendar" Content="カレンダー" Command="{Binding NavigationViewModel}" CommandParameter="{Binding ElementName=frame, Path=NavigationService}" IsChecked="{Binding CheckedPage.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource RadioButtonUriConverter}, ConverterParameter=Calendar}"/>
+                    <RadioButton HorizontalAlignment="Center" Margin="0,10" GroupName="MenuEdit" Content="編集画面" Command="{Binding NavigationViewModel}" CommandParameter="{Binding ElementName=frame, Path=NavigationService}" IsChecked="{Binding CheckedPage.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource RadioButtonUriConverter}, ConverterParameter=Editor}"/>
                 </StackPanel>
             </Border>
             <Border Margin="5" BorderThickness="2" BorderBrush="BlueViolet">
-                <Frame DockPanel.Dock="Right" Source="{Binding SeletedContentPage.Value}" NavigationUIVisibility="Hidden">
-                </Frame>
+                <Frame x:Name="frame" DockPanel.Dock="Right" Source="{Binding SeletedContentPage.Value, Mode=TwoWay}" NavigationUIVisibility="Hidden" />
             </Border>
 
         </DockPanel>
