@@ -1,0 +1,11 @@
+﻿<Application x:Class="MVVM_Refregator.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:MVVM_Refregator"
+             xmlns:vm="clr-namespace:MVVM_Refregator.View"
+             StartupUri="View/CalendarWindow.xaml">
+    <Application.Resources>
+         
+             <!--StartupUri="View/TestView.xaml">-->
+    </Application.Resources>
+</Application>
