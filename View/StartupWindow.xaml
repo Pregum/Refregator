@@ -1,0 +1,32 @@
+﻿<Window x:Class="MVVM_Refregator.View.StartupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MVVM_Refregator.View"
+        xmlns:vm="clr-namespace:MVVM_Refregator.ViewModel"
+        mc:Ignorable="d"
+        Title="StartupWindow" Height="600" Width="900">
+    <Window.DataContext>
+        <vm:StartupViewModel/>
+    </Window.DataContext>
+    <Grid>
+
+        <DockPanel Margin="5">
+            <Border Margin="5" DockPanel.Dock="Left" BorderThickness="2" BorderBrush="Blue">
+                <StackPanel Background="Azure" DockPanel.Dock="Left" Width="100">
+                    <TextBlock Margin="10" Text="Menu" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <RadioButton HorizontalAlignment="Center" Margin="0,20" Content="1Page目"/>
+                    <RadioButton HorizontalAlignment="Center" Margin="0,20" Content="2Page目"/>
+                    <RadioButton HorizontalAlignment="Center" Margin="0,20" Content="3Page目"/>
+                </StackPanel>
+            </Border>
+            <Border Margin="5" BorderThickness="2" BorderBrush="BlueViolet">
+                <Frame DockPanel.Dock="Right" Source="{Binding SeletedContentPage.Value}" NavigationUIVisibility="Hidden">
+                </Frame>
+            </Border>
+
+        </DockPanel>
+
+    </Grid>
+</Window>

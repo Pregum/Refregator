@@ -107,7 +107,5 @@ namespace MVVM_Refregator.ViewModel
                 }
             });
         }
-
-
     }
 }
