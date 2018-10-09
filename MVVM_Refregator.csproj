@@ -122,9 +122,6 @@
     <Compile Include="ViewModel\FoodShelfViewModel.cs" />
     <Compile Include="ViewModel\FoodViewModel.cs" />
     <Compile Include="ViewModel\StartupViewModel.cs" />
-    <Compile Include="View\CalendarWindow.xaml.cs">
-      <DependentUpon>CalendarWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\DashBoardPage.xaml.cs">
       <DependentUpon>DashBoardPage.xaml</DependentUpon>
     </Compile>
@@ -141,10 +138,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\CalendarWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\DashBoardPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

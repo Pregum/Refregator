@@ -8,7 +8,7 @@
         xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:common="clr-namespace:MVVM_Refregator.Common"
         mc:Ignorable="d"
-        Title="StartupWindow" Height="600" Width="900">
+        Title="StartupWindow" Height="600" Width="1000">
     <Window.DataContext>
         <vm:StartupViewModel/>
     </Window.DataContext>
@@ -24,36 +24,38 @@
         <DockPanel Margin="5">
             <Border Margin="5" DockPanel.Dock="Left" BorderThickness="2" BorderBrush="Blue">
                 <StackPanel Background="Azure" DockPanel.Dock="Left" Width="200">
-                    <TextBlock Margin="10" Text="DashBoard" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe Script"/>
-                    <RadioButton HorizontalAlignment="Center" GroupName="MenuDash" Margin="0,10" Content="ダッシュボード" Command="{Binding NavigationViewModel}" CommandParameter="{Binding ElementName=frame, Path=NavigationService}" IsChecked="{Binding CheckedPage.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource RadioButtonUriConverter}, ConverterParameter=DashBoard}">
+                    <TextBlock Margin="10" FontSize="30" Text="Menu" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe Script"/>
+                    <RadioButton HorizontalAlignment="Center" GroupName="MenuDash" Margin="0,10" Command="{Binding NavigationViewModel}" CommandParameter="{Binding ElementName=frame, Path=NavigationService}" IsChecked="{Binding CheckedPage.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource RadioButtonUriConverter}, ConverterParameter=DashBoard}">
                         <RadioButton.Template>
                             <ControlTemplate>
-                                <Grid Background="Blue" Width="150">
-                                    <material:PackIcon Kind="ViewDashboardVariant" HorizontalAlignment="Left" />
-                                    <TextBlock HorizontalAlignment="Center" Text="DASHBOARD" FontFamily="Impact"/>
-                                </Grid>
-                            </ControlTemplate>
-                        </RadioButton.Template>
-                    </RadioButton>
-                    <RadioButton HorizontalAlignment="Center" Margin="0,10" GroupName="MenuCalendar" Content="カレンダー" Command="{Binding NavigationViewModel}" CommandParameter="{Binding ElementName=frame, Path=NavigationService}" IsChecked="{Binding CheckedPage.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource RadioButtonUriConverter}, ConverterParameter=Calendar}">
-                        <RadioButton.Template>
-                            <ControlTemplate TargetType="{x:Type RadioButton}">
                                 <Border Background="Turquoise" CornerRadius="5">
                                     <Grid Width="150">
-                                        <material:PackIcon Kind="ViewDashboard" HorizontalAlignment="Left" />
-                                        <TextBlock HorizontalAlignment="Center" Text="Calendar" FontFamily="Impact"/>
+                                        <material:PackIcon Kind="ViewDashboard" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" />
+                                        <TextBlock HorizontalAlignment="Center" Text="DASHBOARD" FontFamily="Impact" FontSize="20" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                     </Grid>
                                 </Border>
                             </ControlTemplate>
                         </RadioButton.Template>
                     </RadioButton>
-                    <RadioButton HorizontalAlignment="Center" Margin="0,10" GroupName="MenuEdit" Content="編集画面" Command="{Binding NavigationViewModel}" CommandParameter="{Binding ElementName=frame, Path=NavigationService}" IsChecked="{Binding CheckedPage.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource RadioButtonUriConverter}, ConverterParameter=Editor}">
+                    <RadioButton HorizontalAlignment="Center" Margin="0,10" GroupName="MenuCalendar" Command="{Binding NavigationViewModel}" CommandParameter="{Binding ElementName=frame, Path=NavigationService}" IsChecked="{Binding CheckedPage.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource RadioButtonUriConverter}, ConverterParameter=Calendar}">
                         <RadioButton.Template>
                             <ControlTemplate TargetType="{x:Type RadioButton}">
                                 <Border Background="Turquoise" CornerRadius="5">
                                     <Grid Width="150">
-                                        <material:PackIcon Kind="ViewArray" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                                        <TextBlock HorizontalAlignment="Center" Text="Edit" FontFamily="MV Boli"  />
+                                        <material:PackIcon Kind="Calendar" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" />
+                                        <TextBlock HorizontalAlignment="Center" Text="Calendar" FontFamily="Impact" VerticalAlignment="Center" FontSize="20"/>
+                                    </Grid>
+                                </Border>
+                            </ControlTemplate>
+                        </RadioButton.Template>
+                    </RadioButton>
+                    <RadioButton HorizontalAlignment="Center" Margin="0,10" GroupName="MenuEdit" Command="{Binding NavigationViewModel}" CommandParameter="{Binding ElementName=frame, Path=NavigationService}" IsChecked="{Binding CheckedPage.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource RadioButtonUriConverter}, ConverterParameter=Editor}">
+                        <RadioButton.Template>
+                            <ControlTemplate TargetType="{x:Type RadioButton}">
+                                <Border Background="Turquoise" CornerRadius="5">
+                                    <Grid Width="150">
+                                        <material:PackIcon Kind="TableEdit" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"/>
+                                        <TextBlock HorizontalAlignment="Center" Text="Edit" FontFamily="Impact" FontSize="20" />
                                     </Grid>
                                 </Border>
                             </ControlTemplate>

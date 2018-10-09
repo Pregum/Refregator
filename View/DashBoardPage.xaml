@@ -10,6 +10,7 @@
       Title="DashBoardPage">
     <Grid>
 
+        <TextBlock Text="ダッシュボードです"/>
 
     </Grid>
 </Page>

@@ -9,6 +9,6 @@
       Title="EditPage">
 
     <Grid>
-        
+        <TextBlock Text="エディットページです"/>
     </Grid>
 </Page>
