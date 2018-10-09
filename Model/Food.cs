@@ -2,6 +2,7 @@
 using System.Windows.Media.Imaging;
 
 using Prism.Mvvm;
+using Newtonsoft.Json;
 
 namespace MVVM_Refregator.Model
 {
@@ -17,6 +18,7 @@ namespace MVVM_Refregator.Model
         /// <summary>
         /// Id
         /// </summary>
+        [JsonProperty("Id")]
         public uint Id
         {
             get { return _id; }
@@ -30,6 +32,7 @@ namespace MVVM_Refregator.Model
         /// <summary>
         /// 名前
         /// </summary>
+        [JsonProperty("Name")]
         public string Name
         {
             get { return _name; }
@@ -43,6 +46,7 @@ namespace MVVM_Refregator.Model
         /// <summary>
         /// 消費期限
         /// </summary>
+        [JsonProperty("LimitDate")]
         public DateTime LimitDate
         {
             get { return _limitDate; }
@@ -56,6 +60,7 @@ namespace MVVM_Refregator.Model
         /// <summary>
         /// 購入期限
         /// </summary>
+        [JsonProperty("BoughtDate")]
         public DateTime BoughtDate
         {
             get { return _boughtDate; }
@@ -69,6 +74,7 @@ namespace MVVM_Refregator.Model
         /// <summary>
         /// 種類
         /// </summary>
+        [JsonProperty("KindType")]
         public FoodType KindType
         {
             get { return _kindType; }
@@ -82,6 +88,7 @@ namespace MVVM_Refregator.Model
         /// <summary>
         /// 状態
         /// </summary>
+        [JsonProperty("StatusType")]
         public FoodStatusType StatusType
         {
             get { return _statusType; }
@@ -95,6 +102,7 @@ namespace MVVM_Refregator.Model
         /// <summary>
         /// 画像
         /// </summary>
+        [JsonProperty("Image")]
         public BitmapImage Image
         {
             get { return _image; }
@@ -126,13 +134,14 @@ namespace MVVM_Refregator.Model
             _image = image;
         }
 
-        public Food() : this("none", DateTime.Now.AddDays(7), DateTime.Now, FoodType.Other, null)
+        public Food() : this("none", DateTime.Now.AddDays(7), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)))
         {
         }
 
         /// <summary>
         /// 消費期限を過ぎたか
         /// </summary>
+        [JsonIgnore()]
         public bool IsOverLimitDate
         {
             get { return LimitDate.Date > BoughtDate.Date; }

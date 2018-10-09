@@ -34,7 +34,6 @@ namespace MVVM_Refregator.View
         private void ItemsControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             var tes = (ItemsControl)sender;
-            //System.Windows.MessageBox.Show(tes.DataContext.ToString());
             System.Diagnostics.Debug.WriteLine("call by datacontext changed. : " + tes.DataContext.ToString());
             this.foodShelf.Send_BindingFoods.Execute(tes);
         }
@@ -42,7 +41,6 @@ namespace MVVM_Refregator.View
         private void ItemsControl_Initialized(object sender, EventArgs e)
         {
             var tes = (ItemsControl)sender;
-            //System.Windows.MessageBox.Show(tes.DataContext.ToString());
             System.Diagnostics.Debug.WriteLine("call by dataContextChanged : " + tes.DataContext.ToString());
             this.foodShelf.Send_BindingFoods.Execute(tes);
         }

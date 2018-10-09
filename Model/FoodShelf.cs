@@ -62,7 +62,7 @@ namespace MVVM_Refregator.Model
                 return false;
             }
             // todo: ここには、json.netを読み込んでコレクションを生成する処理を実装する
-            this.FoodCollection = JsonManager.LoadJsonFrom<ObservableCollection<Food>>();
+            var food = JsonManager.LoadJsonFrom<ObservableCollection<Food>>();
             return true;
         }
 
@@ -73,7 +73,7 @@ namespace MVVM_Refregator.Model
         public bool Save()
         {
             // todo: とりあえず現在の食材コレクションのデータをJsonファイル等に出力する処理を実装する
-            JsonManager.SaveJsonTo<ICollection<Food>>(this.FoodCollection);
+            JsonManager.SaveJsonTo<ObservableCollection<Food>>(this.FoodCollection);
             return true;
         }
 

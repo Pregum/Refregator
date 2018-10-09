@@ -21,7 +21,9 @@ namespace MVVM_Refregator.Common
         /// <returns></returns>
         public static T LoadJsonFrom<T>(string targetPath = @"food_data.json")
         {
-            T fff = JsonConvert.DeserializeObject<T>(targetPath);
+            System.Diagnostics.Debug.WriteLine($"{typeof(T).ToString()}");
+            T fff = JsonConvert.DeserializeObject<T>(File.ReadAllText(targetPath));
+            //T fff = JsonConvert.DeserializeObject<T>(targetPath);
             return fff;
         }
 
