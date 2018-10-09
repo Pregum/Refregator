@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MVVM_Refregator.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,11 @@ namespace MVVM_Refregator.View
         public FoodCalendarPage()
         {
             InitializeComponent();
+
+            if (App.Current.Resources["FoodShelfKey"] is FoodShelf foodShelfModel)
+            {
+                this.foodShelf = new ViewModel.FoodShelfViewModel(foodShelfModel);
+            }
         }
 
         private void ItemsControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

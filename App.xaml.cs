@@ -17,7 +17,7 @@ namespace MVVM_Refregator
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            var view = new MVVM_Refregator.View.StartupWindow();
+            var view = new StartupWindow();
             view.Show();
         }
     }
