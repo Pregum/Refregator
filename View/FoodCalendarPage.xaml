@@ -30,7 +30,7 @@
                                                     </ItemsControl.ItemsPanel>
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate DataType="{x:Type vm:FoodViewModel}">
-                                                            <Image Source="{Binding Image.Value, UpdateSourceTrigger=PropertyChanged}" Height="20" Stretch="Uniform" />
+                                                            <Image Source="{Binding Image, UpdateSourceTrigger=PropertyChanged}" Height="20" Stretch="Uniform" />
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
@@ -46,9 +46,9 @@
 
             <DataGrid Margin="5" VerticalAlignment="Top" MaxHeight="500" ItemsSource="{Binding Foods}" AutoGenerateColumns="False" IsReadOnly="True">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Id" Binding="{Binding Id.Value}" MaxWidth="50" MinWidth="30"/>
-                    <DataGridTextColumn Header="名前" Binding="{Binding Name.Value}" MaxWidth="50"/>
-                    <DataGridTextColumn Header="期限日" Binding="{Binding LimitDate.Value, StringFormat={}{00:yyyy/MM/dd(ddd)}}"/>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}" MaxWidth="50" MinWidth="30"/>
+                    <DataGridTextColumn Header="名前" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" MaxWidth="50"/>
+                    <DataGridTextColumn Header="期限日" Binding="{Binding LimitDate, StringFormat={}{00:yyyy/MM/dd(ddd)}, UpdateSourceTrigger=PropertyChanged}"/>
                 </DataGrid.Columns>
             </DataGrid>
 

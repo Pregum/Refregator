@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MVVM_Refregator.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,12 +24,16 @@ namespace MVVM_Refregator.View
         public FoodCalendarPage()
         {
             InitializeComponent();
+
+            if (App.Current.Resources["FoodShelfKey"] is FoodShelf foodShelfModel)
+            {
+                this.foodShelf = new ViewModel.FoodShelfViewModel(foodShelfModel);
+            }
         }
 
         private void ItemsControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             var tes = (ItemsControl)sender;
-            //System.Windows.MessageBox.Show(tes.DataContext.ToString());
             System.Diagnostics.Debug.WriteLine("call by datacontext changed. : " + tes.DataContext.ToString());
             this.foodShelf.Send_BindingFoods.Execute(tes);
         }
@@ -36,7 +41,6 @@ namespace MVVM_Refregator.View
         private void ItemsControl_Initialized(object sender, EventArgs e)
         {
             var tes = (ItemsControl)sender;
-            //System.Windows.MessageBox.Show(tes.DataContext.ToString());
             System.Diagnostics.Debug.WriteLine("call by dataContextChanged : " + tes.DataContext.ToString());
             this.foodShelf.Send_BindingFoods.Execute(tes);
         }

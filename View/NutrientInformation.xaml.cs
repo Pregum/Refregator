@@ -10,27 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-
-using MVVM_Refregator.ViewModel;
-using MVVM_Refregator.Model;
 
 namespace MVVM_Refregator.View
 {
     /// <summary>
-    /// StartupWindow.xaml の相互作用ロジック
+    /// NutrientInformation.xaml の相互作用ロジック
     /// </summary>
-    public partial class StartupWindow : Window
+    public partial class NutrientInformation : Page
     {
-        public StartupWindow()
+        public NutrientInformation()
         {
             InitializeComponent();
-
-            if (App.Current.Resources["FoodShelfKey"] is FoodShelf foodShelfModel)
-            {
-                foodShelfModel.FoodCollection.Add(new Food());
-                this.DataContext = new StartupViewModel(foodShelfModel);
-            }
         }
     }
 }

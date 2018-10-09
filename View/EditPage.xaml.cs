@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MVVM_Refregator.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using MVVM_Refregator.ViewModel;
+
 namespace MVVM_Refregator.View
 {
     /// <summary>
@@ -23,6 +26,11 @@ namespace MVVM_Refregator.View
         public EditPage()
         {
             InitializeComponent();
+
+            if (App.Current.Resources["FoodShelfKey"] is FoodShelf foodShelfModel)
+            {
+                this.DataContext = new FoodShelfViewModel(foodShelfModel);
+            }
         }
     }
 }

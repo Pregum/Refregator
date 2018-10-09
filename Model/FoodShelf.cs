@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 
 using System.Windows.Media.Imaging;
+using MVVM_Refregator.Common;
+using System.IO;
 
 namespace MVVM_Refregator.Model
 {
@@ -53,10 +55,15 @@ namespace MVVM_Refregator.Model
         /// </summary>
         /// <param name="jsonFilePath">Jsonのファイルパス</param>
         /// <returns></returns>
-        public bool Load(string jsonFilePath)
+        public bool Load(string jsonFilePath = @"food_data.json")
         {
+            if (File.Exists(jsonFilePath) == false)
+            {
+                return false;
+            }
             // todo: ここには、json.netを読み込んでコレクションを生成する処理を実装する
-            throw new NotImplementedException();
+            var food = JsonManager.LoadJsonFrom<ObservableCollection<Food>>();
+            return true;
         }
 
         /// <summary>
@@ -66,7 +73,8 @@ namespace MVVM_Refregator.Model
         public bool Save()
         {
             // todo: とりあえず現在の食材コレクションのデータをJsonファイル等に出力する処理を実装する
-            throw new NotImplementedException();
+            JsonManager.SaveJsonTo<ObservableCollection<Food>>(this.FoodCollection);
+            return true;
         }
 
         /// <summary>

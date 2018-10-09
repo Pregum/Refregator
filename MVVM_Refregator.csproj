@@ -116,6 +116,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\JsonManager.cs" />
     <Compile Include="Common\RadioButtonUriConverter.cs" />
     <Compile Include="Model\Nutrient.cs" />
     <Compile Include="Model\DisplayPageStatus.cs" />
@@ -130,6 +131,9 @@
     </Compile>
     <Compile Include="View\FoodCalendarPage.xaml.cs">
       <DependentUpon>FoodCalendarPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NutrientInformation.xaml.cs">
+      <DependentUpon>NutrientInformation.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\StartupWindow.xaml.cs">
       <DependentUpon>StartupWindow.xaml</DependentUpon>
@@ -147,6 +151,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\FoodCalendarPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NutrientInformation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

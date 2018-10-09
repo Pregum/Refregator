@@ -3,9 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:MVVM_Refregator"
              xmlns:v="clr-namespace:MVVM_Refregator.View"
+             xmlns:m="clr-namespace:MVVM_Refregator.Model"
              Startup="Application_Startup">
     <Application.Resources>
-         
-             <!--StartupUri="View/TestView.xaml">-->
+
+        <m:FoodShelf x:Key="FoodShelfKey" />
+        <!--StartupUri="View/TestView.xaml">-->
     </Application.Resources>
 </Application>
