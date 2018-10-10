@@ -31,6 +31,10 @@ namespace MVVM_Refregator.View
             {
                 this.DataContext = new FoodShelfViewModel(foodShelfModel);
             }
+            else
+            {
+                this.DataContext = new FoodShelfViewModel();
+            }
         }
     }
 }

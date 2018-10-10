@@ -6,9 +6,9 @@
       xmlns:vm="clr-namespace:MVVM_Refregator.ViewModel"
       mc:Ignorable="d"
         Title="CalendarWindow" Height="550" Width="750">
-    <Page.DataContext>
+    <!--<Page.DataContext>
         <vm:FoodShelfViewModel x:Name="foodShelf"/>
-    </Page.DataContext>
+    </Page.DataContext>-->
     <Grid>
         <StackPanel Orientation="Horizontal">
             <Calendar Margin="5" >

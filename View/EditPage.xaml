@@ -8,9 +8,9 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="EditPage">
-    <Page.DataContext>
+    <!--<Page.DataContext>
         <vm:FoodShelfViewModel />
-    </Page.DataContext>
+    </Page.DataContext>-->
 
     <Grid>
         <TextBlock Text="エディットページです"/>

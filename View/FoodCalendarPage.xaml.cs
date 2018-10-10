@@ -27,7 +27,12 @@ namespace MVVM_Refregator.View
 
             if (App.Current.Resources["FoodShelfKey"] is FoodShelf foodShelfModel)
             {
-                this.foodShelf = new ViewModel.FoodShelfViewModel(foodShelfModel);
+                //this.foodShelf = new ViewModel.FoodShelfViewModel(foodShelfModel);
+                this.DataContext = new ViewModel.FoodShelfViewModel(foodShelfModel);
+            }
+            else
+            {
+                this.DataContext = new ViewModel.FoodShelfViewModel();
             }
         }
 
@@ -35,14 +40,16 @@ namespace MVVM_Refregator.View
         {
             var tes = (ItemsControl)sender;
             System.Diagnostics.Debug.WriteLine("call by datacontext changed. : " + tes.DataContext.ToString());
-            this.foodShelf.Send_BindingFoods.Execute(tes);
+            //this.foodShelf.Send_BindingFoods.Execute(tes);
+            ((ViewModel.FoodShelfViewModel)this.DataContext).Send_BindingFoods.Execute(tes);
         }
 
         private void ItemsControl_Initialized(object sender, EventArgs e)
         {
             var tes = (ItemsControl)sender;
             System.Diagnostics.Debug.WriteLine("call by dataContextChanged : " + tes.DataContext.ToString());
-            this.foodShelf.Send_BindingFoods.Execute(tes);
+            //this.foodShelf.Send_BindingFoods.Execute(tes);
+            ((ViewModel.FoodShelfViewModel)this.DataContext).Send_BindingFoods.Execute(tes);
         }
     }
 }
