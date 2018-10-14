@@ -27,14 +27,17 @@ namespace MVVM_Refregator.View
 
             if (App.Current.Resources["FoodShelfKey"] is FoodShelf foodShelfModel)
             {
-                //this.foodShelf = new ViewModel.FoodShelfViewModel(foodShelfModel);
-                this.DataContext = new ViewModel.FoodShelfViewModel(foodShelfModel);
+                if (this.DataContext == null)
+                {
+                    this.DataContext = new ViewModel.FoodShelfViewModel(foodShelfModel);
+                }
             }
             else
             {
                 this.DataContext = new ViewModel.FoodShelfViewModel();
             }
         }
+
 
         private void ItemsControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
