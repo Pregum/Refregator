@@ -8,7 +8,7 @@
         xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:common="clr-namespace:MVVM_Refregator.Common"
         mc:Ignorable="d"
-        Title="StartupWindow" Height="600" Width="1000">
+        Title="StartupWindow" Height="600" Width="1200">
     <!--<Window.DataContext>
         <vm:StartupViewModel/>
     </Window.DataContext>-->

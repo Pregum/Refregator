@@ -28,7 +28,7 @@ namespace MVVM_Refregator.View
 
             if (App.Current.Resources["FoodShelfKey"] is FoodShelf foodShelfModel)
             {
-                foodShelfModel.FoodCollection.Add(new Food());
+                //foodShelfModel.FoodCollection.Add(new Food());
                 this.DataContext = new StartupViewModel(foodShelfModel);
             }
         }

@@ -9,7 +9,7 @@ namespace MVVM_Refregator.Model
     /// <summary>
     /// 食品を表すクラス
     /// </summary>
-    public class Food : BindableBase 
+    public class Food : BindableBase
     {
         /// <summary>
         /// Id
@@ -102,11 +102,29 @@ namespace MVVM_Refregator.Model
         /// <summary>
         /// 画像
         /// </summary>
-        [JsonProperty("Image")]
+        //[JsonProperty("Image")]
+        [JsonIgnore]
         public BitmapImage Image
         {
             get { return _image; }
-            set { SetProperty(ref _image, value); }
+            set
+            {
+                SetProperty(ref _image, value);
+                this.ImageString = this.Image.UriSource.OriginalString;
+            }
+        }
+
+        private string _imageString;
+        [JsonProperty("Image")]
+        public string ImageString
+        {
+            get { return _imageString; }
+            set
+            {
+                //_imageString = value;
+                SetProperty(ref _imageString, value);
+                this.Image.UriSource = new Uri(_imageString, UriKind.Relative);
+            }
         }
 
         /// <summary>
@@ -132,6 +150,7 @@ namespace MVVM_Refregator.Model
             _kindType = kindType;
             _statusType = FoodStatusType.Fresh;
             _image = image;
+            _imageString = _image.UriSource.OriginalString;
         }
 
         public Food() : this("none", DateTime.Now.AddDays(7), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)))

@@ -13,13 +13,19 @@ namespace MVVM_Refregator.Model
     /// <summary>
     /// 食材のコンテナクラス
     /// </summary>
-    public class FoodShelf 
+    public class FoodShelf  : BindableBase
     {
 
+        private ObservableCollection<Food> _foodCollection = new ObservableCollection<Food>();
         /// <summary>
         /// 食材のコレクション
         /// </summary>
-        public ObservableCollection<Food> FoodCollection { get; private set; } = new ObservableCollection<Food>();
+        //public ObservableCollection<Food> FoodCollection { get; private set; } = new ObservableCollection<Food>();
+        public ObservableCollection<Food> FoodCollection
+        {
+            get { return _foodCollection; }
+            set { SetProperty(ref _foodCollection, value); }
+        }
 
         /// <summary>
         /// key : 賞味期限, value : Foodコレクション
@@ -63,6 +69,12 @@ namespace MVVM_Refregator.Model
             }
             // todo: ここには、json.netを読み込んでコレクションを生成する処理を実装する
             var food = JsonManager.LoadJsonFrom<ObservableCollection<Food>>();
+            //this.FoodCollection = food;
+            this.FoodCollection.Clear();
+            foreach (var aFood in food)
+            {
+                this.FoodCollection.Add(aFood);
+            }
             return true;
         }
 

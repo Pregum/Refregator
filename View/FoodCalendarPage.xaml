@@ -4,14 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:vm="clr-namespace:MVVM_Refregator.ViewModel"
+      xmlns:common="clr-namespace:MVVM_Refregator.Common"
+      xmlns:m="clr-namespace:MVVM_Refregator.Model"
       mc:Ignorable="d"
-        Title="CalendarWindow" Height="550" Width="750">
+        Title="CalendarWindow" Height="550" Width="800">
     <!--<Page.DataContext>
         <vm:FoodShelfViewModel x:Name="foodShelf"/>
     </Page.DataContext>-->
-    <Grid>
+    <Page.Resources>
+        <common:DateFoodsMapMultiConverter x:Key="DateFoodMultiConverter"/>
+    </Page.Resources>
+
+    <Grid x:Name="rootGrid">
         <StackPanel Orientation="Horizontal">
-            <Calendar Margin="5" >
+            <Calendar x:Name="rootCalendar" Margin="5" >
                 <Calendar.Background>White</Calendar.Background>
                 <Calendar.CalendarDayButtonStyle>
                     <Style TargetType="{x:Type CalendarDayButton}">
@@ -22,15 +28,23 @@
                                         <Border BorderThickness="2" BorderBrush="Turquoise">
                                             <StackPanel MinHeight="60" MinWidth="60">
                                                 <TextBlock Text="{Binding StringFormat={}{0:dd}}" Margin="5"/>
-                                                <ItemsControl DataContextChanged="ItemsControl_DataContextChanged" Initialized="ItemsControl_Initialized">
+                                                <!--<ItemsControl DataContextChanged="ItemsControl_DataContextChanged" Initialized="ItemsControl_Initialized">-->
+                                                <ItemsControl>
+                                                    <ItemsControl.ItemsSource>
+                                                    <!--このMultibindingがオブジェクト追加時、自動更新されない-->
+                                                        <MultiBinding Converter="{StaticResource DateFoodMultiConverter}" UpdateSourceTrigger="PropertyChanged" Mode="OneWay">
+                                                            <Binding Path="Date" UpdateSourceTrigger="PropertyChanged"/>
+                                                            <Binding Path="DataContext.Foods" ElementName="rootGrid"  />
+                                                        </MultiBinding>
+                                                    </ItemsControl.ItemsSource>
                                                     <ItemsControl.ItemsPanel>
                                                         <ItemsPanelTemplate>
                                                             <WrapPanel MaxHeight="55" MaxWidth="60" />
                                                         </ItemsPanelTemplate>
                                                     </ItemsControl.ItemsPanel>
                                                     <ItemsControl.ItemTemplate>
-                                                        <DataTemplate DataType="{x:Type vm:FoodViewModel}">
-                                                            <Image Source="{Binding Image, UpdateSourceTrigger=PropertyChanged}" Height="20" Stretch="Uniform" />
+                                                        <DataTemplate DataType="{x:Type m:Food}">
+                                                            <Image Source="{Binding Image, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Height="20" Stretch="Uniform" />
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
@@ -52,6 +66,9 @@
                 </DataGrid.Columns>
             </DataGrid>
 
+            <!--<Button Content="食材追加" VerticalAlignment="Top" Click="Button_Click" Command="{Binding Send_AddFood}" CommandParameter="{Binding ElementName=rootCalendar}" Margin="10"/>-->
+            <Button Content="食材追加" VerticalAlignment="Top" Command="{Binding Send_AddFood}" Margin="10"/>
+            <!--<Button Content="食材追加" VerticalAlignment="Top" Click="Button_Click" Margin="10"/>-->
         </StackPanel>
     </Grid>
 </Page>
