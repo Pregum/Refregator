@@ -13,14 +13,13 @@ namespace MVVM_Refregator.Model
     /// <summary>
     /// 食材のコンテナクラス
     /// </summary>
-    public class FoodShelf  : BindableBase
+    public class FoodShelfModel  : BindableBase
     {
 
         private ObservableCollection<Food> _foodCollection = new ObservableCollection<Food>();
         /// <summary>
         /// 食材のコレクション
         /// </summary>
-        //public ObservableCollection<Food> FoodCollection { get; private set; } = new ObservableCollection<Food>();
         public ObservableCollection<Food> FoodCollection
         {
             get { return _foodCollection; }
@@ -28,14 +27,9 @@ namespace MVVM_Refregator.Model
         }
 
         /// <summary>
-        /// key : 賞味期限, value : Foodコレクション
-        /// </summary>
-        public Dictionary<DateTime, ObservableCollection<Food>> DayFoodMap = new Dictionary<DateTime, ObservableCollection<Food>>();
-
-        /// <summary>
         /// ctor
         /// </summary>
-        public FoodShelf()
+        public FoodShelfModel()
         {
         }
 
@@ -127,27 +121,6 @@ namespace MVVM_Refregator.Model
                 targetFood.Image = image;
             }
             return true;
-        }
-
-        /// <summary>
-        /// コレクションを賞味期限ごとのコレクションにまとめます。
-        /// </summary>
-        private void BuildFoodMap()
-        {
-            this.DayFoodMap.Clear();
-            var crastaData = this.FoodCollection.GroupBy(x => x.LimitDate);
-            foreach (var dayFoods in crastaData)
-            {
-                var currentDate = dayFoods.First().LimitDate.Date;
-                if (this.DayFoodMap.ContainsKey(currentDate) == false)
-                {
-                    this.DayFoodMap.Add(currentDate, new ObservableCollection<Food>());
-                }
-                foreach (var dayFood in dayFoods)
-                {
-                    this.DayFoodMap[currentDate].Add(dayFood);
-                }
-            }
         }
 
     }

@@ -39,7 +39,7 @@
                                                 <VisualState x:Name="Checked">
                                                     <Storyboard>
                                                         <ColorAnimation Storyboard.TargetName="myborder" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                                            To="Orange" Duration="0"/>
+                                                                            To="Orange" Duration="0:00:00.3"/>
                                                     </Storyboard>
                                                 </VisualState>
                                                 <VisualState x:Name="Unchecked"/>
@@ -63,7 +63,7 @@
                                                 <VisualState x:Name="Checked">
                                                     <Storyboard>
                                                         <ColorAnimation Storyboard.TargetName="myborder" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                                            To="Orange" Duration="0"/>
+                                                                            To="Orange" Duration="0:00:00.3"/>
                                                     </Storyboard>
                                                 </VisualState>
                                                 <VisualState x:Name="Unchecked"/>
@@ -87,7 +87,7 @@
                                                 <VisualState x:Name="Checked">
                                                     <Storyboard>
                                                         <ColorAnimation Storyboard.TargetName="myborder" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                                            To="Orange" Duration="0"/>
+                                                                            To="Orange" Duration="0:00:00.3"/>
                                                     </Storyboard>
                                                 </VisualState>
                                                 <VisualState x:Name="Unchecked"/>
@@ -111,7 +111,7 @@
                                                 <VisualState x:Name="Checked">
                                                     <Storyboard>
                                                         <ColorAnimation Storyboard.TargetName="myborder" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                                            To="Orange" Duration="0"/>
+                                                                            To="Orange" Duration="0:00:00.3"/>
                                                     </Storyboard>
                                                 </VisualState>
                                                 <VisualState x:Name="Unchecked"/>

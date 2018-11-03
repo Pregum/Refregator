@@ -17,7 +17,7 @@ namespace MVVM_Refregator.ViewModel
     public class FoodShelfViewModel : BindableBase, IDisposable
     {
 
-        private FoodShelf Model;
+        private FoodShelfModel Model;
 
         public ReadOnlyReactiveCollection<Food> Foods { get; }
         //public ReactiveProperty<ObservableCollection<Food>> Foods { get; }
@@ -43,7 +43,7 @@ namespace MVVM_Refregator.ViewModel
         /// </summary>
         public FoodShelfViewModel()
         {
-            var model = new FoodShelf();
+            var model = new FoodShelfModel();
             model.Create("first", DateTime.Now.AddDays(1), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)));
             model.Create("second", DateTime.Now.AddDays(8), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)));
             this.Foods = model.FoodCollection.ToReadOnlyReactiveCollection(m => m).AddTo(this.Disposable); ;
@@ -57,7 +57,7 @@ namespace MVVM_Refregator.ViewModel
         /// modelを渡したときのctor
         /// </summary>
         /// <param name="model"></param>
-        public FoodShelfViewModel(FoodShelf model)
+        public FoodShelfViewModel(FoodShelfModel model)
         {
             this.Model = model;
             // 変更前(このコードを有効にすると最新の変更が反映されず、1つ前の変更内容が表示される)
@@ -65,7 +65,7 @@ namespace MVVM_Refregator.ViewModel
             // FoodCollectionの変更を現行スレッドで即時反映させる
             this.Foods = this.Model.FoodCollection.ToReadOnlyReactiveCollection(Model.FoodCollection.ToCollectionChanged(), System.Reactive.Concurrency.Scheduler.CurrentThread).AddTo(this.Disposable);
             // CollectionChanged時にPropertyChangedを強制的に呼び出す
-            Model.FoodCollection.CollectionChangedAsObservable().Subscribe(x => RaisePropertyChanged("Foods"));
+            Model.FoodCollection.CollectionChangedAsObservable().Subscribe(x => RaisePropertyChanged(nameof(Foods)));
             this.InitProperty();
         }
 
@@ -107,28 +107,6 @@ namespace MVVM_Refregator.ViewModel
                 this.Model.Create("second", DateTime.Now.AddDays(ram.Next(1,8)), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)));
                 System.Diagnostics.Debug.WriteLine($" create food.  foodName : {this.Model.FoodCollection[0].Name}");
             });
-        }
-
-        /// <summary>
-        /// コレクションを賞味期限ごとのコレクションにまとめます。
-        /// </summary>
-        private void BuildFoodMap()
-        {
-            this.DateFoodsMap.Value.Clear();
-            //var crastaData = this.Foods.Value.GroupBy(x => x.LimitDate);
-            var crastaData = this.Foods.GroupBy(x => x.LimitDate);
-            foreach (var dayFoods in crastaData)
-            {
-                var currentDate = dayFoods.First().LimitDate.Date;
-                if (this.DateFoodsMap.Value.ContainsKey(currentDate) == false)
-                {
-                    this.DateFoodsMap.Value.Add(currentDate, new ObservableCollection<Food>());
-                }
-                foreach (var dayFood in dayFoods)
-                {
-                    this.DateFoodsMap.Value[currentDate].Add(dayFood);
-                }
-            }
         }
 
         public void Dispose()

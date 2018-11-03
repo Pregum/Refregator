@@ -119,8 +119,13 @@
     <Compile Include="Common\DateFoodsMapMultiConverter.cs" />
     <Compile Include="Common\JsonManager.cs" />
     <Compile Include="Common\RadioButtonUriConverter.cs" />
+    <Compile Include="Model\IStep.cs" />
     <Compile Include="Model\Nutrient.cs" />
     <Compile Include="Model\DisplayPageStatus.cs" />
+    <Compile Include="Model\StepStatusType.cs" />
+    <Compile Include="Model\WorkStep.cs" />
+    <Compile Include="Model\WorkStepModel.cs" />
+    <Compile Include="ViewModel\EditPageViewModel.cs" />
     <Compile Include="ViewModel\FoodShelfViewModel.cs" />
     <Compile Include="ViewModel\FoodViewModel.cs" />
     <Compile Include="ViewModel\StartupViewModel.cs" />
@@ -143,6 +148,18 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="View\StepOfSettingFoodBoughtDate.xaml.cs">
+      <DependentUpon>StepOfSettingFoodBoughtDate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StepOfSettingFoodLimitDate.xaml.cs">
+      <DependentUpon>StepOfSettingFoodLimitDate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StepOfSettingFoodName.xaml.cs">
+      <DependentUpon>StepOfSettingFoodName.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StepOfSettingRegisterConfirm.xaml.cs">
+      <DependentUpon>StepOfSettingRegisterConfirm.xaml</DependentUpon>
+    </Compile>
     <Page Include="View\DashBoardPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -163,10 +180,26 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\StepOfSettingFoodBoughtDate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\StepOfSettingFoodLimitDate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\StepOfSettingFoodName.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\StepOfSettingRegisterConfirm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Food.cs" />
-    <Compile Include="Model\FoodShelf.cs" />
+    <Compile Include="Model\FoodShelfModel.cs" />
     <Compile Include="Model\FoodType.cs" />
     <Compile Include="Model\FoodStatusType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
