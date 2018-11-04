@@ -10,7 +10,7 @@
       Title="StepOfSettingRegisterConfirm">
 
     <Page.DataContext>
-        <m:Food/>
+        <m:FoodModel/>
     </Page.DataContext>
 
     <Page.Resources>

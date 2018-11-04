@@ -33,13 +33,13 @@ namespace MVVM_Refregator.ViewModel
             private set { this.SetProperty(ref _currentStep, value); }
         }
 
-        public ReactiveProperty<Food> ManipulateFood = new ReactiveProperty<Food>(new Food());
+        public ReactiveProperty<FoodModel> ManipulateFood = new ReactiveProperty<FoodModel>(new FoodModel());
 
         public ReactiveProperty<bool> ButtonVisibility { get; } = new ReactiveProperty<bool>(true);
 
         public ReactiveProperty<bool> WorkLoadVisibility { get; } = new ReactiveProperty<bool>(false);
 
-        public ReadOnlyReactiveCollection<Food> Foods { get; }
+        public ReadOnlyReactiveCollection<FoodModel> Foods { get; }
 
         //public ReactiveProperty<DateTime> InputBoughtDate { get; } = new ReactiveProperty<DateTime>(DateTime.Today);
 

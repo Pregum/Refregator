@@ -37,7 +37,7 @@ namespace MVVM_Refregator.Model
             navigation.Navigate(this._editPage);
         }
 
-        public void Update(Food food)
+        public void Update(FoodModel food)
         {
             if (food == null)
             {
@@ -80,7 +80,7 @@ namespace MVVM_Refregator.Model
             navigation.Navigate(this._editPage);
         }
 
-        public void Update(Food food)
+        public void Update(FoodModel food)
         {
             if (food == null)
             {
@@ -121,7 +121,7 @@ namespace MVVM_Refregator.Model
             navigation.Navigate(this._editPage);
         }
 
-        public void Update(Food food)
+        public void Update(FoodModel food)
         {
             if (food == null)
             {
@@ -161,7 +161,7 @@ namespace MVVM_Refregator.Model
             throw new NotImplementedException();
         }
 
-        public void Update(Food food)
+        public void Update(FoodModel food)
         {
             throw new NotImplementedException();
         }
@@ -192,7 +192,7 @@ namespace MVVM_Refregator.Model
             navigation.Navigate(this._editPage);
         }
 
-        public void Update(Food food)
+        public void Update(FoodModel food)
         {
             if (food == null)
             {

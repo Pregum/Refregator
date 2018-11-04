@@ -16,11 +16,11 @@ namespace MVVM_Refregator.Model
     public class FoodShelfModel  : BindableBase
     {
 
-        private ObservableCollection<Food> _foodCollection = new ObservableCollection<Food>();
+        private ObservableCollection<FoodModel> _foodCollection = new ObservableCollection<FoodModel>();
         /// <summary>
         /// 食材のコレクション
         /// </summary>
-        public ObservableCollection<Food> FoodCollection
+        public ObservableCollection<FoodModel> FoodCollection
         {
             get { return _foodCollection; }
             set { SetProperty(ref _foodCollection, value); }
@@ -44,7 +44,7 @@ namespace MVVM_Refregator.Model
         /// <returns></returns>
         public bool Create(string name, DateTime limitDate, DateTime boughtDate, FoodType kindType, BitmapImage image)
         {
-            var newFood = new Food(name, limitDate, boughtDate, kindType, image);
+            var newFood = new FoodModel(name, limitDate, boughtDate, kindType, image);
             this.FoodCollection.Add(newFood);
 
             return true;
@@ -62,7 +62,7 @@ namespace MVVM_Refregator.Model
                 return false;
             }
             // todo: ここには、json.netを読み込んでコレクションを生成する処理を実装する
-            var food = JsonManager.LoadJsonFrom<ObservableCollection<Food>>();
+            var food = JsonManager.LoadJsonFrom<ObservableCollection<FoodModel>>();
             //this.FoodCollection = food;
             this.FoodCollection.Clear();
             foreach (var aFood in food)
@@ -79,7 +79,7 @@ namespace MVVM_Refregator.Model
         public bool Save()
         {
             // todo: とりあえず現在の食材コレクションのデータをJsonファイル等に出力する処理を実装する
-            JsonManager.SaveJsonTo<ObservableCollection<Food>>(this.FoodCollection);
+            JsonManager.SaveJsonTo<ObservableCollection<FoodModel>>(this.FoodCollection);
             return true;
         }
 

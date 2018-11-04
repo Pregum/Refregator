@@ -198,7 +198,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Food.cs" />
+    <Compile Include="Model\FoodModel.cs" />
     <Compile Include="Model\FoodShelfModel.cs" />
     <Compile Include="Model\FoodType.cs" />
     <Compile Include="Model\FoodStatusType.cs" />

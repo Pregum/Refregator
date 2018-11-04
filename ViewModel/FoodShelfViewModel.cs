@@ -19,16 +19,16 @@ namespace MVVM_Refregator.ViewModel
 
         private FoodShelfModel Model;
 
-        public ReadOnlyReactiveCollection<Food> Foods { get; }
+        public ReadOnlyReactiveCollection<FoodModel> Foods { get; }
         //public ReactiveProperty<ObservableCollection<Food>> Foods { get; }
 
         public ReactiveProperty<DateTime> SelectedDate { get; private set; }
 
         public ReactiveProperty<bool> Checked { get; } = new ReactiveProperty<bool>(false);
 
-        public ObservableCollection<Food> SelectedFood { get; private set; } = new ObservableCollection<Food>();
+        public ObservableCollection<FoodModel> SelectedFood { get; private set; } = new ObservableCollection<FoodModel>();
 
-        public ReactiveProperty<Dictionary<DateTime, ObservableCollection<Food>>> DateFoodsMap { get; } = new ReactiveProperty<Dictionary<DateTime, ObservableCollection<Food>>>(new Dictionary<DateTime, ObservableCollection<Food>>());
+        public ReactiveProperty<Dictionary<DateTime, ObservableCollection<FoodModel>>> DateFoodsMap { get; } = new ReactiveProperty<Dictionary<DateTime, ObservableCollection<FoodModel>>>(new Dictionary<DateTime, ObservableCollection<FoodModel>>());
 
         public ReactiveCommand Send_ShowAllFood { get; } = new ReactiveCommand();
 

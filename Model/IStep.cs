@@ -17,7 +17,7 @@ namespace MVVM_Refregator.Model
         /// </summary>
         /// <param name="food">操作中の食材</param>
         /// <returns></returns>
-        void Update(Food food);
+        void Update(FoodModel food);
 
         /// <summary>
         ///  初期化を行います

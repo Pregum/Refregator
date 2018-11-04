@@ -41,7 +41,7 @@
                                                         </ItemsPanelTemplate>
                                                     </ItemsControl.ItemsPanel>
                                                     <ItemsControl.ItemTemplate>
-                                                        <DataTemplate DataType="{x:Type m:Food}">
+                                                        <DataTemplate DataType="{x:Type m:FoodModel}">
                                                             <Image Source="{Binding Image, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Height="20" Stretch="Uniform" />
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
