@@ -129,6 +129,10 @@
     <Compile Include="ViewModel\FoodShelfViewModel.cs" />
     <Compile Include="ViewModel\FoodViewModel.cs" />
     <Compile Include="ViewModel\StartupViewModel.cs" />
+    <Compile Include="ViewModel\StepOfFoodBoughtDateViewModel.cs" />
+    <Compile Include="ViewModel\StepOfFoodConfirmViewModel.cs" />
+    <Compile Include="ViewModel\StepOfFoodLimitDateViewModel.cs" />
+    <Compile Include="ViewModel\StepOfFoodNameViewModel.cs" />
     <Compile Include="View\DashBoardPage.xaml.cs">
       <DependentUpon>DashBoardPage.xaml</DependentUpon>
     </Compile>

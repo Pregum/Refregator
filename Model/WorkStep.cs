@@ -13,18 +13,34 @@ namespace MVVM_Refregator.Model
     /// </summary>
     public class FoodNameEditStep : BindableBase, IStep
     {
-        private string _foodName = "食材_1";
-        public string FoodName { get { return _foodName; } set { SetProperty(ref _foodName, value); } } 
-
-        public string Name => "食材の設定";
-
+        private string _oldFoodName;
         private Uri _editPage = new Uri("/View/StepOfSettingFoodName.xaml", UriKind.Relative);
 
         private StepStatusType _stepStatus = StepStatusType.New;
 
-        public StepStatusType StepStatus
+        private string _foodName = "食材１";
+
+        private static FoodNameEditStep _instance = null;
+
+        public string Name => "食材の設定";
+
+        public StepStatusType StepStatus { get { return _stepStatus; } }
+
+        public string FoodName
         {
-            get { return _stepStatus; }
+            get => _foodName;
+            //set => _foodName = value;
+            set => this.SetProperty(ref _foodName, value);
+        }
+
+        public static FoodNameEditStep GetInstance()
+        {
+            _instance = _instance ?? new FoodNameEditStep();
+            return _instance;
+        }
+
+        private FoodNameEditStep()
+        {
         }
 
         /// <summary>
@@ -37,13 +53,18 @@ namespace MVVM_Refregator.Model
             navigation.Navigate(this._editPage);
         }
 
+        /// <summary>
+        /// 食材に対し、名前の変更を行い自身を完了状態にします
+        /// </summary>
+        /// <param name="food">変更を加える食材</param>
         public void Update(FoodModel food)
         {
             if (food == null)
             {
                 return;
             }
-            food.Name = this.Name;
+            food.Name = this.FoodName;
+            this._oldFoodName = this.FoodName;
             this.SetProperty(ref _stepStatus, StepStatusType.Done, nameof(this.StepStatus));
         }
 
@@ -52,7 +73,16 @@ namespace MVVM_Refregator.Model
         /// </summary>
         public void Init()
         {
-            FoodName = "食材_1";
+            this.FoodName = "食材１";;
+            this.SetProperty(ref _stepStatus, StepStatusType.New, nameof(this.StepStatus));
+        }
+
+        /// <summary>
+        /// 元の状態に戻します
+        /// </summary>
+        public void Revert()
+        {
+            this.FoodName = this._oldFoodName;
             this.SetProperty(ref _stepStatus, StepStatusType.New, nameof(this.StepStatus));
         }
     }
@@ -62,24 +92,43 @@ namespace MVVM_Refregator.Model
     /// </summary>
     public class FoodBoughtDateEditStep : BindableBase, IStep
     {
-        private DateTime _boughtDate = DateTime.Today;
-        public DateTime BoughtDate { get { return _boughtDate; } set { this.SetProperty(ref _boughtDate, value); } }
-
-        public string Name => "購入日の設定";
+        private DateTime _boughtDate;
 
         private Uri _editPage = new Uri("/View/StepOfSettingFoodBoughtDate.xaml", UriKind.Relative);
 
         private StepStatusType _stepStatus = StepStatusType.New;
 
+        public DateTime BoughtDate { get; set; } = DateTime.Today;
+
+        public string Name => "購入日の設定";
+
         public StepStatusType StepStatus { get => _stepStatus; }
 
+        private static FoodBoughtDateEditStep _instance = null;
+        public static FoodBoughtDateEditStep GetInstance()
+        {
+            _instance = _instance ?? new FoodBoughtDateEditStep();
+            return _instance;
+        }
+
+        private FoodBoughtDateEditStep()
+        {
+        }
+
+        /// <summary>
+        /// 購入日を設定するページへ遷移します
+        /// </summary>
+        /// <param name="navigation">遷移処理が行われるフレームのNavigationService</param>
         public void Navigate(NavigationService navigation)
         {
             this.SetProperty(ref _stepStatus, StepStatusType.Working, nameof(this.StepStatus));
-            //this.StepStatus = StepStatusType.Working;
             navigation.Navigate(this._editPage);
         }
 
+        /// <summary>
+        /// 食材に対し、購入日を設定し自身を完了状態にします
+        /// </summary>
+        /// <param name="food">変更を加える食材</param>
         public void Update(FoodModel food)
         {
             if (food == null)
@@ -87,13 +136,22 @@ namespace MVVM_Refregator.Model
                 return;
             }
             food.BoughtDate = this.BoughtDate;
+            this._boughtDate = this.BoughtDate;
             this.SetProperty(ref _stepStatus, StepStatusType.Done, nameof(this.StepStatus));
-            //this.StepStatus = StepStatusType.Done;
         }
 
+        /// <summary>
+        /// 自身を初期状態にします
+        /// </summary>
         public void Init()
         {
-            this._boughtDate = DateTime.Today;
+            this.BoughtDate = DateTime.Today;
+            this.SetProperty(ref _stepStatus, StepStatusType.New, nameof(this.StepStatus));
+        }
+
+        public void Revert()
+        {
+            this.BoughtDate = this._boughtDate;
             this.SetProperty(ref _stepStatus, StepStatusType.New, nameof(this.StepStatus));
         }
     }
@@ -103,21 +161,32 @@ namespace MVVM_Refregator.Model
     /// </summary>
     public class FoodLimitDateEditStep : BindableBase, IStep
     {
-        private DateTime _limitDate = DateTime.Today.AddDays(7);
-        public DateTime LimitDate { get { return _limitDate; } set { this.SetProperty(ref _limitDate, value); } }
-
-        public string Name => "賞味期限の設定";
+        private DateTime _oldLimitDate;
 
         private Uri _editPage = new Uri("/View/StepOfSettingFoodLimitDate.xaml", UriKind.Relative);
 
         private StepStatusType _stepStatus = StepStatusType.New;
 
+        public string Name => "賞味期限の設定";
+
+        public DateTime LimitDate { get; set; } = DateTime.Today.AddDays(7);
+
         public StepStatusType StepStatus { get => _stepStatus; }
+
+        private static FoodLimitDateEditStep _instance = null;
+        public static FoodLimitDateEditStep GetInstance()
+        {
+            _instance = _instance ?? new FoodLimitDateEditStep();
+            return _instance;
+        }
+
+        private FoodLimitDateEditStep()
+        {
+        }
 
         public void Navigate(NavigationService navigation)
         {
             this.SetProperty(ref _stepStatus, StepStatusType.Working, nameof(this.StepStatus));
-            //this.StepStatus = StepStatusType.Working;
             navigation.Navigate(this._editPage);
         }
 
@@ -129,8 +198,8 @@ namespace MVVM_Refregator.Model
             }
 
             food.LimitDate = this.LimitDate;
+            this._oldLimitDate = this.LimitDate;
             this.SetProperty(ref _stepStatus, StepStatusType.Done, nameof(this.StepStatus));
-            //this.StepStatus = StepStatusType.Done;
         }
 
         /// <summary>
@@ -141,6 +210,12 @@ namespace MVVM_Refregator.Model
             this.LimitDate = DateTime.Today.AddDays(7);
             this.SetProperty(ref _stepStatus, StepStatusType.New, nameof(this.StepStatus));
         }
+
+        public void Revert()
+        {
+            this.LimitDate = this._oldLimitDate;
+            this.SetProperty(ref _stepStatus, StepStatusType.New, nameof(this.StepStatus));
+        }
     }
 
     /// <summary>
@@ -148,11 +223,11 @@ namespace MVVM_Refregator.Model
     /// </summary>
     public class WeightEditStep : BindableBase, IStep
     {
+        private StepStatusType _stepStatus = StepStatusType.New;
+
         public float Weight { get; set; }
 
         public string Name => "重量の設定";
-
-        private StepStatusType _stepStatus = StepStatusType.New;
 
         public StepStatusType StepStatus { get => _stepStatus; }
 
@@ -167,6 +242,11 @@ namespace MVVM_Refregator.Model
         }
 
         public void Init()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Revert()
         {
             throw new NotImplementedException();
         }
@@ -177,18 +257,28 @@ namespace MVVM_Refregator.Model
     /// </summary>
     public class FoodConfirmStep : BindableBase, IStep
     {
-        public string Name => "確認画面";
-
         private StepStatusType _stepStatus = StepStatusType.New;
 
         private Uri _editPage = new Uri("/View/StepOfSettingRegisterConfirm.xaml", UriKind.Relative);
 
         public StepStatusType StepStatus { get => _stepStatus; }
 
+        public string Name => "確認画面";
+
+        private static FoodConfirmStep _instance = null;
+        public static FoodConfirmStep GetInstance()
+        {
+            _instance = _instance ?? new FoodConfirmStep();
+            return _instance;
+        }
+
+        private FoodConfirmStep()
+        {
+        }
+
         public void Navigate(NavigationService navigation)
         {
             this.SetProperty(ref _stepStatus, StepStatusType.Working, nameof(this.StepStatus));
-            //this.StepStatus = StepStatusType.Working;
             navigation.Navigate(this._editPage);
         }
 
@@ -198,11 +288,15 @@ namespace MVVM_Refregator.Model
             {
                 return;
             }
-            //this.StepStatus = StepStatusType.Done;
             this.SetProperty(ref _stepStatus, StepStatusType.Done, nameof(this.StepStatus));
         }
 
         public void Init()
+        {
+            this.SetProperty(ref _stepStatus, StepStatusType.New, nameof(this.StepStatus));
+        }
+
+        public void Revert()
         {
             this.SetProperty(ref _stepStatus, StepStatusType.New, nameof(this.StepStatus));
         }

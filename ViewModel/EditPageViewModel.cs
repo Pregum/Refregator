@@ -33,7 +33,7 @@ namespace MVVM_Refregator.ViewModel
             private set { this.SetProperty(ref _currentStep, value); }
         }
 
-        public ReactiveProperty<FoodModel> ManipulateFood = new ReactiveProperty<FoodModel>(new FoodModel());
+        public ReactiveProperty<FoodModel> ManipulateFood;
 
         public ReactiveProperty<bool> ButtonVisibility { get; } = new ReactiveProperty<bool>(true);
 
@@ -42,11 +42,8 @@ namespace MVVM_Refregator.ViewModel
         public ReadOnlyReactiveCollection<FoodModel> Foods { get; }
 
         //public ReactiveProperty<DateTime> InputBoughtDate { get; } = new ReactiveProperty<DateTime>(DateTime.Today);
-
         //public ReactiveProperty<DateTime> InputLimitDate { get; } = new ReactiveProperty<DateTime>(DateTime.Today.AddDays(7));
-
         //public ReactiveProperty<double> BorderOpacity { get; } = new ReactiveProperty<double>(0.5);
-
         //public ReactiveProperty<double> EllipseOpacity { get; } = new ReactiveProperty<double>(0.5);
 
         public ReactiveProperty<string> NextContent { get; } = new ReactiveProperty<string>("次へ");
@@ -91,13 +88,15 @@ namespace MVVM_Refregator.ViewModel
             this.Foods = this._foodShelfModel.FoodCollection.ToReadOnlyReactiveCollection(_foodShelfModel.FoodCollection.ToCollectionChanged(), System.Reactive.Concurrency.Scheduler.CurrentThread).AddTo(this.Disposable);
             this._foodShelfModel.FoodCollection.CollectionChangedAsObservable().Subscribe(x => RaisePropertyChanged(nameof(Foods)));
 
-            this._workStepModel = new WorkStepModel();
+            //this._workStepModel = new WorkStepModel();
+            this._workStepModel = WorkStepModel.GetInstance();
             this.WorkSteps = this._workStepModel.RegisterSteps.ToReadOnlyReactiveCollection(this._workStepModel.RegisterSteps.ToCollectionChanged(), System.Reactive.Concurrency.Scheduler.CurrentThread).AddTo(this.Disposable);
             this.CurrentStep = new ReactiveProperty<IStep>(this.WorkSteps.First());
 
+            this.ManipulateFood = new ReactiveProperty<FoodModel>(this._workStepModel.ManipulateFood);
+
             this.Send_NavigateRegister.Subscribe((x) =>
             {
-
                 if (x is NavigationService navigation)
                 {
                     this.ButtonVisibility.Value = !this.ButtonVisibility.Value;
@@ -111,7 +110,8 @@ namespace MVVM_Refregator.ViewModel
             {
                 if (navigationService is NavigationService navigation)
                 {
-                    this.CurrentStep.Value.Update(this.ManipulateFood.Value);
+                
+                    this.CurrentStep.Value.Update(ManipulateFood.Value);
                     if (this.CurrentStep.Value.StepStatus == StepStatusType.Done)
                     {
                         // nullでないかつ今のステップが最後でない場合
@@ -125,18 +125,17 @@ namespace MVVM_Refregator.ViewModel
                         {
                             // 最後のステップが完了した場合食材データを更新する
                             Debug.WriteLine("食材を追加中...");
-                            //this._foodShelfModel.Create(this.ManipulateFood);
-                            this._foodShelfModel.FoodCollection.Add(this.ManipulateFood.Value);
+                            this._foodShelfModel.FoodCollection.Add(ManipulateFood.Value);
                             Debug.WriteLine("食材を追加しました...");
 
-                            // todo: ここで遷移してきた時と同じ画面に戻す
-                            // tmpFoodの再生成
                             // 各コントロールの初期化(次へボタンや、progress tracker等)
                             foreach (var aStep in this.WorkSteps)
                             {
                                 aStep.Init();
                             }
 
+                            this._workStepModel.InitializeFood();
+                            this.ManipulateFood = new ReactiveProperty<FoodModel>(this._workStepModel.ManipulateFood);
                             this.ButtonVisibility.Value = !this.ButtonVisibility.Value;
                             this.WorkLoadVisibility.Value = !this.WorkLoadVisibility.Value;
                             this._currentStepIndex = 0;
@@ -158,18 +157,19 @@ namespace MVVM_Refregator.ViewModel
             {
                 if (namevigationService is NavigationService navigation)
                 {
-                    if (this._currentStepIndex > 0)
-                    {
-                        this.CurrentStep.Value.Init();
-                        this._currentStepIndex--;
-                        this._currentStep.Value = this.WorkSteps[_currentStepIndex];
-                        this.CurrentStep.Value.Navigate(navigation);
-                    }
 
                     if (this.CurrentStep.Value == this.WorkSteps.First())
                     {
                         this.ButtonVisibility.Value = !this.ButtonVisibility.Value;
                         this.WorkLoadVisibility.Value = !this.WorkLoadVisibility.Value;
+                    }
+
+                    if (this._currentStepIndex > 0)
+                    {
+                        this.CurrentStep.Value.Revert();
+                        this._currentStepIndex--;
+                        this._currentStep.Value = this.WorkSteps[_currentStepIndex];
+                        this.CurrentStep.Value.Navigate(navigation);
                     }
                 }
             });

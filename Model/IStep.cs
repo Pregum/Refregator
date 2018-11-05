@@ -13,10 +13,19 @@ namespace MVVM_Refregator.Model
     public interface IStep
     {
         /// <summary>
+        /// ステップ名を取得します
+        /// </summary>
+        string Name { get; }
+
+        /// <summary>
+        /// ステップの状態を表します
+        /// </summary>
+        StepStatusType StepStatus { get; }
+
+        /// <summary>
         /// 引数の食材の更新を行います
         /// </summary>
         /// <param name="food">操作中の食材</param>
-        /// <returns></returns>
         void Update(FoodModel food);
 
         /// <summary>
@@ -31,13 +40,8 @@ namespace MVVM_Refregator.Model
         void Navigate(NavigationService navigation);
 
         /// <summary>
-        /// ステップ名を取得します
+        /// 元の状態に戻します
         /// </summary>
-        string Name { get; }
-
-        /// <summary>
-        /// ステップの状態を表します
-        /// </summary>
-        StepStatusType StepStatus { get; }
+        void Revert();
     }
 }
