@@ -84,7 +84,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Calendar Margin="5" Grid.Column="0" />
+                <Calendar Margin="5" Grid.Column="0" Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
 
                 <StackPanel Grid.Column="1" Margin="10" Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" >
                     <ItemsControl ItemsSource="{Binding Foods}">
@@ -96,7 +96,7 @@
                     </ItemsControl>
                 </StackPanel>
 
-                <Grid Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Margin="10">
+                <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Margin="10">
                     <Frame x:Name="EditFrame" NavigationUIVisibility="Hidden" Visibility="{Binding WorkLoadVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" >
 
                     </Frame>
