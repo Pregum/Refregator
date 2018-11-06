@@ -34,8 +34,8 @@ namespace MVVM_Refregator.ViewModel
 
         public StartupViewModel()
         {
-            this._model = new FoodShelfModel();
-            InitProperty();
+            //this._model = new FoodShelfModel();
+            //InitProperty();
         }
 
         public StartupViewModel(FoodShelfModel model)

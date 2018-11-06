@@ -13,32 +13,63 @@ namespace MVVM_Refregator.Model
     /// </summary>
     public class FoodNameEditStep : BindableBase, IStep
     {
+        /// <summary>
+        /// 変更前の食材名(Previous用)
+        /// </summary>
         private string _oldFoodName;
+
+        /// <summary>
+        /// Viewのページ
+        /// </summary>
         private Uri _editPage = new Uri("/View/StepOfSettingFoodName.xaml", UriKind.Relative);
 
-        private StepStatusType _stepStatus = StepStatusType.New;
-
-        private string _foodName = "食材１";
-
-        private static FoodNameEditStep _instance = null;
-
+        /// <summary>
+        /// 作業名
+        /// </summary>
         public string Name => "食材の設定";
 
+        /// <summary>
+        /// 作業状態
+        /// </summary>
+        private StepStatusType _stepStatus = StepStatusType.New;
+
+        /// <summary>
+        /// 作業状態
+        /// </summary>
         public StepStatusType StepStatus { get { return _stepStatus; } }
 
+        /// <summary>
+        /// 食材名
+        /// </summary>
+        private string _foodName = "食材１";
+
+        /// <summary>
+        /// 食材名
+        /// </summary>
         public string FoodName
         {
-            get => _foodName;
-            //set => _foodName = value;
-            set => this.SetProperty(ref _foodName, value);
+            get { return _foodName; }
+            set { this.SetProperty(ref _foodName, value); }
         }
 
+        /// <summary>
+        /// singleton用
+        /// </summary>
+        private static FoodNameEditStep _instance = null;
+
+        /// <summary>
+        /// singleton用
+        /// </summary>
+        /// <returns></returns>
         public static FoodNameEditStep GetInstance()
         {
             _instance = _instance ?? new FoodNameEditStep();
             return _instance;
         }
 
+        /// <summary>
+        /// ctor
+        /// </summary>
         private FoodNameEditStep()
         {
         }
@@ -46,7 +77,7 @@ namespace MVVM_Refregator.Model
         /// <summary>
         /// 画面遷移を行います
         /// </summary>
-        /// <param name="navigation"></param>
+        /// <param name="navigation">遷移処理元のFrameのNavigationService</param>
         public void Navigate(NavigationService navigation)
         {
             this.SetProperty(ref _stepStatus, StepStatusType.Working, nameof(this.StepStatus));

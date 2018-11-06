@@ -10,22 +10,47 @@ using Reactive.Bindings;
 
 namespace MVVM_Refregator.Model
 {
+    /// <summary>
+    /// 登録作業・変更作業を管理するクラス
+    /// </summary>
     public class WorkStepModel : BindableBase
     {
+        /// <summary>
+        /// 登録作業のステップ
+        /// </summary>
         private ObservableCollection<IStep> _registerSteps = new ObservableCollection<IStep>();
 
+        /// <summary>
+        /// 登録作業のステップ
+        /// </summary>
         public ObservableCollection<IStep> RegisterSteps
         {
             get { return this._registerSteps; }
             set { this.SetProperty(ref _registerSteps, value); }
         }
 
+        /// <summary>
+        /// 操作される食材
+        /// </summary>
         private FoodModel _manipulateFood = new FoodModel();
 
-        public FoodModel ManipulateFood { get => _manipulateFood; private set => this.SetProperty(ref _manipulateFood, value); }
+        /// <summary>
+        /// 操作される食材
+        /// </summary>
+        public FoodModel ManipulateFood
+        {
+            get { return _manipulateFood; }
+            private set { this.SetProperty(ref _manipulateFood, value); }
+        }
 
+        /// <summary>
+        /// シングルトンを実現するためのstatic変数
+        /// </summary>
         private static WorkStepModel _instance = null;
 
+        /// <summary>
+        /// シングルトンを実現するためのstatic変数
+        /// </summary>
         public static WorkStepModel GetInstance()
         {
             _instance = _instance ?? new WorkStepModel();
@@ -48,7 +73,6 @@ namespace MVVM_Refregator.Model
         /// </summary>
         public void Initialize()
         {
-            //this._manipulateFood = new FoodModel();
             this.ManipulateFood = new FoodModel();
             foreach (var aStep in this.RegisterSteps)
             {
@@ -62,7 +86,6 @@ namespace MVVM_Refregator.Model
         /// <param name="manipulateFood"></param>
         public void SetFood(FoodModel manipulateFood)
         {
-            //this._manipulateFood = manipulateFood;
             this.ManipulateFood = manipulateFood;
         }
     }
