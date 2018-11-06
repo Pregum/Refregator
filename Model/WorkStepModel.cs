@@ -20,9 +20,11 @@ namespace MVVM_Refregator.Model
             set { this.SetProperty(ref _registerSteps, value); }
         }
 
-        public FoodModel ManipulateFood => _manipulateFood;
-        private static WorkStepModel _instance = null;
         private FoodModel _manipulateFood = new FoodModel();
+
+        public FoodModel ManipulateFood { get => _manipulateFood; private set => this.SetProperty(ref _manipulateFood, value); }
+
+        private static WorkStepModel _instance = null;
 
         public static WorkStepModel GetInstance()
         {
@@ -35,11 +37,6 @@ namespace MVVM_Refregator.Model
         /// </summary>
         private WorkStepModel()
         {
-            //this.RegisterSteps.Add(new FoodNameEditStep());
-            //this.RegisterSteps.Add(new FoodBoughtDateEditStep());
-            //this.RegisterSteps.Add(new FoodLimitDateEditStep());
-            //this.RegisterSteps.Add(new FoodConfirmStep());
-
             this.RegisterSteps.Add(FoodNameEditStep.GetInstance());
             this.RegisterSteps.Add(FoodBoughtDateEditStep.GetInstance());
             this.RegisterSteps.Add(FoodLimitDateEditStep.GetInstance());
@@ -49,18 +46,24 @@ namespace MVVM_Refregator.Model
         /// <summary>
         /// 操作している食材オブジェクトの初期化
         /// </summary>
-        public void InitializeFood()
+        public void Initialize()
         {
-            this._manipulateFood = new FoodModel();
+            //this._manipulateFood = new FoodModel();
+            this.ManipulateFood = new FoodModel();
+            foreach (var aStep in this.RegisterSteps)
+            {
+                aStep.Init();
+            }
         }
 
         /// <summary>
-        /// DI時のctor
+        /// 食材をセットします
         /// </summary>
-        /// <param name="manipulateFood">操作されるFood</param>
-        public WorkStepModel(FoodModel manipulateFood)
+        /// <param name="manipulateFood"></param>
+        public void SetFood(FoodModel manipulateFood)
         {
-
+            //this._manipulateFood = manipulateFood;
+            this.ManipulateFood = manipulateFood;
         }
     }
 }

@@ -24,6 +24,6 @@
             <Calendar />
         </StackPanel>-->
 
-        <DatePicker Grid.Column="1" Margin="20" BorderBrush="Transparent" SelectedDate="{Binding LimitDate.Value}" />
+        <DatePicker Grid.Column="1" Margin="20" BorderBrush="Transparent" SelectedDate="{Binding Food.Value.LimitDate}" />
     </Grid>
 </Page>

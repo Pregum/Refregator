@@ -23,7 +23,7 @@ namespace MVVM_Refregator.Model
         public ObservableCollection<FoodModel> FoodCollection
         {
             get { return _foodCollection; }
-            set { SetProperty(ref _foodCollection, value); }
+            private set { SetProperty(ref _foodCollection, value); }
         }
 
         /// <summary>

@@ -16,14 +16,25 @@ namespace MVVM_Refregator.ViewModel
     {
         private FoodLimitDateEditStep _foodLimitDateEditStep;
 
-        public ReactiveProperty<DateTime> LimitDate { get; }
+        private WorkStepModel _workStepModel;
+
+        //public ReactiveProperty<DateTime> LimitDate { get; }
+        public ReactiveProperty<FoodModel> Food { get; }
 
         public StepOfFoodLimitDateViewModel()
         {
             this._foodLimitDateEditStep = FoodLimitDateEditStep.GetInstance();
+            this._workStepModel = WorkStepModel.GetInstance();
 
-            this.LimitDate = this._foodLimitDateEditStep.ToReactivePropertyAsSynchronized(
-                m => m.LimitDate,
+            //this.LimitDate = this._foodLimitDateEditStep.ToReactivePropertyAsSynchronized(
+            //    m => m.LimitDate,
+            //    convert => convert,
+            //    convertBack => convertBack,
+            //    ReactivePropertyMode.DistinctUntilChanged | ReactivePropertyMode.RaiseLatestValueOnSubscribe,
+            //    false);
+
+            this.Food = this._workStepModel.ToReactivePropertyAsSynchronized(
+                m => m.ManipulateFood,
                 convert => convert,
                 convertBack => convertBack,
                 ReactivePropertyMode.DistinctUntilChanged | ReactivePropertyMode.RaiseLatestValueOnSubscribe,

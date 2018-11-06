@@ -16,29 +16,30 @@ namespace MVVM_Refregator.ViewModel
     {
         private FoodNameEditStep _foodNameEditStepModel;
 
-        //private WorkStepModel _workStepModel;
-        public ReactiveProperty<string> FoodName { get; }
+        private WorkStepModel _workStepModel;
+        public ReactiveProperty<FoodModel> Food { get; }
 
         public StepOfFoodNameViewModel()
         {
             this._foodNameEditStepModel = FoodNameEditStep.GetInstance();
-            //this._workStepModel = WorkStepModel.GetInstance();
+            this._workStepModel = WorkStepModel.GetInstance();
 
             //this.FoodName = new ReactiveProperty<string>(this._workStepModel._manipulateFood.Name);
             //this.FoodName = new ReactiveProperty<string>(this._foodNameEditStepModel.FoodName);
-            this.FoodName = this._foodNameEditStepModel.ToReactivePropertyAsSynchronized(m => m.FoodName,
-                convert => convert,
-                convertBack => convertBack,
-                ReactivePropertyMode.DistinctUntilChanged | ReactivePropertyMode.RaiseLatestValueOnSubscribe,
-                false);
 
-            //this.FoodName = this._model.ObserveProperty(x => x.FoodName).ToReactiveProperty();
-            //this.FoodName = this._model.ToReactivePropertyAsSynchronized(
-            //    x => x.FoodName, 
+            //this.FoodName = this._foodNameEditStepModel.ToReactivePropertyAsSynchronized(
+            //    m => m.FoodName,
             //    convert => convert,
             //    convertBack => convertBack,
-            //    ReactivePropertyMode.RaiseLatestValueOnSubscribe | ReactivePropertyMode.DistinctUntilChanged,
+            //    ReactivePropertyMode.DistinctUntilChanged | ReactivePropertyMode.RaiseLatestValueOnSubscribe,
             //    false);
+
+            this.Food = this._workStepModel.ToReactivePropertyAsSynchronized(
+                x => x.ManipulateFood,
+                convert => convert,
+                convertBack => convertBack,
+                ReactivePropertyMode.RaiseLatestValueOnSubscribe | ReactivePropertyMode.DistinctUntilChanged,
+                false);
         }
     }
 }

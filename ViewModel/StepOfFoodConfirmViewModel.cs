@@ -25,7 +25,8 @@ namespace MVVM_Refregator.ViewModel
             this._confirmModel = FoodConfirmStep.GetInstance();
             this._workStepModel = WorkStepModel.GetInstance();
 
-            this.ManipulateFoodModel = new ReactiveProperty<FoodModel>(this._workStepModel.ManipulateFood);
+            this.ManipulateFoodModel =
+                new ReactiveProperty<FoodModel>(this._workStepModel.ManipulateFood);
         }
     }
 }

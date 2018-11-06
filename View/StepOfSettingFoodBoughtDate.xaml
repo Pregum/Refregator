@@ -18,7 +18,8 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <DatePicker SelectedDate="{Binding BoughtDate.Value}" BorderBrush="Transparent" Grid.Column="1" Grid.RowSpan="2" Margin="20" />
+        <DatePicker SelectedDate="{Binding Food.Value.BoughtDate}"
+                    BorderBrush="Transparent" Grid.Column="1" Grid.RowSpan="2" Margin="20" />
         <!--<Button Grid.RowSpan="2" Grid.Column="1" Margin="10" Content="食材購入日決定画面です"/>-->
     </Grid>
 </Page>
