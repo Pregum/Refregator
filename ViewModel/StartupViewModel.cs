@@ -32,15 +32,17 @@ namespace MVVM_Refregator.ViewModel
 
         public ReactiveCommand LoadJsonCommand { get; } = new ReactiveCommand();
 
+        //public StartupViewModel()
+        //{
+        //    //this._model = new FoodShelfModel();
+        //    //InitProperty();
+        //}
+
+        //public StartupViewModel(FoodShelfModel model)
         public StartupViewModel()
         {
-            //this._model = new FoodShelfModel();
-            //InitProperty();
-        }
-
-        public StartupViewModel(FoodShelfModel model)
-        {
-            this._model = model;
+            //this._model = model;
+            this._model = FoodShelfModel.GetInstance();
             InitProperty();
         }
 

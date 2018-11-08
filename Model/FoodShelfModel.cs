@@ -13,10 +13,14 @@ namespace MVVM_Refregator.Model
     /// <summary>
     /// 食材のコンテナクラス
     /// </summary>
-    public class FoodShelfModel  : BindableBase
+    public class FoodShelfModel : BindableBase
     {
 
+        /// <summary>
+        /// 食材のコレクション
+        /// </summary>
         private ObservableCollection<FoodModel> _foodCollection = new ObservableCollection<FoodModel>();
+
         /// <summary>
         /// 食材のコレクション
         /// </summary>
@@ -27,9 +31,24 @@ namespace MVVM_Refregator.Model
         }
 
         /// <summary>
+        /// singleton
+        /// </summary>
+        private static FoodShelfModel _instance = null;
+
+        /// <summary>
+        /// singleton
+        /// </summary>
+        /// <returns></returns>
+        public static FoodShelfModel GetInstance()
+        {
+            _instance = _instance ?? new FoodShelfModel();
+            return _instance;
+        }
+
+        /// <summary>
         /// ctor
         /// </summary>
-        public FoodShelfModel()
+        private FoodShelfModel()
         {
         }
 
@@ -88,7 +107,7 @@ namespace MVVM_Refregator.Model
         /// </summary>
         /// <param name="food">追加される食材</param>
         /// <returns></returns>
-        public bool Craete(FoodModel food)
+        public bool Create(FoodModel food)
         {
             this.FoodCollection.Add(food);
 
@@ -133,6 +152,12 @@ namespace MVVM_Refregator.Model
                 targetFood.Image = image;
             }
             return true;
+        }
+
+        public bool Update(FoodModel food)
+        {
+            return Update(food.Id, food.Name, food.LimitDate, food.BoughtDate, food.KindType, food.Image);
+
         }
 
     }

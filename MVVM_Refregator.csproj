@@ -125,6 +125,7 @@
     <Compile Include="Model\StepStatusType.cs" />
     <Compile Include="Model\WorkStep.cs" />
     <Compile Include="Model\WorkStepModel.cs" />
+    <Compile Include="Model\WorkStepType.cs" />
     <Compile Include="ViewModel\EditPageViewModel.cs" />
     <Compile Include="ViewModel\FoodShelfViewModel.cs" />
     <Compile Include="ViewModel\FoodViewModel.cs" />

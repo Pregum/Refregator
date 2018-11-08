@@ -14,7 +14,7 @@ namespace MVVM_Refregator.ViewModel
 {
     public class StepOfFoodLimitDateViewModel : BindableBase
     {
-        private FoodLimitDateEditStep _foodLimitDateEditStep;
+        //private FoodLimitDateEditStep _foodLimitDateEditStep;
 
         private WorkStepModel _workStepModel;
 
@@ -23,7 +23,7 @@ namespace MVVM_Refregator.ViewModel
 
         public StepOfFoodLimitDateViewModel()
         {
-            this._foodLimitDateEditStep = FoodLimitDateEditStep.GetInstance();
+            //this._foodLimitDateEditStep = FoodLimitDateEditStep.GetInstance();
             this._workStepModel = WorkStepModel.GetInstance();
 
             //this.LimitDate = this._foodLimitDateEditStep.ToReactivePropertyAsSynchronized(

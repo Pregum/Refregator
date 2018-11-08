@@ -43,6 +43,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
+                <!-- 食材操作ボタン -->
                 <Button Grid.Column="0" Content="追加" Margin="20,10"
                         Command="{Binding Send_NavigateRegister}"
                         CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
@@ -56,8 +57,7 @@
                         CommandParameter="{Binding SelectedFood.Value}"
                         Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
 
-
-                <!-- Progress Tracker の用意-->
+                <!-- Progress Tracker -->
                 <ItemsControl Grid.Row="0" Grid.ColumnSpan="5"
                               ItemsSource="{Binding WorkSteps, UpdateSourceTrigger=PropertyChanged}"
                               Visibility="{Binding WorkLoadVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}">

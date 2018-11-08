@@ -27,16 +27,18 @@ namespace MVVM_Refregator.View
         {
             InitializeComponent();
 
-            if (App.Current.Resources["FoodShelfKey"] is FoodShelfModel foodShelfModel)
-            {
-                //this.DataContext = new FoodShelfViewModel(foodShelfModel);
-                this.DataContext = new EditPageViewModel(foodShelfModel);
-            }
-            else
-            {
-                //this.DataContext = new FoodShelfViewModel();
-                this.DataContext = new EditPageViewModel();
-            }
+            //if (App.Current.Resources["FoodShelfKey"] is FoodShelfModel foodShelfModel)
+            //{
+            //    //this.DataContext = new FoodShelfViewModel(foodShelfModel);
+            //    this.DataContext = new EditPageViewModel(foodShelfModel);
+            //}
+            //else
+            //{
+            //    //this.DataContext = new FoodShelfViewModel();
+            //    this.DataContext = new EditPageViewModel();
+            //}
+            //this.DataContext = new FoodShelfViewModel();
+            this.DataContext = new EditPageViewModel();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

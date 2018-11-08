@@ -13,7 +13,7 @@ namespace MVVM_Refregator.ViewModel
 {
     public class StepOfFoodBoughtDateViewModel : BindableBase
     {
-        private FoodBoughtDateEditStep _foodBoughtDateEditStepModel;
+        //private FoodBoughtDateEditStep _foodBoughtDateEditStepModel;
 
         private WorkStepModel _workStepModel;
 
@@ -22,7 +22,7 @@ namespace MVVM_Refregator.ViewModel
 
         public StepOfFoodBoughtDateViewModel()
         {
-            this._foodBoughtDateEditStepModel = FoodBoughtDateEditStep.GetInstance();
+            //this._foodBoughtDateEditStepModel = FoodBoughtDateEditStep.GetInstance();
 
             this._workStepModel = WorkStepModel.GetInstance();
 

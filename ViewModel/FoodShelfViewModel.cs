@@ -38,28 +38,30 @@ namespace MVVM_Refregator.ViewModel
 
         private CompositeDisposable Disposable { get; } = new CompositeDisposable();
 
-        /// <summary>
-        /// ctor
-        /// </summary>
-        public FoodShelfViewModel()
-        {
-            var model = new FoodShelfModel();
-            model.Create("first", DateTime.Now.AddDays(1), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)));
-            model.Create("second", DateTime.Now.AddDays(8), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)));
-            this.Foods = model.FoodCollection.ToReadOnlyReactiveCollection(m => m).AddTo(this.Disposable); ;
-            this._foodShelfModel = model;
+        ///// <summary>
+        ///// ctor
+        ///// </summary>
+        //public FoodShelfViewModel()
+        //{
+            //var model = new FoodShelfModel();
+            //model.Create("first", DateTime.Now.AddDays(1), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)));
+            //model.Create("second", DateTime.Now.AddDays(8), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)));
+            //this.Foods = model.FoodCollection.ToReadOnlyReactiveCollection(m => m).AddTo(this.Disposable); ;
+            //this._foodShelfModel = model;
 
-            InitProperty();
-        }
+            //InitProperty();
+        //}
 
 
         /// <summary>
         /// modelを渡したときのctor
         /// </summary>
         /// <param name="model"></param>
-        public FoodShelfViewModel(FoodShelfModel model)
+        //public FoodShelfViewModel(FoodShelfModel model)
+        public FoodShelfViewModel()
         {
-            this._foodShelfModel = model;
+            //this._foodShelfModel = model;
+            this._foodShelfModel = FoodShelfModel.GetInstance();
             // 変更前(このコードを有効にすると最新の変更が反映されず、1つ前の変更内容が表示される)
             // FoodCollectionの変更を現行スレッドで即時反映させる
             this.Foods = this._foodShelfModel.FoodCollection.ToReadOnlyReactiveCollection(_foodShelfModel.FoodCollection.ToCollectionChanged(), System.Reactive.Concurrency.Scheduler.CurrentThread).AddTo(this.Disposable);

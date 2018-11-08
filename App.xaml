@@ -7,7 +7,7 @@
              Startup="Application_Startup">
     <Application.Resources>
 
-        <m:FoodShelfModel x:Key="FoodShelfKey" />
+        <!--<m:FoodShelfModel x:Key="FoodShelfKey" />-->
         <!--StartupUri="View/TestView.xaml">-->
     </Application.Resources>
 </Application>

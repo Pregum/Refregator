@@ -14,7 +14,7 @@ namespace MVVM_Refregator.ViewModel
 {
     public class StepOfFoodConfirmViewModel : BindableBase
     {
-        FoodConfirmStep _confirmModel;
+        //FoodConfirmStep _confirmModel;
 
         WorkStepModel _workStepModel;
 
@@ -22,7 +22,7 @@ namespace MVVM_Refregator.ViewModel
 
         public StepOfFoodConfirmViewModel()
         {
-            this._confirmModel = FoodConfirmStep.GetInstance();
+            //this._confirmModel = FoodConfirmStep.GetInstance();
             this._workStepModel = WorkStepModel.GetInstance();
 
             this.ManipulateFoodModel =

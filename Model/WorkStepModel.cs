@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Reactive.Bindings;
+using System.Windows.Navigation;
 
 namespace MVVM_Refregator.Model
 {
@@ -16,18 +17,79 @@ namespace MVVM_Refregator.Model
     public class WorkStepModel : BindableBase
     {
         /// <summary>
-        /// 登録作業のステップ
+        /// 現在のステップのインデックス
         /// </summary>
-        private ObservableCollection<IStep> _registerSteps = new ObservableCollection<IStep>();
+        private int _currentStepIndex = 0;
+
+        /// <summary>
+        /// 現在の作業の種類
+        /// </summary>
+        private WorkType _currentWorkStepsType;
+
+        /// <summary>
+        /// 現在の作業の種類
+        /// </summary>
+        public WorkType CurrentWorkStepsType
+        {
+            get { return this._currentWorkStepsType; }
+            private set { this.SetProperty(ref _currentWorkStepsType, value); }
+        }
+
+        /// <summary>
+        /// 食材管理クラス
+        /// </summary>
+        private FoodShelfModel _foodShelfModel = FoodShelfModel.GetInstance();
+
+        /// <summary>
+        /// 現在の作業のステップコレクション
+        /// </summary>
+        private ObservableCollection<IStep> _currentWorkSteps;
+
+        /// <summary>
+        /// 現在の作業のステップコレクション
+        /// </summary>
+        public ObservableCollection<IStep> CurrentWorkSteps
+        {
+            get { return _currentWorkSteps; }
+            private set { this.SetProperty(ref _currentWorkSteps, value); }
+        }
 
         /// <summary>
         /// 登録作業のステップ
         /// </summary>
-        public ObservableCollection<IStep> RegisterSteps
-        {
-            get { return this._registerSteps; }
-            set { this.SetProperty(ref _registerSteps, value); }
-        }
+        private ObservableCollection<IStep> _registerSteps
+            = new ObservableCollection<IStep>() {
+                new FoodNameEditStep(),
+                new FoodBoughtDateEditStep(),
+                new FoodLimitDateEditStep(),
+                new FoodConfirmStep() };
+
+        /// <summary>
+        /// 変更作業のステップ
+        /// </summary>
+        private ObservableCollection<IStep> _updateSteps
+            = new ObservableCollection<IStep>(){
+                new FoodNameEditStep(),
+                new FoodBoughtDateEditStep(),
+                new FoodLimitDateEditStep(),
+                new FoodConfirmStep() };
+
+        /// <summary>
+        /// 削除作業のステップ
+        /// </summary>
+        private ObservableCollection<IStep> _deleteStep
+            = new ObservableCollection<IStep>() {
+                new FoodConfirmStep() };
+
+        /// <summary>
+        /// 現在の作業ステップ
+        /// </summary>
+        private IStep _currentStep;
+
+        /// <summary>
+        /// 一時保管用(変更時・削除時)
+        /// </summary>
+        private FoodModel _temporalFood;
 
         /// <summary>
         /// 操作される食材
@@ -44,12 +106,22 @@ namespace MVVM_Refregator.Model
         }
 
         /// <summary>
-        /// シングルトンを実現するためのstatic変数
+        /// 今のステップが最初のステップか
+        /// </summary>
+        public bool IsFirstStep { get { return this._currentStep == this._currentWorkSteps.First(); } }
+
+        /// <summary>
+        /// 今のステップが最後のステップか
+        /// </summary>
+        public bool IsLastStep { get { return this._currentStep == this._currentWorkSteps.Last(); } }
+
+        /// <summary>
+        /// singleton
         /// </summary>
         private static WorkStepModel _instance = null;
 
         /// <summary>
-        /// シングルトンを実現するためのstatic変数
+        /// singleton
         /// </summary>
         public static WorkStepModel GetInstance()
         {
@@ -62,31 +134,158 @@ namespace MVVM_Refregator.Model
         /// </summary>
         private WorkStepModel()
         {
-            this.RegisterSteps.Add(FoodNameEditStep.GetInstance());
-            this.RegisterSteps.Add(FoodBoughtDateEditStep.GetInstance());
-            this.RegisterSteps.Add(FoodLimitDateEditStep.GetInstance());
-            this.RegisterSteps.Add(FoodConfirmStep.GetInstance());
+            this._currentWorkSteps = this._registerSteps;
+            //this._currentWorkStepType = WorkStepType.Create;
+            this.CurrentWorkStepsType = WorkType.StandBy;
         }
 
         /// <summary>
-        /// 操作している食材オブジェクトの初期化
+        /// 次のステップへ移ります
         /// </summary>
-        public void Initialize()
+        public void NextStep(NavigationService navigation)
+        {
+            this._currentStep.Update();
+            // 現在の作業が完了していなければ終了
+            if (this._currentStep.StepStatus != StepStatusType.Done)
+            {
+                return;
+            }
+
+            // 全作業が完了した場合、食材を処理します
+            if (this._currentWorkSteps.All(status => status.StepStatus == StepStatusType.Done) && this._currentWorkSteps.Last() == this._currentStep)
+            {
+                // 今の作業の種類によって行う動作を分ける(ここが大きくなったらStrategyパターンになる)
+                switch (this._currentWorkStepsType)
+                {
+                    // 作成作業
+                    case WorkType.Create:
+                        this._foodShelfModel.Create(this._manipulateFood);
+                        //this._currentWorkStepType = WorkStepType.StandBy;
+                        this.CurrentWorkStepsType = WorkType.StandBy;
+                        break;
+                    // 更新作業
+                    case WorkType.Update:
+                        this._foodShelfModel.Update(this._manipulateFood);
+                        //this._currentWorkStepType = WorkStepType.StandBy;
+                        this.CurrentWorkStepsType = WorkType.StandBy;
+                        break;
+                    // 削除作業
+                    case WorkType.Delete:
+                        this._foodShelfModel.Delete(this._manipulateFood.Id);
+                        //this._currentWorkStepType = WorkStepType.StandBy;
+                        this.CurrentWorkStepsType = WorkType.StandBy;
+                        break;
+                    // 未定義または読込作業またはデフォルト
+                    case WorkType.StandBy:
+                    case WorkType.None:
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                // 現在のステップが最後でなければ、次のステップへ進む
+                //this._currentStepIndex = this._currentStepIndex + 1 >= this._currentWorkSteps.Count ? this._currentStepIndex : this._currentStepIndex + 1;
+                this._currentStepIndex = this.IsLastStep ? this._currentStepIndex : this._currentStepIndex + 1;
+                this._currentStep = this._currentWorkSteps[this._currentStepIndex];
+                this._currentStep.Navigate(navigation);
+            }
+
+            // IsLastStepプロパティの通知
+            this.RaisePropertyChanged(nameof(this.IsLastStep));
+        }
+
+        /// <summary>
+        /// 前のステップへ戻ります
+        /// </summary>
+        public void PrevStep(NavigationService navigation)
+        {
+            // 現作業ステップが2番目以降の場合、変更を戻し一つ前の作業に戻る
+            if (this._currentStepIndex > 0)
+            {
+                this._currentStep.Revert();
+
+                this._currentStepIndex--;
+                this._currentStep = this._currentWorkSteps[this._currentStepIndex];
+                this._currentStep.Navigate(navigation);
+            }
+            // 最初のステップならば待機中に変更
+            else if (this._currentStepIndex == 0)
+            {
+                //this._currentWorkStepType = WorkStepType.StandBy;
+                this.CurrentWorkStepsType = WorkType.StandBy;
+            }
+
+            // IsLastStepプロパティの通知
+            this.RaisePropertyChanged(nameof(this.IsLastStep));
+        }
+
+        /// <summary>
+        /// 食材の追加作業に移ります
+        /// </summary>
+        /// <param name="navigation">画面遷移用Service</param>
+        public void NavigateAddWork(NavigationService navigation)
         {
             this.ManipulateFood = new FoodModel();
-            foreach (var aStep in this.RegisterSteps)
+            this.CurrentWorkSteps = this._registerSteps;
+            foreach (IStep aStep in this.CurrentWorkSteps)
             {
                 aStep.Init();
             }
+
+            this._currentStepIndex = 0;
+            this._currentStep = this.CurrentWorkSteps.First();
+            this._currentStep.Navigate(navigation);
+            this.CurrentWorkStepsType = WorkType.Create;
+
+            this.RaisePropertyChanged(nameof(this.IsLastStep));
         }
 
         /// <summary>
-        /// 食材をセットします
+        /// 食材の更新作業に移ります
         /// </summary>
-        /// <param name="manipulateFood"></param>
-        public void SetFood(FoodModel manipulateFood)
+        /// <param name="updateFood">更新される食材</param>
+        /// <param name="navigation">画面遷移用Service</param>
+        public void NavigateUpdateWork(FoodModel updateFood, NavigationService navigation)
         {
-            this.ManipulateFood = manipulateFood;
+            this.ManipulateFood = new FoodModel();
+            this._temporalFood = updateFood;
+            //this._currentWorkSteps = this._updateSteps;
+            this.CurrentWorkSteps = this._updateSteps;
+            foreach (IStep aStep in this.CurrentWorkSteps)
+            {
+                aStep.Init();
+            }
+
+            this._currentStepIndex = 0;
+            this.CurrentWorkStepsType = WorkType.Update;
+            this._currentStep = this._currentWorkSteps.First();
+            this._currentStep.Navigate(navigation);
+
+            this.RaisePropertyChanged(nameof(this.IsLastStep));
         }
+
+        /// <summary>
+        /// 食材の削除作業に移ります
+        /// </summary>
+        /// <param name="deleteFood">削除される食材</param>
+        /// <param name="navigation">画面遷移用Service</param>
+        public void NavigateDeleteWork(FoodModel deleteFood, NavigationService navigation)
+        {
+            this.ManipulateFood = deleteFood;
+            this.CurrentWorkSteps = this._deleteStep;
+            foreach (IStep aStep in this.CurrentWorkSteps)
+            {
+                aStep.Init();
+            }
+
+            this._currentStepIndex = 0;
+            this.CurrentWorkStepsType = WorkType.Delete;
+            this._currentStep = this._currentWorkSteps.First();
+            this._currentStep.Navigate(navigation);
+
+            this.RaisePropertyChanged(nameof(this.IsLastStep));
+        }
+
     }
 }
