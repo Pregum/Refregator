@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using MVVM_Refregator.ViewModel;
+
 namespace MVVM_Refregator.View
 {
     /// <summary>
@@ -25,34 +27,19 @@ namespace MVVM_Refregator.View
         {
             InitializeComponent();
 
-            if (App.Current.Resources["FoodShelfKey"] is FoodShelf foodShelfModel)
-            {
-                if (this.DataContext == null)
-                {
-                    this.DataContext = new ViewModel.FoodShelfViewModel(foodShelfModel);
-                }
-            }
-            else
-            {
-                this.DataContext = new ViewModel.FoodShelfViewModel();
-            }
-        }
+            //if (App.Current.Resources["FoodShelfKey"] is FoodShelfModel foodShelfModel)
+            //{
+            //    if (this.DataContext == null)
+            //    {
+            //        this.DataContext = new ViewModel.FoodShelfViewModel(foodShelfModel);
+            //    }
+            //}
+            //else
+            //{
+            //    this.DataContext = new ViewModel.FoodShelfViewModel();
+            //}
 
-
-        private void ItemsControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            var tes = (ItemsControl)sender;
-            System.Diagnostics.Debug.WriteLine("call by datacontext changed. : " + tes.DataContext.ToString());
-            //this.foodShelf.Send_BindingFoods.Execute(tes);
-            ((ViewModel.FoodShelfViewModel)this.DataContext).Send_BindingFoods.Execute(tes);
-        }
-
-        private void ItemsControl_Initialized(object sender, EventArgs e)
-        {
-            var tes = (ItemsControl)sender;
-            System.Diagnostics.Debug.WriteLine("call by dataContextChanged : " + tes.DataContext.ToString());
-            //this.foodShelf.Send_BindingFoods.Execute(tes);
-            ((ViewModel.FoodShelfViewModel)this.DataContext).Send_BindingFoods.Execute(tes);
+            this.DataContext = this.DataContext ?? new FoodShelfViewModel();
         }
     }
 }

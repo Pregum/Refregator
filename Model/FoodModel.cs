@@ -9,7 +9,7 @@ namespace MVVM_Refregator.Model
     /// <summary>
     /// 食品を表すクラス
     /// </summary>
-    public class Food : BindableBase
+    public class FoodModel : BindableBase
     {
         /// <summary>
         /// Id
@@ -141,7 +141,7 @@ namespace MVVM_Refregator.Model
         /// <param name="kindType">種類</param>
         /// <param name="statusType">状態</param>
         /// <param name="image">食材画像</param>
-        public Food(string name, DateTime limitDate, DateTime boughtDate, FoodType kindType, BitmapImage image)
+        public FoodModel(string name, DateTime limitDate, DateTime boughtDate, FoodType kindType, BitmapImage image)
         {
             _id = _id_num++;
             _name = name;
@@ -153,18 +153,27 @@ namespace MVVM_Refregator.Model
             _imageString = _image.UriSource.OriginalString;
         }
 
-        public Food() : this("none", DateTime.Now.AddDays(7), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)))
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="food">コピー元食材</param>
+        public FoodModel(FoodModel food) : this(food.Name, food.LimitDate, food.BoughtDate, food.KindType, food.Image) { }
+
+        /// <summary>
+        /// 開発用ctor
+        /// </summary>
+        public FoodModel() : this("none", DateTime.Now.AddDays(7), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)))
         {
         }
 
-        /// <summary>
-        /// 消費期限を過ぎたか
-        /// </summary>
-        [JsonIgnore()]
-        public bool IsOverLimitDate
-        {
-            get { return LimitDate.Date > BoughtDate.Date; }
-        }
+        ///// <summary>
+        ///// 消費期限を過ぎたか
+        ///// </summary>
+        //[JsonIgnore()]
+        //public bool IsOverLimitDate
+        //{
+        //    get { return LimitDate.Date > BoughtDate.Date; }
+        //}
 
     }
 }

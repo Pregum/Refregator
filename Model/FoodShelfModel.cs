@@ -13,47 +13,43 @@ namespace MVVM_Refregator.Model
     /// <summary>
     /// 食材のコンテナクラス
     /// </summary>
-    public class FoodShelf  : BindableBase
+    public class FoodShelfModel : BindableBase
     {
 
-        private ObservableCollection<Food> _foodCollection = new ObservableCollection<Food>();
         /// <summary>
         /// 食材のコレクション
         /// </summary>
-        //public ObservableCollection<Food> FoodCollection { get; private set; } = new ObservableCollection<Food>();
-        public ObservableCollection<Food> FoodCollection
+        private ObservableCollection<FoodModel> _foodCollection = new ObservableCollection<FoodModel>();
+
+        /// <summary>
+        /// 食材のコレクション
+        /// </summary>
+        public ObservableCollection<FoodModel> FoodCollection
         {
             get { return _foodCollection; }
-            set { SetProperty(ref _foodCollection, value); }
+            private set { SetProperty(ref _foodCollection, value); }
         }
 
         /// <summary>
-        /// key : 賞味期限, value : Foodコレクション
+        /// singleton
         /// </summary>
-        public Dictionary<DateTime, ObservableCollection<Food>> DayFoodMap = new Dictionary<DateTime, ObservableCollection<Food>>();
+        private static FoodShelfModel _instance = null;
+
+        /// <summary>
+        /// singleton
+        /// </summary>
+        /// <returns></returns>
+        public static FoodShelfModel GetInstance()
+        {
+            _instance = _instance ?? new FoodShelfModel();
+            return _instance;
+        }
 
         /// <summary>
         /// ctor
         /// </summary>
-        public FoodShelf()
+        private FoodShelfModel()
         {
-        }
-
-        /// <summary>
-        /// 新しい食材を追加します
-        /// </summary>
-        /// <param name="name">食材名</param>
-        /// <param name="limitDate">賞味期限</param>
-        /// <param name="boughtDate">購入日</param>
-        /// <param name="kindType">食材のタイプ</param>
-        /// <param name="image">食材画像</param>
-        /// <returns></returns>
-        public bool Create(string name, DateTime limitDate, DateTime boughtDate, FoodType kindType, BitmapImage image)
-        {
-            var newFood = new Food(name, limitDate, boughtDate, kindType, image);
-            this.FoodCollection.Add(newFood);
-
-            return true;
         }
 
         /// <summary>
@@ -68,7 +64,7 @@ namespace MVVM_Refregator.Model
                 return false;
             }
             // todo: ここには、json.netを読み込んでコレクションを生成する処理を実装する
-            var food = JsonManager.LoadJsonFrom<ObservableCollection<Food>>();
+            var food = JsonManager.LoadJsonFrom<ObservableCollection<FoodModel>>();
             //this.FoodCollection = food;
             this.FoodCollection.Clear();
             foreach (var aFood in food)
@@ -85,7 +81,36 @@ namespace MVVM_Refregator.Model
         public bool Save()
         {
             // todo: とりあえず現在の食材コレクションのデータをJsonファイル等に出力する処理を実装する
-            JsonManager.SaveJsonTo<ObservableCollection<Food>>(this.FoodCollection);
+            JsonManager.SaveJsonTo<ObservableCollection<FoodModel>>(this.FoodCollection);
+            return true;
+        }
+
+        /// <summary>
+        /// 新しい食材を追加します
+        /// </summary>
+        /// <param name="name">食材名</param>
+        /// <param name="limitDate">賞味期限</param>
+        /// <param name="boughtDate">購入日</param>
+        /// <param name="kindType">食材のタイプ</param>
+        /// <param name="image">食材画像</param>
+        /// <returns></returns>
+        public bool Create(string name, DateTime limitDate, DateTime boughtDate, FoodType kindType, BitmapImage image)
+        {
+            var newFood = new FoodModel(name, limitDate, boughtDate, kindType, image);
+            this.FoodCollection.Add(newFood);
+
+            return true;
+        }
+
+        /// <summary>
+        /// 新しい食材を追加します
+        /// </summary>
+        /// <param name="food">追加される食材</param>
+        /// <returns></returns>
+        public bool Create(FoodModel food)
+        {
+            this.FoodCollection.Add(food);
+
             return true;
         }
 
@@ -129,25 +154,10 @@ namespace MVVM_Refregator.Model
             return true;
         }
 
-        /// <summary>
-        /// コレクションを賞味期限ごとのコレクションにまとめます。
-        /// </summary>
-        private void BuildFoodMap()
+        public bool Update(FoodModel food)
         {
-            this.DayFoodMap.Clear();
-            var crastaData = this.FoodCollection.GroupBy(x => x.LimitDate);
-            foreach (var dayFoods in crastaData)
-            {
-                var currentDate = dayFoods.First().LimitDate.Date;
-                if (this.DayFoodMap.ContainsKey(currentDate) == false)
-                {
-                    this.DayFoodMap.Add(currentDate, new ObservableCollection<Food>());
-                }
-                foreach (var dayFood in dayFoods)
-                {
-                    this.DayFoodMap[currentDate].Add(dayFood);
-                }
-            }
+            return Update(food.Id, food.Name, food.LimitDate, food.BoughtDate, food.KindType, food.Image);
+
         }
 
     }

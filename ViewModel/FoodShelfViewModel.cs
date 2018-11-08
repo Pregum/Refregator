@@ -17,18 +17,18 @@ namespace MVVM_Refregator.ViewModel
     public class FoodShelfViewModel : BindableBase, IDisposable
     {
 
-        private FoodShelf Model;
+        private FoodShelfModel _foodShelfModel;
 
-        public ReadOnlyReactiveCollection<Food> Foods { get; }
+        public ReadOnlyReactiveCollection<FoodModel> Foods { get; }
         //public ReactiveProperty<ObservableCollection<Food>> Foods { get; }
 
         public ReactiveProperty<DateTime> SelectedDate { get; private set; }
 
         public ReactiveProperty<bool> Checked { get; } = new ReactiveProperty<bool>(false);
 
-        public ObservableCollection<Food> SelectedFood { get; private set; } = new ObservableCollection<Food>();
+        public ObservableCollection<FoodModel> SelectedFood { get; private set; } = new ObservableCollection<FoodModel>();
 
-        public ReactiveProperty<Dictionary<DateTime, ObservableCollection<Food>>> DateFoodsMap { get; } = new ReactiveProperty<Dictionary<DateTime, ObservableCollection<Food>>>(new Dictionary<DateTime, ObservableCollection<Food>>());
+        //public ReactiveProperty<Dictionary<DateTime, ObservableCollection<FoodModel>>> DateFoodsMap { get; } = new ReactiveProperty<Dictionary<DateTime, ObservableCollection<FoodModel>>>(new Dictionary<DateTime, ObservableCollection<FoodModel>>());
 
         public ReactiveCommand Send_ShowAllFood { get; } = new ReactiveCommand();
 
@@ -39,33 +39,19 @@ namespace MVVM_Refregator.ViewModel
         private CompositeDisposable Disposable { get; } = new CompositeDisposable();
 
         /// <summary>
-        /// ctor
-        /// </summary>
-        public FoodShelfViewModel()
-        {
-            var model = new FoodShelf();
-            model.Create("first", DateTime.Now.AddDays(1), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)));
-            model.Create("second", DateTime.Now.AddDays(8), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)));
-            this.Foods = model.FoodCollection.ToReadOnlyReactiveCollection(m => m).AddTo(this.Disposable); ;
-            this.Model = model;
-
-            InitProperty();
-        }
-
-
-        /// <summary>
         /// modelを渡したときのctor
         /// </summary>
         /// <param name="model"></param>
-        public FoodShelfViewModel(FoodShelf model)
+        //public FoodShelfViewModel(FoodShelfModel model)
+        public FoodShelfViewModel()
         {
-            this.Model = model;
+            //this._foodShelfModel = model;
+            this._foodShelfModel = FoodShelfModel.GetInstance();
             // 変更前(このコードを有効にすると最新の変更が反映されず、1つ前の変更内容が表示される)
-            //this.Foods = this.Model.FoodCollection.ToReadOnlyReactiveCollection(m => m).AddTo(this.Disposable);
             // FoodCollectionの変更を現行スレッドで即時反映させる
-            this.Foods = this.Model.FoodCollection.ToReadOnlyReactiveCollection(Model.FoodCollection.ToCollectionChanged(), System.Reactive.Concurrency.Scheduler.CurrentThread).AddTo(this.Disposable);
+            this.Foods = this._foodShelfModel.FoodCollection.ToReadOnlyReactiveCollection(_foodShelfModel.FoodCollection.ToCollectionChanged(), System.Reactive.Concurrency.Scheduler.CurrentThread).AddTo(this.Disposable);
             // CollectionChanged時にPropertyChangedを強制的に呼び出す
-            Model.FoodCollection.CollectionChangedAsObservable().Subscribe(x => RaisePropertyChanged("Foods"));
+            _foodShelfModel.FoodCollection.CollectionChangedAsObservable().Subscribe(x => RaisePropertyChanged(nameof(Foods)));
             this.InitProperty();
         }
 
@@ -101,34 +87,13 @@ namespace MVVM_Refregator.ViewModel
                 ((ItemsControl)x).ItemsSource = selected;
             }).AddTo(this.Disposable);
 
+            // デバッグ用
             this.Send_AddFood.Subscribe((x) =>
             {
                 var ram = new Random();
-                this.Model.Create("second", DateTime.Now.AddDays(ram.Next(1,8)), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)));
-                System.Diagnostics.Debug.WriteLine($" create food.  foodName : {this.Model.FoodCollection[0].Name}");
+                this._foodShelfModel.Create("second", DateTime.Now.AddDays(ram.Next(1,8)), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)));
+                System.Diagnostics.Debug.WriteLine($" create food.  foodName : {this._foodShelfModel.FoodCollection[0].Name}");
             });
-        }
-
-        /// <summary>
-        /// コレクションを賞味期限ごとのコレクションにまとめます。
-        /// </summary>
-        private void BuildFoodMap()
-        {
-            this.DateFoodsMap.Value.Clear();
-            //var crastaData = this.Foods.Value.GroupBy(x => x.LimitDate);
-            var crastaData = this.Foods.GroupBy(x => x.LimitDate);
-            foreach (var dayFoods in crastaData)
-            {
-                var currentDate = dayFoods.First().LimitDate.Date;
-                if (this.DateFoodsMap.Value.ContainsKey(currentDate) == false)
-                {
-                    this.DateFoodsMap.Value.Add(currentDate, new ObservableCollection<Food>());
-                }
-                foreach (var dayFood in dayFoods)
-                {
-                    this.DateFoodsMap.Value[currentDate].Add(dayFood);
-                }
-            }
         }
 
         public void Dispose()

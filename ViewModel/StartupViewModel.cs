@@ -18,7 +18,7 @@ namespace MVVM_Refregator.ViewModel
 {
     public class StartupViewModel
     {
-        private FoodShelf _model;
+        private FoodShelfModel _model;
 
         public ReactiveProperty<Uri> SelectedContentPage { get; private set; }
 
@@ -32,15 +32,17 @@ namespace MVVM_Refregator.ViewModel
 
         public ReactiveCommand LoadJsonCommand { get; } = new ReactiveCommand();
 
+        //public StartupViewModel()
+        //{
+        //    //this._model = new FoodShelfModel();
+        //    //InitProperty();
+        //}
+
+        //public StartupViewModel(FoodShelfModel model)
         public StartupViewModel()
         {
-            this._model = new FoodShelf();
-            InitProperty();
-        }
-
-        public StartupViewModel(FoodShelf model)
-        {
-            this._model = model;
+            //this._model = model;
+            this._model = FoodShelfModel.GetInstance();
             InitProperty();
         }
 

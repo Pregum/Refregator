@@ -5,14 +5,157 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MVVM_Refregator.View"
       xmlns:vm="clr-namespace:MVVM_Refregator.ViewModel"
+      xmlns:model="clr-namespace:MVVM_Refregator.Model"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="EditPage">
-    <!--<Page.DataContext>
-        <vm:FoodShelfViewModel />
-    </Page.DataContext>-->
+
+    <Page.DataContext>
+        <vm:EditPageViewModel/>
+    </Page.DataContext>
+
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolVisibilityConverter" />
+
+        <Style x:Key="EllipseStyle" TargetType="Ellipse">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding StepStatus}" Value="{x:Static model:StepStatusType.Done}">
+                    <Setter Property="Fill" Value="LightGreen" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding StepStatus}" Value="{x:Static model:StepStatusType.New}">
+                    <Setter Property="Fill" Value="Gray" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding StepStatus}" Value="{x:Static model:StepStatusType.Working}">
+                    <Setter Property="Fill" Value="Orange" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
 
     <Grid>
-        <TextBlock Text="エディットページです"/>
+        <DockPanel>
+            <Grid DockPanel.Dock="Top" x:Name="TopGrid" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- 食材操作ボタン -->
+                <Button Grid.Column="0" Content="追加" Margin="20,10"
+                        Command="{Binding Send_NavigateRegister}"
+                        CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
+                        Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}"/>
+                <Button Grid.Column="2" Content="変更" IsEnabled="{Binding IsSelectedFood.Value}" Margin="20,10"
+                        Command="{Binding Send_ModifyFood}"
+                        CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
+                        Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
+                <Button Grid.Column="4" Content="削除" IsEnabled="{Binding IsSelectedFood.Value}" Margin="20,10"
+                        Command="{Binding Send_RemoveFood}"
+                        CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
+                        Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
+
+                <!-- Progress Tracker -->
+                <ItemsControl Grid.Row="0" Grid.ColumnSpan="5"
+                              ItemsSource="{Binding WorkSteps.Value, UpdateSourceTrigger=PropertyChanged}"
+                              Visibility="{Binding WorkLoadVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}">
+                    <ItemsControl.Template>
+                        <ControlTemplate TargetType="ItemsControl">
+                            <ItemsPresenter Margin="10"/>
+                        </ControlTemplate>
+                    </ItemsControl.Template>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1" Columns="{Binding WorkSteps.Value.Count}" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Line X1="0" Y1="20" X2="500" Y2="20" VerticalAlignment="Center" Stroke="Black" StrokeThickness="4" HorizontalAlignment="Center"/>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Name}" FontSize="14" HorizontalAlignment="Center" />
+                                    <Ellipse Style="{StaticResource EllipseStyle}" Width="15" Height="15" Stroke="Black" HorizontalAlignment="Center" />
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Calendar Margin="5" Grid.Column="0"
+                          Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
+
+                <ListBox ItemsSource="{Binding Foods}" Grid.Column="1" Grid.ColumnSpan="2" SelectedItem="{Binding SelectedFood.Value}"
+                          Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" >
+                    <ListBox.Template>
+                        <ControlTemplate TargetType="ListBox">
+                            <ItemsPresenter Margin="10"/>
+                        </ControlTemplate>
+                    </ListBox.Template>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="2" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type model:FoodModel}">
+                            <Border BorderBrush="Black" BorderThickness="4">
+                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Id}" FontSize="14" />
+                                        <TextBlock Text="{Binding Name}" FontSize="14" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="OverridesDefaultStyle" Value="True" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ContentControl}">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="SpringGreen" />
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="LightGray" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+
+                <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Margin="10">
+                    <Frame x:Name="EditFrame" NavigationUIVisibility="Hidden" Visibility="{Binding WorkLoadVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" >
+
+                    </Frame>
+                </Grid>
+                <Button Grid.Column="1" VerticalAlignment="Bottom" Content="{Binding PrevContent.Value}" HorizontalAlignment="Left" Margin="10" Width="50" 
+                        Visibility="{Binding WorkLoadVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}"
+                        Command="{Binding Send_PrevStep}" CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"/>
+                <Button Grid.Column="2" VerticalAlignment="Bottom" Content="{Binding NextContent.Value}" HorizontalAlignment="Right" Margin="10" Width="50" 
+                        Visibility="{Binding WorkLoadVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" 
+                        Command="{Binding Send_NextStep}" CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"/>
+            </Grid>
+        </DockPanel>
     </Grid>
 </Page>

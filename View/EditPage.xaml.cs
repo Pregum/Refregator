@@ -27,14 +27,27 @@ namespace MVVM_Refregator.View
         {
             InitializeComponent();
 
-            if (App.Current.Resources["FoodShelfKey"] is FoodShelf foodShelfModel)
-            {
-                this.DataContext = new FoodShelfViewModel(foodShelfModel);
-            }
-            else
-            {
-                this.DataContext = new FoodShelfViewModel();
-            }
+            //if (App.Current.Resources["FoodShelfKey"] is FoodShelfModel foodShelfModel)
+            //{
+            //    //this.DataContext = new FoodShelfViewModel(foodShelfModel);
+            //    this.DataContext = new EditPageViewModel(foodShelfModel);
+            //}
+            //else
+            //{
+            //    //this.DataContext = new FoodShelfViewModel();
+            //    this.DataContext = new EditPageViewModel();
+            //}
+            //this.DataContext = new FoodShelfViewModel();
+            //this.DataContext = new EditPageViewModel();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //var button1 = new Button() { Content = "test button", Margin = new Thickness(10) };
+            //button1.SetValue(Grid.RowProperty, 0);
+            //button1.SetValue(Grid.ColumnProperty, 0);
+            //this.TopGrid.Children[1].Visibility = Visibility.Hidden;
+            //this.TopGrid.Children.Add(button1);
         }
     }
 }

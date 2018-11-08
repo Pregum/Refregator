@@ -26,11 +26,12 @@ namespace MVVM_Refregator.View
         {
             InitializeComponent();
 
-            if (App.Current.Resources["FoodShelfKey"] is FoodShelf foodShelfModel)
-            {
-                //foodShelfModel.FoodCollection.Add(new Food());
-                this.DataContext = new StartupViewModel(foodShelfModel);
-            }
+            //if (App.Current.Resources["FoodShelfKey"] is FoodShelfModel foodShelfModel)
+            //{
+            //    //foodShelfModel.FoodCollection.Add(new Food());
+            //    this.DataContext = new StartupViewModel(foodShelfModel);
+            //}
+            this.DataContext = new StartupViewModel();
         }
     }
 }

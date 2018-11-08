@@ -20,9 +20,9 @@ namespace MVVM_Refregator.Common
         {
             var targetDate = (DateTime)values[0];
 
-            if (values[1] is ReadOnlyReactiveCollection<Food> foodCollection)
+            if (values[1] is ReadOnlyReactiveCollection<FoodModel> foodCollection)
             {
-                System.Diagnostics.Debug.WriteLine($" updating Calendar.ItemsSource  ...");
+                //System.Diagnostics.Debug.WriteLine($" updating Calendar.ItemsSource  ...");
 
                 var chunkItem = foodCollection.Where(x => x.LimitDate.Date == targetDate.Date);
 
