@@ -1,12 +1,6 @@
 ﻿using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Reactive.Bindings;
 using System.Windows.Navigation;
 
 namespace MVVM_Refregator.Model
@@ -135,7 +129,6 @@ namespace MVVM_Refregator.Model
         private WorkStepModel()
         {
             this._currentWorkSteps = this._registerSteps;
-            //this._currentWorkStepType = WorkStepType.Create;
             this.CurrentWorkStepsType = WorkType.StandBy;
         }
 
@@ -160,19 +153,17 @@ namespace MVVM_Refregator.Model
                     // 作成作業
                     case WorkType.Create:
                         this._foodShelfModel.Create(this._manipulateFood);
-                        //this._currentWorkStepType = WorkStepType.StandBy;
                         this.CurrentWorkStepsType = WorkType.StandBy;
                         break;
                     // 更新作業
                     case WorkType.Update:
-                        this._foodShelfModel.Update(this._manipulateFood);
-                        //this._currentWorkStepType = WorkStepType.StandBy;
+                        var food = this._manipulateFood;
+                        this._foodShelfModel.Update(this._temporalFood.Id, food.Name, food.LimitDate, food.BoughtDate, food.KindType, food.Image);
                         this.CurrentWorkStepsType = WorkType.StandBy;
                         break;
                     // 削除作業
                     case WorkType.Delete:
                         this._foodShelfModel.Delete(this._manipulateFood.Id);
-                        //this._currentWorkStepType = WorkStepType.StandBy;
                         this.CurrentWorkStepsType = WorkType.StandBy;
                         break;
                     // 未定義または読込作業またはデフォルト
@@ -185,13 +176,27 @@ namespace MVVM_Refregator.Model
             else
             {
                 // 現在のステップが最後でなければ、次のステップへ進む
-                //this._currentStepIndex = this._currentStepIndex + 1 >= this._currentWorkSteps.Count ? this._currentStepIndex : this._currentStepIndex + 1;
                 this._currentStepIndex = this.IsLastStep ? this._currentStepIndex : this._currentStepIndex + 1;
                 this._currentStep = this._currentWorkSteps[this._currentStepIndex];
                 this._currentStep.Navigate(navigation);
             }
 
             // IsLastStepプロパティの通知
+            this.RaisePropertyChanged(nameof(this.IsLastStep));
+        }
+
+        /// <summary>
+        /// スタンバイモードに移行する
+        /// </summary>
+        public void SetStandBy()
+        {
+            this._currentWorkSteps = this._registerSteps;
+            this._currentStepIndex = 0;
+            this._currentStep = this._currentWorkSteps[this._currentStepIndex];
+            this.CurrentWorkStepsType = WorkType.StandBy;
+            this._temporalFood = new FoodModel();
+
+            this.RaisePropertyChanged(nameof(this.IsFirstStep));
             this.RaisePropertyChanged(nameof(this.IsLastStep));
         }
 
@@ -212,7 +217,6 @@ namespace MVVM_Refregator.Model
             // 最初のステップならば待機中に変更
             else if (this._currentStepIndex == 0)
             {
-                //this._currentWorkStepType = WorkStepType.StandBy;
                 this.CurrentWorkStepsType = WorkType.StandBy;
             }
 
@@ -248,9 +252,9 @@ namespace MVVM_Refregator.Model
         /// <param name="navigation">画面遷移用Service</param>
         public void NavigateUpdateWork(FoodModel updateFood, NavigationService navigation)
         {
-            this.ManipulateFood = new FoodModel();
             this._temporalFood = updateFood;
-            //this._currentWorkSteps = this._updateSteps;
+            //this.ManipulateFood = new FoodModel();
+            this.ManipulateFood = new FoodModel(this._temporalFood);
             this.CurrentWorkSteps = this._updateSteps;
             foreach (IStep aStep in this.CurrentWorkSteps)
             {

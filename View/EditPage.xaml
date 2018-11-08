@@ -10,6 +10,10 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="EditPage">
 
+    <Page.DataContext>
+        <vm:EditPageViewModel/>
+    </Page.DataContext>
+
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="BoolVisibilityConverter" />
 
@@ -27,10 +31,6 @@
             </Style.Triggers>
         </Style>
     </Page.Resources>
-
-    <!--<Page.DataContext>
-        <vm:EditPageViewModel/>
-    </Page.DataContext>-->
 
     <Grid>
         <DockPanel>
@@ -54,12 +54,12 @@
                         Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
                 <Button Grid.Column="4" Content="削除" IsEnabled="{Binding IsSelectedFood.Value}" Margin="20,10"
                         Command="{Binding Send_RemoveFood}"
-                        CommandParameter="{Binding SelectedFood.Value}"
+                        CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
                         Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
 
                 <!-- Progress Tracker -->
                 <ItemsControl Grid.Row="0" Grid.ColumnSpan="5"
-                              ItemsSource="{Binding WorkSteps, UpdateSourceTrigger=PropertyChanged}"
+                              ItemsSource="{Binding WorkSteps.Value, UpdateSourceTrigger=PropertyChanged}"
                               Visibility="{Binding WorkLoadVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}">
                     <ItemsControl.Template>
                         <ControlTemplate TargetType="ItemsControl">
@@ -68,7 +68,7 @@
                     </ItemsControl.Template>
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid Rows="1" Columns="{Binding WorkSteps.Count}" />
+                            <UniformGrid Rows="1" Columns="{Binding WorkSteps.Value.Count}" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
 

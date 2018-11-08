@@ -153,18 +153,27 @@ namespace MVVM_Refregator.Model
             _imageString = _image.UriSource.OriginalString;
         }
 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="food">コピー元食材</param>
+        public FoodModel(FoodModel food) : this(food.Name, food.LimitDate, food.BoughtDate, food.KindType, food.Image) { }
+
+        /// <summary>
+        /// 開発用ctor
+        /// </summary>
         public FoodModel() : this("none", DateTime.Now.AddDays(7), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)))
         {
         }
 
-        /// <summary>
-        /// 消費期限を過ぎたか
-        /// </summary>
-        [JsonIgnore()]
-        public bool IsOverLimitDate
-        {
-            get { return LimitDate.Date > BoughtDate.Date; }
-        }
+        ///// <summary>
+        ///// 消費期限を過ぎたか
+        ///// </summary>
+        //[JsonIgnore()]
+        //public bool IsOverLimitDate
+        //{
+        //    get { return LimitDate.Date > BoughtDate.Date; }
+        //}
 
     }
 }

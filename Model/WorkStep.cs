@@ -100,6 +100,11 @@ namespace MVVM_Refregator.Model
         {
             this.SetProperty(ref _stepStatus, StepStatusType.New, nameof(this.StepStatus));
         }
+
+        public override string ToString()
+        {
+            return $"画面名 : {this.Name}, 現在の状況 : {this.StepStatus}";
+        }
     }
 
     /// <summary>
@@ -128,7 +133,6 @@ namespace MVVM_Refregator.Model
 
         public FoodBoughtDateEditStep()
         {
-            // manipulateFoodプロパティに代入する
         }
 
         /// <summary>
@@ -160,6 +164,11 @@ namespace MVVM_Refregator.Model
         public void Revert()
         {
             this.SetProperty(ref _stepStatus, StepStatusType.New, nameof(this.StepStatus));
+        }
+
+        public override string ToString()
+        {
+            return $"画面名 : {this.Name}, 現在の状況 : {this.StepStatus}";
         }
     }
 
@@ -215,6 +224,11 @@ namespace MVVM_Refregator.Model
         {
             this.SetProperty(ref _stepStatus, StepStatusType.New, nameof(this.StepStatus));
         }
+
+        public override string ToString()
+        {
+            return $"画面名 : {this.Name}, 現在の状況 : {this.StepStatus}";
+        }
     }
 
     /// <summary>
@@ -246,6 +260,11 @@ namespace MVVM_Refregator.Model
         public void Revert()
         {
             throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            return $"画面名 : {this.Name}, 現在の状況 : {this.StepStatus}";
         }
     }
 
@@ -285,6 +304,11 @@ namespace MVVM_Refregator.Model
         public void Revert()
         {
             this.SetProperty(ref _stepStatus, StepStatusType.New, nameof(this.StepStatus));
+        }
+
+        public override string ToString()
+        {
+            return $"画面名 : {this.Name}, 現在の状況 : {this.StepStatus}";
         }
     }
 }

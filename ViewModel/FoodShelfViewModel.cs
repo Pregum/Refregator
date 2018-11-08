@@ -38,21 +38,6 @@ namespace MVVM_Refregator.ViewModel
 
         private CompositeDisposable Disposable { get; } = new CompositeDisposable();
 
-        ///// <summary>
-        ///// ctor
-        ///// </summary>
-        //public FoodShelfViewModel()
-        //{
-            //var model = new FoodShelfModel();
-            //model.Create("first", DateTime.Now.AddDays(1), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)));
-            //model.Create("second", DateTime.Now.AddDays(8), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)));
-            //this.Foods = model.FoodCollection.ToReadOnlyReactiveCollection(m => m).AddTo(this.Disposable); ;
-            //this._foodShelfModel = model;
-
-            //InitProperty();
-        //}
-
-
         /// <summary>
         /// modelを渡したときのctor
         /// </summary>
@@ -102,6 +87,7 @@ namespace MVVM_Refregator.ViewModel
                 ((ItemsControl)x).ItemsSource = selected;
             }).AddTo(this.Disposable);
 
+            // デバッグ用
             this.Send_AddFood.Subscribe((x) =>
             {
                 var ram = new Random();

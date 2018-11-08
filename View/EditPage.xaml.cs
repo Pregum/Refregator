@@ -38,7 +38,7 @@ namespace MVVM_Refregator.View
             //    this.DataContext = new EditPageViewModel();
             //}
             //this.DataContext = new FoodShelfViewModel();
-            this.DataContext = new EditPageViewModel();
+            //this.DataContext = new EditPageViewModel();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
