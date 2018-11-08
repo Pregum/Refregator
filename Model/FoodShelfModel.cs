@@ -5,30 +5,84 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 
 using System.Windows.Media.Imaging;
+using MVVM_Refregator.Common;
+using System.IO;
 
 namespace MVVM_Refregator.Model
 {
     /// <summary>
     /// 食材のコンテナクラス
     /// </summary>
-    public class FoodShelf 
+    public class FoodShelfModel : BindableBase
     {
 
         /// <summary>
         /// 食材のコレクション
         /// </summary>
-        public ObservableCollection<Food> FoodCollection { get; private set; } = new ObservableCollection<Food>();
+        private ObservableCollection<FoodModel> _foodCollection = new ObservableCollection<FoodModel>();
 
         /// <summary>
-        /// key : 賞味期限, value : Foodコレクション
+        /// 食材のコレクション
         /// </summary>
-        public Dictionary<DateTime, ObservableCollection<Food>> DayFoodMap = new Dictionary<DateTime, ObservableCollection<Food>>();
+        public ObservableCollection<FoodModel> FoodCollection
+        {
+            get { return _foodCollection; }
+            private set { SetProperty(ref _foodCollection, value); }
+        }
+
+        /// <summary>
+        /// singleton
+        /// </summary>
+        private static FoodShelfModel _instance = null;
+
+        /// <summary>
+        /// singleton
+        /// </summary>
+        /// <returns></returns>
+        public static FoodShelfModel GetInstance()
+        {
+            _instance = _instance ?? new FoodShelfModel();
+            return _instance;
+        }
 
         /// <summary>
         /// ctor
         /// </summary>
-        public FoodShelf()
+        private FoodShelfModel()
         {
+        }
+
+        /// <summary>
+        /// 食材情報が保存されているJsonファイルを読み込んでデータをロードします
+        /// </summary>
+        /// <param name="jsonFilePath">Jsonのファイルパス</param>
+        /// <returns></returns>
+        public bool Load(string jsonFilePath = @"food_data.json")
+        {
+            if (File.Exists(jsonFilePath) == false)
+            {
+                return false;
+            }
+            // todo: ここには、json.netを読み込んでコレクションを生成する処理を実装する
+            var food = JsonManager.LoadJsonFrom<ObservableCollection<FoodModel>>();
+            //this.FoodCollection = food;
+            this.FoodCollection.Clear();
+            foreach (var aFood in food)
+            {
+                this.FoodCollection.Add(aFood);
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 現在の食材データをJsonファイル等の外部バックアップを取ります
+        /// </summary>
+        /// <returns></returns>
+        public bool Save()
+        {
+            // todo: とりあえず現在の食材コレクションのデータをJsonファイル等に出力する処理を実装する
+            JsonManager.SaveJsonTo<ObservableCollection<FoodModel>>(this.FoodCollection);
+            return true;
         }
 
         /// <summary>
@@ -42,31 +96,22 @@ namespace MVVM_Refregator.Model
         /// <returns></returns>
         public bool Create(string name, DateTime limitDate, DateTime boughtDate, FoodType kindType, BitmapImage image)
         {
-            var newFood = new Food(name, limitDate, boughtDate, kindType, image);
+            var newFood = new FoodModel(name, limitDate, boughtDate, kindType, image);
             this.FoodCollection.Add(newFood);
 
             return true;
         }
 
         /// <summary>
-        /// 食材情報が保存されているJsonファイルを読み込んでデータをロードします
+        /// 新しい食材を追加します
         /// </summary>
-        /// <param name="jsonFilePath">Jsonのファイルパス</param>
+        /// <param name="food">追加される食材</param>
         /// <returns></returns>
-        public bool Load(string jsonFilePath)
+        public bool Create(FoodModel food)
         {
-            // todo: ここには、json.netを読み込んでコレクションを生成する処理を実装する
-            throw new NotImplementedException();
-        }
+            this.FoodCollection.Add(food);
 
-        /// <summary>
-        /// 現在の食材データをJsonファイル等の外部バックアップを取ります
-        /// </summary>
-        /// <returns></returns>
-        public bool Save()
-        {
-            // todo: とりあえず現在の食材コレクションのデータをJsonファイル等に出力する処理を実装する
-            throw new NotImplementedException();
+            return true;
         }
 
         /// <summary>
@@ -109,25 +154,10 @@ namespace MVVM_Refregator.Model
             return true;
         }
 
-        /// <summary>
-        /// コレクションを賞味期限ごとのコレクションにまとめます。
-        /// </summary>
-        private void BuildFoodMap()
+        public bool Update(FoodModel food)
         {
-            this.DayFoodMap.Clear();
-            var crastaData = this.FoodCollection.GroupBy(x => x.LimitDate);
-            foreach (var dayFoods in crastaData)
-            {
-                var currentDate = dayFoods.First().LimitDate.Date;
-                if (this.DayFoodMap.ContainsKey(currentDate) == false)
-                {
-                    this.DayFoodMap.Add(currentDate, new ObservableCollection<Food>());
-                }
-                foreach (var dayFood in dayFoods)
-                {
-                    this.DayFoodMap[currentDate].Add(dayFood);
-                }
-            }
+            return Update(food.Id, food.Name, food.LimitDate, food.BoughtDate, food.KindType, food.Image);
+
         }
 
     }

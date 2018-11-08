@@ -27,7 +27,7 @@ namespace MVVM_Refregator.ViewModel
 
         private CompositeDisposable Disposable { get; } = new CompositeDisposable();
 
-        public FoodViewModel(Food food)
+        public FoodViewModel(FoodModel food)
         {
 
             this.Id = food.ObserveProperty(x => x.Id).ToReactiveProperty().AddTo(this.Disposable);

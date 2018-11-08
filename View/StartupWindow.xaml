@@ -1,0 +1,141 @@
+﻿<Window x:Class="MVVM_Refregator.View.StartupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MVVM_Refregator.View"
+        xmlns:vm="clr-namespace:MVVM_Refregator.ViewModel"
+        xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:common="clr-namespace:MVVM_Refregator.Common"
+        mc:Ignorable="d"
+        Title="StartupWindow" Height="600" Width="1200">
+    <!--<Window.DataContext>
+        <vm:StartupViewModel/>
+    </Window.DataContext>-->
+    <Window.Resources>
+        <common:RadioButtonUriConverter x:Key="RadioButtonUriConverter"/>
+    </Window.Resources>
+    <Grid >
+
+        <Grid.Effect>
+            <DropShadowEffect BlurRadius="20" Color="#FFDEDEDE" RenderingBias="Quality" ShadowDepth="1"/>
+        </Grid.Effect>
+
+        <DockPanel Margin="5">
+            <Border Margin="5" DockPanel.Dock="Left" BorderThickness="2" BorderBrush="Blue">
+                <Grid>
+                    <StackPanel Background="Azure" Width="200">
+                        <TextBlock Margin="10" FontSize="30" Text="Menu" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe Script"/>
+                        <RadioButton HorizontalAlignment="Center" GroupName="MenuDash" Margin="0,10" Command="{Binding NavigationViewModel}" CommandParameter="{Binding ElementName=frame, Path=NavigationService}" IsChecked="{Binding CheckedPage.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource RadioButtonUriConverter}, ConverterParameter=DashBoard}">
+                            <RadioButton.Template>
+                                <ControlTemplate TargetType="RadioButton">
+                                    <Border Background="Turquoise" x:Name="myborder" CornerRadius="5">
+                                        <Grid x:Name="mygrid" Width="150">
+                                            <material:PackIcon Kind="ViewDashboard" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" />
+                                            <TextBlock HorizontalAlignment="Center" Text="DASHBOARD" FontFamily="Impact" FontSize="20" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                        </Grid>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CheckStates">
+                                                <VisualState x:Name="Checked">
+                                                    <Storyboard>
+                                                        <ColorAnimation Storyboard.TargetName="myborder" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                            To="Orange" Duration="0:00:00.3"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Unchecked"/>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </Border>
+                                </ControlTemplate>
+                            </RadioButton.Template>
+                        </RadioButton>
+
+                        <RadioButton HorizontalAlignment="Center" Margin="0,10" GroupName="MenuCalendar" Command="{Binding NavigationViewModel}" CommandParameter="{Binding ElementName=frame, Path=NavigationService}" IsChecked="{Binding CheckedPage.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource RadioButtonUriConverter}, ConverterParameter=Calendar}">
+                            <RadioButton.Template>
+                                <ControlTemplate TargetType="{x:Type RadioButton}">
+                                    <Border x:Name="myborder" Background="Turquoise" CornerRadius="5">
+                                        <Grid Width="150">
+                                            <material:PackIcon Kind="Calendar" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" />
+                                            <TextBlock HorizontalAlignment="Center" Text="Calendar" FontFamily="Impact" VerticalAlignment="Center" FontSize="20"/>
+                                        </Grid>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CheckStates">
+                                                <VisualState x:Name="Checked">
+                                                    <Storyboard>
+                                                        <ColorAnimation Storyboard.TargetName="myborder" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                            To="Orange" Duration="0:00:00.3"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Unchecked"/>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </Border>
+                                </ControlTemplate>
+                            </RadioButton.Template>
+                        </RadioButton>
+
+                        <RadioButton HorizontalAlignment="Center" Margin="0,10" GroupName="MenuEdit" Command="{Binding NavigationViewModel}" CommandParameter="{Binding ElementName=frame, Path=NavigationService}" IsChecked="{Binding CheckedPage.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource RadioButtonUriConverter}, ConverterParameter=Editor}">
+                            <RadioButton.Template>
+                                <ControlTemplate TargetType="{x:Type RadioButton}">
+                                    <Border x:Name="myborder" Background="Turquoise" CornerRadius="5">
+                                        <Grid Width="150">
+                                            <material:PackIcon Kind="TableEdit" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"/>
+                                            <TextBlock HorizontalAlignment="Center" Text="Edit" FontFamily="Impact" VerticalAlignment="Center" FontSize="20" />
+                                        </Grid>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CheckStates">
+                                                <VisualState x:Name="Checked">
+                                                    <Storyboard>
+                                                        <ColorAnimation Storyboard.TargetName="myborder" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                            To="Orange" Duration="0:00:00.3"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Unchecked"/>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </Border>
+                                </ControlTemplate>
+                            </RadioButton.Template>
+                        </RadioButton>
+
+                        <RadioButton HorizontalAlignment="Center" Margin="0,10" GroupName="MenuNutrient" Command="{Binding NavigationViewModel}" CommandParameter="{Binding ElementName=frame, Path=NavigationService}" IsChecked="{Binding CheckedPage.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource RadioButtonUriConverter}, ConverterParameter=NutrientInfo}">
+                            <RadioButton.Template>
+                                <ControlTemplate TargetType="{x:Type RadioButton}">
+                                    <Border x:Name="myborder" Background="Turquoise" CornerRadius="5">
+                                        <Grid Width="150">
+                                            <material:PackIcon Kind="Nutrition" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"/>
+                                            <TextBlock HorizontalAlignment="Center" Text="Nutrient" FontFamily="Impact" VerticalAlignment="Center" FontSize="20" />
+                                        </Grid>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CheckStates">
+                                                <VisualState x:Name="Checked">
+                                                    <Storyboard>
+                                                        <ColorAnimation Storyboard.TargetName="myborder" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                            To="Orange" Duration="0:00:00.3"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Unchecked"/>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </Border>
+                                </ControlTemplate>
+                            </RadioButton.Template>
+                        </RadioButton>
+                    </StackPanel>
+                    <Grid VerticalAlignment="Bottom" Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Content="Load" Command="{Binding LoadJsonCommand}" Grid.Column="0"/>
+                        <Button Content="Save" Command="{Binding SaveJsonCommand}" Grid.Column="2"/>
+                    </Grid>
+                </Grid>
+            </Border>
+            <Border Margin="5" BorderThickness="2" BorderBrush="#FF009B07">
+                <Frame x:Name="frame" DockPanel.Dock="Right" Source="{Binding SeletedContentPage.Value, Mode=TwoWay}" NavigationUIVisibility="Hidden" Background="#FFE9FFE9" />
+            </Border>
+        </DockPanel>
+    </Grid>
+</Window>

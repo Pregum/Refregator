@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MVVM_Refregator
+namespace MVVM_Refregator.View
 {
     /// <summary>
-    /// MainWindow.xaml の相互作用ロジック
+    /// StepOfSettingFoodBoughtDate.xaml の相互作用ロジック
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class StepOfSettingFoodBoughtDate : Page
     {
-        public MainWindow()
+        public StepOfSettingFoodBoughtDate()
         {
             InitializeComponent();
         }
