@@ -373,7 +373,7 @@
             this.Cholesterol = cholesterol;
             this.Carbohydrate = carbohydrate;
             this.Carbohydrate_Available = carbohydrate_Avaliable;
-            this.DietaryFiber_Insoluble = dietaryFiber_Soluble;
+            this.DietaryFiber_Soluble = dietaryFiber_Soluble;
             this.DietaryFiber_Insoluble = dietaryFiber_Insoluble;
             this.DietaryFiber_Total = dietaryFiber_Total;
             this.Ash = ash;
@@ -421,6 +421,73 @@
             this.Cooking_Oil = cooking_Oil;
             this.Organic_AcidsTotal = organic_AcidsTotal;
             this.Yield = yield;
+        }
+
+        public static FoodComposition operator+(FoodComposition a, FoodComposition b)
+        {
+            return new FoodComposition(0, 0, 0, "", 
+                a.Refuse + b.Refuse,
+                a.Energy_kcal + b.Energy_kcal,
+                a.Energy_kj + b.Energy_kj,
+                a.Water + b.Water,
+                a.Protein + b.Protein,
+                a.Protein_AminoAcidResidues + b.Protein_AminoAcidResidues,
+                a.Lipid + b.Lipid,
+                a.FattyAcid_TriacylGlycerol + b.FattyAcid_TriacylGlycerol,
+                a.FattyAcid_Saturated + b.FattyAcid_Saturated,
+                a.FattyAcid_MonoUnsaturated + b.FattyAcid_MonoUnsaturated,
+                a.FattyAcid_PolyUnsaturated + b.FattyAcid_PolyUnsaturated,
+                a.Cholesterol + b.Cholesterol,
+                a.Carbohydrate + b.Carbohydrate,
+                a.Carbohydrate_Available + b.Carbohydrate_Available,
+                a.DietaryFiber_Soluble + b.DietaryFiber_Soluble,
+                a.DietaryFiber_Insoluble + b.DietaryFiber_Insoluble,
+                a.DietaryFiber_Total + b.DietaryFiber_Total,
+                a.Ash + b.Ash,
+                a.Sodium + b.Sodium,
+                a.Potassium + b.Potassium,
+                a.Calcium + b.Calcium,
+                a.Magnesium + b.Magnesium,
+                a.Phosphorus + b.Phosphorus,
+                a.Iron + b.Iron,
+                a.Zinc + b.Zinc,
+                a.Copper + b.Copper,
+                a.Manganese + b.Manganese,
+                a.Iodine + b.Iodine,
+                a.Selenium + b.Selenium,
+                a.Chromium + b.Chromium,
+                a.Molybdenum + b.Molybdenum,
+                a.Retinol + b.Retinol,
+                a.Alpha_Carotene + b.Alpha_Carotene,
+                a.Beta_Carotene + b.Beta_Carotene,
+                a.Beta_Cryptoxanthin + b.Beta_Cryptoxanthin,
+                a.Beta_CaroteneEquivalents + b.Beta_CaroteneEquivalents,
+                a.Retinon_ActivityEquivalents + b.Retinon_ActivityEquivalents,
+                a.Vitamin_D + b.Vitamin_D,
+                a.Alpha_Tocopherol + b.Alpha_Tocopherol,
+                a.Beta_Tocopherol + b.Beta_Tocopherol,
+                a.Gamma_Tocopherol + b.Gamma_Tocopherol,
+                a.Delta_Tocopherol + b.Delta_Tocopherol,
+                a.Vitamin_K + b.Vitamin_K,
+                a.Thiamin + b.Thiamin,
+                a.Niacin + b.Niacin,
+                a.Vitamin_B6 + b.Vitamin_B6,
+                a.Vitamin_B12 + b.Vitamin_B12,
+                a.Folate + b.Folate,
+                a.Pantothenic_Acid + b.Pantothenic_Acid,
+                a.Biotin + b.Biotin,
+                a.Ascorbic_Acid + b.Ascorbic_Acid,
+                a.Salt_Equivalents + b.Salt_Equivalents,
+                a.Alcohol + b.Alcohol,
+                a.Nitrate_Ion + b.Nitrate_Ion,
+                a.Theobromine + b.Theobromine,
+                a.Caffeine + b.Caffeine,
+                a.Tannin + b.Tannin,
+                a.Polyphenol + b.Polyphenol,
+                a.Acetic_Acid + b.Acetic_Acid,
+                a.Cooking_Oil + b.Cooking_Oil,
+                a.Organic_AcidsTotal + b.Organic_AcidsTotal,
+                a.Yield + b.Yield);
         }
     }
 }

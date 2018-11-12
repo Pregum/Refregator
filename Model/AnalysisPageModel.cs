@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using MVVM_Refregator.Common;
 using Prism.Mvvm;
 
@@ -7,7 +9,7 @@ namespace MVVM_Refregator.Model
     public class AnalysisPageModel : BindableBase
     {
         /// <summary>
-        /// 食材コレクション用
+        /// 食材管理Model
         /// </summary>
         private FoodShelfModel _foodShelfModel = FoodShelfModel.GetInstance();
 
@@ -24,6 +26,11 @@ namespace MVVM_Refregator.Model
             get { return _foodCompositions; }
             private set { this.SetProperty(ref _foodCompositions, value); }
         }
+
+        /// <summary>
+        /// 計算された成分表
+        /// </summary>
+        public FoodComposition CalculatedResultFoodComposition { get; private set; }
 
         /// <summary>
         /// 今保存されているすべての食材情報
@@ -106,5 +113,137 @@ namespace MVVM_Refregator.Model
             this.AllFoods.Add(food);
             this.AnalysisFoods.Remove(food);
         }
+
+        /// <summary>
+        /// 設定された食材の成分表を計算する
+        /// </summary>
+        public void CalculateFoodComposition()
+        {
+            Func<UnitKind, Nutrient> func = ((UnitKind uni) => new Nutrient(0.0d, uni, false));
+            var composition = new FoodComposition(0, 0, 0, "accumulate_composition", func(UnitKind.percent),
+                func(UnitKind.kcal),
+                func(UnitKind.kj),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.mg),
+                func(UnitKind.mg),
+                func(UnitKind.mg),
+                func(UnitKind.mg),
+                func(UnitKind.mg),
+                func(UnitKind.mg),
+                func(UnitKind.mg),
+                func(UnitKind.mg),
+                func(UnitKind.mg),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.mg),
+                func(UnitKind.mg),
+                func(UnitKind.mg),
+                func(UnitKind.mg),
+                func(UnitKind.g),
+                func(UnitKind.mg),
+                func(UnitKind.mg),
+                func(UnitKind.mg),
+                func(UnitKind.micro_g),
+                func(UnitKind.micro_g),
+                func(UnitKind.mg),
+                func(UnitKind.micro_g),
+                func(UnitKind.mg),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.g),
+                func(UnitKind.percent));
+
+            if (this.AnalysisFoods.Any())
+            {
+                foreach (var food in this.AnalysisFoods)
+                {
+                    composition += GetFoodComposition(food.KindType);
+                }
+                this.CalculatedResultFoodComposition = composition;
+                this.RaisePropertyChanged(nameof(this.CalculatedResultFoodComposition));
+            }
+        }
+
+        /// <summary>
+        /// 食品タイプに応じて成分表を返す
+        /// </summary>
+        /// <param name="foodType">食品タイプ</param>
+        /// <returns></returns>
+        private FoodComposition GetFoodComposition(FoodType foodType)
+        {
+            switch (foodType)
+            {
+                case FoodType.Rice:
+                    return this.FoodCompositions[90];
+                case FoodType.Bread:
+                    return this.FoodCompositions[30];
+                case FoodType.Noodle:
+                    return this.FoodCompositions[50];
+                case FoodType.Potato:
+                    return this.FoodCompositions[170];
+                case FoodType.Sugar:
+                    return this.FoodCompositions[230];
+                case FoodType.Confectionery:
+                    return this.FoodCompositions[1850];
+                case FoodType.Oil:
+                    return this.FoodCompositions[1820];
+                case FoodType.Soy:
+                    return this.FoodCompositions[280];
+                case FoodType.Miso:
+                    return this.FoodCompositions[2130];
+                case FoodType.Fruit:
+                    return this.FoodCompositions[440];
+                case FoodType.Vegetables:
+                    return this.FoodCompositions[425];
+                case FoodType.Seaweed:
+                    return this.FoodCompositions[1025];
+                case FoodType.SeaFood:
+                    return this.FoodCompositions[1040];
+                case FoodType.BeastMeat:
+                    return this.FoodCompositions[1500];
+                case FoodType.Egg:
+                    return this.FoodCompositions[1750];
+                case FoodType.Milk:
+                    return this.FoodCompositions[1756];
+                case FoodType.OtherDairyProducts:
+                    return this.FoodCompositions[1780];
+                case FoodType.Seasoning:
+                    return this.FoodCompositions[2110];
+                case FoodType.Other:
+                    return this.FoodCompositions[2169];
+                default:
+                    throw new InvalidOperationException();
+            }
+        } 
     }
 }

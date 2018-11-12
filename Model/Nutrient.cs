@@ -70,5 +70,10 @@ namespace MVVM_Refregator.Model
         {
             return $"{this.Value}";
         }
+
+        public static Nutrient operator+(Nutrient a, Nutrient b)
+        {
+            return new Nutrient(a.Value + b.Value, a.UnitKind, a.IsEstimateValue || b.IsEstimateValue);
+        }
     }
 }

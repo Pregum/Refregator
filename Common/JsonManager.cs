@@ -119,7 +119,7 @@ namespace MVVM_Refregator.Common
                 var acetic_Acid = Nutrient.Create(children["Acetic acid"].Value<string>(), UnitKind.g);
                 var cooking_Oil = Nutrient.Create(children["Cooking oil"].Value<string>(), UnitKind.g);
                 var organic_Acids = Nutrient.Create(children["Organic acids, total"].Value<string>(), UnitKind.g);
-                var yield = Nutrient.Create(children["Yield"].Value<string>(), UnitKind.g);
+                var yield = Nutrient.Create(children["Yield"].Value<string>(), UnitKind.percent);
 
                 list.Add(
                     new FoodComposition(foodGroup, itemNo, indexNo, foodAndDescription, refuse,

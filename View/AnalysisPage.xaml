@@ -26,6 +26,9 @@
 
         <!--<TextBlock Text="栄養素情報ページです"/>-->
         <!--<Button Content="Jsonファイルを読み込みます" Command="{Binding Send_ReadJson}" Margin="10"/>-->
+        <Button Content="計算" Grid.Row="1" Margin="10" Command="{Binding Send_CalculateFoodComposition}" />
+        <!--<TextBlock Grid.Row="2" Margin="5" Text="{Binding CalculateFoodComposition.Value}" />-->
+        <TextBlock Grid.Row="2" Margin="5" Text="{Binding CalculateFoodComposition.Value.Energy_kcal}" />
         <DataGrid Grid.Row="0" Grid.Column="1" IsReadOnly="True" ItemsSource="{Binding FoodList}" Margin="10" SelectedItem="{Binding SelectedFood_AllGrid.Value, Mode=TwoWay}" />
         <Button Grid.Row="1" Grid.Column="1" Content="項目に追加" Margin="10" HorizontalAlignment="Left" Command="{Binding Send_AddAnalysisFood}" CommandParameter="{Binding SelectedFood_AllGrid.Value}" />
         <Button Grid.Row="1" Grid.Column="1" Content="項目から除外" Margin="10" HorizontalAlignment="Right" Command="{Binding Send_RemoveAnalysisFood}" CommandParameter="{Binding SelectedFood_AnalysisGrid.Value}" />

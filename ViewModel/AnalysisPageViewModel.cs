@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using MVVM_Refregator.Model;
 using Prism.Mvvm;
 using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace MVVM_Refregator.ViewModel
 {
@@ -20,6 +21,11 @@ namespace MVVM_Refregator.ViewModel
         /// 全食材コレクション
         /// </summary>
         public ObservableCollection<FoodModel> FoodList { get; }
+
+        /// <summary>
+        /// 計算後の成分表
+        /// </summary>
+        public ReactiveProperty<FoodComposition> CalculateFoodComposition { get; }
 
         /// <summary>
         /// 食品成分表
@@ -55,6 +61,11 @@ namespace MVVM_Refregator.ViewModel
         public ReactiveCommand Send_RemoveAnalysisFood { get; } = new ReactiveCommand();
 
         /// <summary>
+        /// 解析用コレクションの成分表を計算
+        /// </summary>
+        public ReactiveCommand Send_CalculateFoodComposition { get; } = new ReactiveCommand();
+
+        /// <summary>
         /// ctor
         /// </summary>
         public AnalysisPageViewModel()
@@ -65,6 +76,13 @@ namespace MVVM_Refregator.ViewModel
             this.FoodList = this._analysisPageModel.AllFoods;
             this.AnalysisFoodList = this._analysisPageModel.AnalysisFoods;
             this.FoodCompositions = this._analysisPageModel.FoodCompositions;
+
+            //this.CalculateFoodComposition = this._analysisPageModel.ObserveProperty(x => x.CalculatedResultFoodComposition).ToReactiveProperty();
+            this.CalculateFoodComposition = this._analysisPageModel.ToReactivePropertyAsSynchronized(x => x.CalculatedResultFoodComposition,
+                convert => convert,
+                convertBack => convertBack,
+                ReactivePropertyMode.DistinctUntilChanged | ReactivePropertyMode.RaiseLatestValueOnSubscribe,
+                false);
 
             this.Send_AddAnalysisFood.Subscribe((x) =>
             {
@@ -80,6 +98,11 @@ namespace MVVM_Refregator.ViewModel
                 {
                     this._analysisPageModel.MoveToFoodList(food);
                 }
+            });
+
+            this.Send_CalculateFoodComposition.Subscribe(() =>
+            {
+                this._analysisPageModel.CalculateFoodComposition();
             });
         }
     }
