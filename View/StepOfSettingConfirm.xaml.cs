@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace MVVM_Refregator.View
 {
     /// <summary>
-    /// StepOfSettingRegisterConfirm.xaml の相互作用ロジック
+    /// StepOfSettingConfirm.xaml の相互作用ロジック
     /// </summary>
-    public partial class StepOfSettingRegisterConfirm : Page
+    public partial class StepOfSettingConfirm : Page
     {
-        public StepOfSettingRegisterConfirm()
+        public StepOfSettingConfirm()
         {
             InitializeComponent();
         }

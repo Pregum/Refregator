@@ -1,4 +1,4 @@
-﻿<Page x:Class="MVVM_Refregator.View.StepOfSettingRegisterConfirm"
+﻿<Page x:Class="MVVM_Refregator.View.StepOfSettingConfirm"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -43,6 +43,13 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
+                <TextBlock Text="食材の種類" Style="{StaticResource NormalBlock}" />
+                <Border Style="{StaticResource NormalBorder}">
+                    <TextBlock Text="{Binding ManipulateFoodModel.Value.KindType}" />
+                </Border>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
                 <TextBlock Text="購入日" Style="{StaticResource NormalBlock}" />
                 <Border Style="{StaticResource NormalBorder}">
                     <!--<TextBlock Text="{Binding BoughtDate}" />-->
@@ -53,7 +60,6 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="賞味期限" Style="{StaticResource NormalBlock}" />
                 <Border Style="{StaticResource NormalBorder}">
-                    <!--<TextBlock Text="{Binding LimitDate}" />-->
                     <TextBlock Text="{Binding ManipulateFoodModel.Value.LimitDate}" />
                 </Border>
             </StackPanel>
