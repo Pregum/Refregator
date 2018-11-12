@@ -54,6 +54,7 @@ namespace MVVM_Refregator.Model
         private ObservableCollection<IStep> _registerSteps
             = new ObservableCollection<IStep>() {
                 new FoodNameEditStep(),
+                new FoodKindStep(),
                 new FoodBoughtDateEditStep(),
                 new FoodLimitDateEditStep(),
                 new FoodConfirmStep() };
@@ -64,6 +65,7 @@ namespace MVVM_Refregator.Model
         private ObservableCollection<IStep> _updateSteps
             = new ObservableCollection<IStep>(){
                 new FoodNameEditStep(),
+                new FoodKindStep(),
                 new FoodBoughtDateEditStep(),
                 new FoodLimitDateEditStep(),
                 new FoodConfirmStep() };
