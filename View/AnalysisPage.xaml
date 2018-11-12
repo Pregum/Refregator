@@ -14,8 +14,21 @@
     </Page.DataContext>
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
         <!--<TextBlock Text="栄養素情報ページです"/>-->
-        <Button Content="Jsonファイルを読み込みます" Command="{Binding Send_ReadJson}" Margin="10,411,627,10"/>
-        <DataGrid ItemsSource="{Binding FoodList}" MinWidth="687" Margin="0,0,0,30" />
+        <!--<Button Content="Jsonファイルを読み込みます" Command="{Binding Send_ReadJson}" Margin="10"/>-->
+        <DataGrid Grid.Row="0" Grid.Column="1" IsReadOnly="True" ItemsSource="{Binding FoodList}" Margin="10" SelectedItem="{Binding SelectedFood_AllGrid.Value, Mode=TwoWay}" />
+        <Button Grid.Row="1" Grid.Column="1" Content="項目に追加" Margin="10" HorizontalAlignment="Left" Command="{Binding Send_AddAnalysisFood}" CommandParameter="{Binding SelectedFood_AllGrid.Value}" />
+        <Button Grid.Row="1" Grid.Column="1" Content="項目から除外" Margin="10" HorizontalAlignment="Right" Command="{Binding Send_RemoveAnalysisFood}" CommandParameter="{Binding SelectedFood_AnalysisGrid.Value}" />
+        <DataGrid Grid.Row="2" Grid.Column="1" IsReadOnly="True" ItemsSource="{Binding AnalysisFoodList}" Margin="10" SelectedItem="{Binding SelectedFood_AnalysisGrid.Value}" />
     </Grid>
 </Page>
