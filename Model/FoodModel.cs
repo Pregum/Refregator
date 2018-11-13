@@ -102,7 +102,6 @@ namespace MVVM_Refregator.Model
         /// <summary>
         /// 画像
         /// </summary>
-        //[JsonProperty("Image")]
         [JsonIgnore]
         public BitmapImage Image
         {
@@ -114,14 +113,19 @@ namespace MVVM_Refregator.Model
             }
         }
 
+        /// <summary>
+        /// ImageのUri
+        /// </summary>
         private string _imageString;
+        /// <summary>
+        /// ImageのUri
+        /// </summary>
         [JsonProperty("Image")]
         public string ImageString
         {
             get { return _imageString; }
             set
             {
-                //_imageString = value;
                 SetProperty(ref _imageString, value);
                 this.Image.UriSource = new Uri(_imageString, UriKind.Relative);
             }
@@ -165,15 +169,6 @@ namespace MVVM_Refregator.Model
         public FoodModel() : this("none", DateTime.Now.AddDays(7), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)))
         {
         }
-
-        ///// <summary>
-        ///// 消費期限を過ぎたか
-        ///// </summary>
-        //[JsonIgnore()]
-        //public bool IsOverLimitDate
-        //{
-        //    get { return LimitDate.Date > BoughtDate.Date; }
-        //}
 
     }
 }

@@ -1,0 +1,37 @@
+﻿<Page x:Class="MVVM_Refregator.View.AnalysisPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MVVM_Refregator.View"
+      xmlns:vm="clr-namespace:MVVM_Refregator.ViewModel"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="NutrientInformation">
+
+    <Page.DataContext>
+        <vm:AnalysisPageViewModel />
+    </Page.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--<TextBlock Text="栄養素情報ページです"/>-->
+        <!--<Button Content="Jsonファイルを読み込みます" Command="{Binding Send_ReadJson}" Margin="10"/>-->
+        <Button Content="計算" Grid.Row="1" Margin="10" Command="{Binding Send_CalculateFoodComposition}" />
+        <!--<TextBlock Grid.Row="2" Margin="5" Text="{Binding CalculateFoodComposition.Value}" />-->
+        <TextBlock Grid.Row="2" Margin="5" Text="{Binding CalculateFoodComposition.Value.Energy_kcal}" />
+        <DataGrid Grid.Row="0" Grid.Column="1" IsReadOnly="True" ItemsSource="{Binding FoodList}" Margin="10" SelectedItem="{Binding SelectedFood_AllGrid.Value, Mode=TwoWay}" />
+        <Button Grid.Row="1" Grid.Column="1" Content="項目に追加" Margin="10" HorizontalAlignment="Left" Command="{Binding Send_AddAnalysisFood}" CommandParameter="{Binding SelectedFood_AllGrid.Value}" />
+        <Button Grid.Row="1" Grid.Column="1" Content="項目から除外" Margin="10" HorizontalAlignment="Right" Command="{Binding Send_RemoveAnalysisFood}" CommandParameter="{Binding SelectedFood_AnalysisGrid.Value}" />
+        <DataGrid Grid.Row="2" Grid.Column="1" IsReadOnly="True" ItemsSource="{Binding AnalysisFoodList}" Margin="10" SelectedItem="{Binding SelectedFood_AnalysisGrid.Value}" />
+    </Grid>
+</Page>

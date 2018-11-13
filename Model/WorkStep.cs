@@ -1,9 +1,5 @@
 ﻿using Prism.Mvvm;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Navigation;
 
 namespace MVVM_Refregator.Model
@@ -37,28 +33,6 @@ namespace MVVM_Refregator.Model
         /// 作業状態
         /// </summary>
         public StepStatusType StepStatus { get { return _stepStatus; } }
-
-        ///// <summary>
-        ///// singleton用
-        ///// </summary>
-        //private static FoodNameEditStep _instance = null;
-
-        ///// <summary>
-        ///// singleton用
-        ///// </summary>
-        ///// <returns></returns>
-        //public static FoodNameEditStep GetInstance()
-        //{
-        //    _instance = _instance ?? new FoodNameEditStep();
-        //    return _instance;
-        //}
-
-        ///// <summary>
-        ///// ctor
-        ///// </summary>
-        //private FoodNameEditStep()
-        //{
-        //}
 
         /// <summary>
         /// ctor
@@ -120,17 +94,6 @@ namespace MVVM_Refregator.Model
 
         public StepStatusType StepStatus { get => _stepStatus; }
 
-        //private static FoodBoughtDateEditStep _instance = null;
-        //public static FoodBoughtDateEditStep GetInstance()
-        //{
-        //    _instance = _instance ?? new FoodBoughtDateEditStep();
-        //    return _instance;
-        //}
-
-        //private FoodBoughtDateEditStep()
-        //{
-        //}
-
         public FoodBoughtDateEditStep()
         {
         }
@@ -184,18 +147,6 @@ namespace MVVM_Refregator.Model
         public string Name => "賞味期限の設定";
 
         public StepStatusType StepStatus { get => _stepStatus; }
-
-        //private static FoodLimitDateEditStep _instance = null;
-
-        //public static FoodLimitDateEditStep GetInstance()
-        //{
-        //    _instance = _instance ?? new FoodLimitDateEditStep();
-        //    return _instance;
-        //}
-
-        //private FoodLimitDateEditStep()
-        //{
-        //}
 
         public FoodLimitDateEditStep()
         {
@@ -268,6 +219,43 @@ namespace MVVM_Refregator.Model
         }
     }
 
+    public class FoodKindStep : BindableBase, IStep
+    {
+        public string Name => "食材の種類";
+
+        private Uri _editPage = new Uri("/View/StepOfSettingFoodKind.xaml", UriKind.Relative);
+
+        private StepStatusType _stepStatus = StepStatusType.New;
+
+        public StepStatusType StepStatus { get { return _stepStatus; } }
+
+        public void Init()
+        {
+            this.SetProperty(ref _stepStatus, StepStatusType.New, nameof(this.StepStatus));
+        }
+
+        public void Navigate(NavigationService navigation)
+        {
+            this.SetProperty(ref _stepStatus, StepStatusType.Working, nameof(this.StepStatus));
+            navigation.Navigate(this._editPage);
+        }
+
+        public void Revert()
+        {
+            this.SetProperty(ref _stepStatus, StepStatusType.New, nameof(this.StepStatus));
+        }
+
+        public void Update()
+        {
+            this.SetProperty(ref _stepStatus, StepStatusType.Done, nameof(this.StepStatus));
+        }
+
+        public override string ToString()
+        {
+            return $"画面名 : {this.Name}, 現在の状況 : {this.StepStatus}";
+        }
+    }
+
     /// <summary>
     /// 最終確認を行うステップです
     /// </summary>
@@ -275,7 +263,7 @@ namespace MVVM_Refregator.Model
     {
         private StepStatusType _stepStatus = StepStatusType.New;
 
-        private Uri _editPage = new Uri("/View/StepOfSettingRegisterConfirm.xaml", UriKind.Relative);
+        private Uri _editPage = new Uri("/View/StepOfSettingConfirm.xaml", UriKind.Relative);
 
         public StepStatusType StepStatus { get => _stepStatus; }
 

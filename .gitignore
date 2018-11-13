@@ -294,13 +294,8 @@ paket-files/
 .idea/
 *.sln.iml
 
-<<<<<<< HEAD
 # CodeRush personal settings
 .cr/personal
-=======
-# CodeRush
-.cr/
->>>>>>> origin/master
 
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
@@ -325,11 +320,7 @@ __pycache__/
 # OpenCover UI analysis results
 OpenCover/
 
-<<<<<<< HEAD
 # Azure Stream Analytics local run output
-=======
-# Azure Stream Analytics local run output 
->>>>>>> origin/master
 ASALocalRun/
 
 # MSBuild Binary and Structured Log
@@ -338,21 +329,21 @@ ASALocalRun/
 # NVidia Nsight GPU debugger configuration file
 *.nvuser
 
-<<<<<<< HEAD
 # MFractors (Xamarin productivity tool) working folder
 .mfractor/
 
 # Local History for Visual Studio
 .localhistory/
-<<<<<<< HEAD
-=======
+
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
->>>>>>> origin/master
-=======
+
 *.xml
->>>>>>> develop
+
 .gitignore_REMOTE_7436
 .gitignore_BASE_7436
 .gitignore_BACKUP_7436
 .gitignore_LOCAL_7436
+
+*.xlsx
+

@@ -1,31 +1,29 @@
-﻿using Prism.Mvvm;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using MVVM_Refregator.Model;
+using Prism.Mvvm;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
-using MVVM_Refregator.Model;
-
 namespace MVVM_Refregator.ViewModel
 {
-    public class StepOfFoodLimitDateViewModel : BindableBase
+    public class StepOfFoodKindViewModel : BindableBase
     {
-        private WorkStepModel _workStepModel;
+        private WorkStepModel _workstepModel;
 
         public ReactiveProperty<FoodModel> Food { get; }
 
         /// <summary>
         /// ctor
         /// </summary>
-        public StepOfFoodLimitDateViewModel()
+        public StepOfFoodKindViewModel()
         {
-            this._workStepModel = WorkStepModel.GetInstance();
+            this._workstepModel = WorkStepModel.GetInstance();
 
-            this.Food = this._workStepModel.ToReactivePropertyAsSynchronized(
+            this.Food = this._workstepModel.ToReactivePropertyAsSynchronized(
                 m => m.ManipulateFood,
                 convert => convert,
                 convertBack => convertBack,
