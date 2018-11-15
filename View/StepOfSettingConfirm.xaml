@@ -3,16 +3,11 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:MVVM_Refregator.View"
-      xmlns:m="clr-namespace:MVVM_Refregator.Model"
       xmlns:vm="clr-namespace:MVVM_Refregator.ViewModel"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="StepOfSettingRegisterConfirm">
 
-    <!--<Page.DataContext>
-        <m:FoodModel/>
-    </Page.DataContext>-->
     <Page.DataContext>
         <vm:StepOfFoodConfirmViewModel />
     </Page.DataContext>
@@ -27,40 +22,63 @@
         <Style TargetType="TextBlock" x:Key="NormalBlock" >
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="5" />
-            <!--<Setter Property="Width" Value="50" />-->
+            <Setter Property="FontSize" Value="20"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="StackPanel" x:Key="NormalStackPanel" >
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Grid.Column" Value="1" />
         </Style>
     </Page.Resources>
 
     <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-        <StackPanel Margin="5" >
+        <TextBlock FontSize="24" Margin="10" >
+            <Run Text="最終確認を行います" />
+            <LineBreak />
+            <LineBreak />
+            <Run Text="右記の設定でよければ登録して下さい" />
+            <LineBreak />
+        </TextBlock>
+
+        <StackPanel Style="{StaticResource NormalStackPanel}" >
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="名前" Style="{StaticResource NormalBlock}" />
                 <Border Style="{StaticResource NormalBorder}">
-                    <TextBlock Text="{Binding ManipulateFoodModel.Value.Name}" />
+                    <TextBlock Text="{Binding ManipulateFoodModel.Value.Name}" Style="{StaticResource NormalBlock}" />
+                </Border>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="アイコン" Style="{StaticResource NormalBlock}" />
+                <Border Style="{StaticResource NormalBorder}">
+                    <Image Source="{Binding ManipulateFoodModel.Value.Image, Mode=OneWay}" Stretch="Uniform" Height="40" Width="40" />
                 </Border>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="食材の種類" Style="{StaticResource NormalBlock}" />
                 <Border Style="{StaticResource NormalBorder}">
-                    <TextBlock Text="{Binding ManipulateFoodModel.Value.KindType}" />
+                    <TextBlock Text="{Binding ManipulateFoodModel.Value.KindType}" Style="{StaticResource NormalBlock}" />
                 </Border>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="購入日" Style="{StaticResource NormalBlock}" />
                 <Border Style="{StaticResource NormalBorder}">
-                    <!--<TextBlock Text="{Binding BoughtDate}" />-->
-                    <TextBlock Text="{Binding ManipulateFoodModel.Value.BoughtDate}" />
+                    <TextBlock Text="{Binding ManipulateFoodModel.Value.BoughtDate}" Style="{StaticResource NormalBlock}" />
                 </Border>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="賞味期限" Style="{StaticResource NormalBlock}" />
                 <Border Style="{StaticResource NormalBorder}">
-                    <TextBlock Text="{Binding ManipulateFoodModel.Value.LimitDate}" />
+                    <TextBlock Text="{Binding ManipulateFoodModel.Value.LimitDate}" Style="{StaticResource NormalBlock}" />
                 </Border>
             </StackPanel>
 

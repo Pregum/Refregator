@@ -17,6 +17,10 @@
                 <x:Type TypeName="m:FoodType" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+
+        <Style x:Key="NormalTextBlock" TargetType="{x:Type TextBlock}" >
+            <Setter Property="FontSize" Value="24" />
+        </Style>
     </Page.Resources>
 
     <Page.DataContext>
@@ -47,15 +51,16 @@
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-
         </ListBox>
 
-        <!--<ListBox ItemsSource="{Binding Source={StaticResource Detectors}}" Grid.Column="1" Margin="10" >
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Button Content="{Binding}" />
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>-->
+        <TextBlock Grid.Column="0" Style="{StaticResource NormalTextBlock}" Margin="10" >
+            <Run Text="食材の種類を選択します。"  />
+            <LineBreak />
+            <LineBreak />
+            <Run Text="選択した食材の種類によって" />
+            <LineBreak />
+            <Run Text="食材の栄養素を設定します。" />
+        </TextBlock>
+
     </Grid>
 </Page>

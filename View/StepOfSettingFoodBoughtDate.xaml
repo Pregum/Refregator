@@ -8,15 +8,26 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="StepOfSettingFoodBought">
+
     <Page.DataContext>
         <vm:StepOfFoodBoughtDateViewModel />
     </Page.DataContext>
+
+    <Page.Resources>
+        <Style x:Key="NormalTextBlock" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="24" />
+        </Style>
+    </Page.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions >
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+
+        <TextBlock Margin="10" Style="{StaticResource NormalTextBlock}" >
+            <Run Text="食材を購入した日を設定して下さい。" />
+        </TextBlock>
 
         <DatePicker SelectedDate="{Binding Food.Value.BoughtDate}"
                     BorderBrush="Transparent" Grid.Column="1" Grid.RowSpan="2" Margin="20" />

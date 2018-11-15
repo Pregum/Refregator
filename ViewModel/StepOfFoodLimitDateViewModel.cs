@@ -18,6 +18,8 @@ namespace MVVM_Refregator.ViewModel
 
         public ReactiveProperty<FoodModel> Food { get; }
 
+        public ReactiveProperty<DateTime> StartDate { get; } = new ReactiveProperty<DateTime>(DateTime.Now.Date);
+
         /// <summary>
         /// ctor
         /// </summary>

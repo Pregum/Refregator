@@ -34,7 +34,6 @@
             <TextBlock Margin="10" Text="食材名" FontSize="20" />
             <TextBox Margin="40,10" Text="{Binding Food.Value.Name, Mode=TwoWay}" FontSize="20" />
             <TextBlock Margin="10" Text="アイコン" FontSize="20" />
-            <!--<Image Source="/Resources/information_image.png" Width="100" Stretch="Uniform" Margin="10" />-->
             <Button Background="Transparent" HorizontalAlignment="Center" BorderBrush="Transparent" Margin="10" >
                 <Image Source="/Resources/information_image.png" Width="100" Stretch="Uniform" Margin="10" />
             </Button>            

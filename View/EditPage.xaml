@@ -41,24 +41,29 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- 食材操作ボタン -->
-                <Button Grid.Column="0" Content="追加" Margin="20,10"
+                <Button Grid.Column="0" Content="追加" Margin="10,10"
                         Command="{Binding Send_NavigateRegister}"
                         CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
                         Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}"/>
-                <Button Grid.Column="2" Content="変更" IsEnabled="{Binding IsSelectedFood.Value}" Margin="20,10"
+                <Button Grid.Column="2" Content="変更" IsEnabled="{Binding IsSelectedFood.Value}" Margin="10,10"
                         Command="{Binding Send_ModifyFood}"
                         CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
                         Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
-                <Button Grid.Column="4" Content="削除" IsEnabled="{Binding IsSelectedFood.Value}" Margin="20,10"
+                <Button Grid.Column="4" Content="コピー" IsEnabled="{Binding IsSelectedFood.Value}" Margin="10,10"
+                        
+                        Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
+                <Button Grid.Column="6" Content="削除" IsEnabled="{Binding IsSelectedFood.Value}" Margin="10,10"
                         Command="{Binding Send_RemoveFood}"
                         CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
                         Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
 
                 <!-- Progress Tracker -->
-                <ItemsControl Grid.Row="0" Grid.ColumnSpan="5"
+                <ItemsControl Grid.Row="0" Grid.ColumnSpan="7"
                               ItemsSource="{Binding WorkSteps.Value, UpdateSourceTrigger=PropertyChanged}"
                               Visibility="{Binding WorkLoadVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}">
                     <ItemsControl.Template>
