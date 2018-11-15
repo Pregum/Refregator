@@ -128,8 +128,8 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Content="Load" Command="{Binding LoadJsonCommand}" Grid.Column="0"/>
-                        <Button Content="Save" Command="{Binding SaveJsonCommand}" Grid.Column="2"/>
+                        <!--<Button Content="Load" Command="{Binding LoadJsonCommand}" Grid.Column="0"/>
+                        <Button Content="Save" Command="{Binding SaveJsonCommand}" Grid.Column="2"/>-->
                     </Grid>
                 </Grid>
             </Border>

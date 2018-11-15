@@ -80,8 +80,14 @@ namespace MVVM_Refregator.Model
         /// </summary>
         public AnalysisPageModel()
         {
-            this.FoodCompositions = JsonManager.ReadJson();
+        }
 
+        /// <summary>
+        /// 食材成分表データの読み込み
+        /// </summary>
+        public void LoadFoodComposition(string targetPath = @"food_composition_japanese.json")
+        {
+            this.FoodCompositions = JsonManager.ReadJson(targetPath);
             this.InitFoodCollection();
         }
 

@@ -47,9 +47,9 @@ namespace MVVM_Refregator.Common
         /// <returns></returns>
         public static ObservableCollection<FoodComposition> ReadJson(string targetPath = @"food_composition_japanese.json")
         {
-            JToken foodComposition = JToken.Parse(File.ReadAllText(targetPath, Encoding.GetEncoding("shift-jis")));
+            var foodComposition = JToken.Parse(File.ReadAllText(targetPath, Encoding.GetEncoding("shift-jis")));
             IList<JToken> compositionList = foodComposition.Children().ToList();
-            ObservableCollection<FoodComposition> list = new ObservableCollection<FoodComposition>();
+            var list = new ObservableCollection<FoodComposition>();
             for (int i = 0; i < compositionList.Count; i++)
             {
                 JToken children = compositionList[i];
