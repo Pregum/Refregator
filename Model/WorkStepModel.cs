@@ -205,6 +205,7 @@ namespace MVVM_Refregator.Model
         /// <summary>
         /// 前のステップへ戻ります
         /// </summary>
+        /// <param name="navigation">遷移元のフレームの</param>
         public void PrevStep(NavigationService navigation)
         {
             // 現作業ステップが2番目以降の場合、変更を戻し一つ前の作業に戻る
@@ -255,7 +256,6 @@ namespace MVVM_Refregator.Model
         public void NavigateUpdateWork(FoodModel updateFood, NavigationService navigation)
         {
             this._temporalFood = updateFood;
-            //this.ManipulateFood = new FoodModel();
             this.ManipulateFood = new FoodModel(this._temporalFood);
             this.CurrentWorkSteps = this._updateSteps;
             foreach (IStep aStep in this.CurrentWorkSteps)

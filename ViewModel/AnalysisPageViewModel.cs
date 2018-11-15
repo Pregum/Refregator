@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using MVVM_Refregator.Model;
 using Prism.Mvvm;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+
+using MVVM_Refregator.Model;
 
 namespace MVVM_Refregator.ViewModel
 {
@@ -13,7 +14,7 @@ namespace MVVM_Refregator.ViewModel
     public class AnalysisPageViewModel : BindableBase
     {
         /// <summary>
-        /// Model
+        /// 解析用オブジェクト
         /// </summary>
         private AnalysisPageModel _analysisPageModel = AnalysisPageModel.GetInstance();
 
@@ -28,7 +29,7 @@ namespace MVVM_Refregator.ViewModel
         public ReactiveProperty<FoodComposition> CalculateFoodComposition { get; }
 
         /// <summary>
-        /// 食品成分表
+        /// 食品成分表のコレクション
         /// </summary>
         public ObservableCollection<FoodComposition> FoodCompositions { get; }
 
@@ -84,6 +85,7 @@ namespace MVVM_Refregator.ViewModel
                 ReactivePropertyMode.DistinctUntilChanged | ReactivePropertyMode.RaiseLatestValueOnSubscribe,
                 false);
 
+            // 解析用コレクションに追加コマンドの購読
             this.Send_AddAnalysisFood.Subscribe((x) =>
             {
                 if (x is FoodModel food)
@@ -92,6 +94,7 @@ namespace MVVM_Refregator.ViewModel
                 }
             });
 
+            // 解析用コレクションから削除コマンドの購読
             this.Send_RemoveAnalysisFood.Subscribe((x) =>
             {
                 if (x is FoodModel food)
@@ -100,6 +103,7 @@ namespace MVVM_Refregator.ViewModel
                 }
             });
 
+            // 食材成分計算コマンドの購読
             this.Send_CalculateFoodComposition.Subscribe(() =>
             {
                 this._analysisPageModel.CalculateFoodComposition();

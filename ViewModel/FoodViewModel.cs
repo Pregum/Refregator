@@ -29,7 +29,6 @@ namespace MVVM_Refregator.ViewModel
 
         public FoodViewModel(FoodModel food)
         {
-
             this.Id = food.ObserveProperty(x => x.Id).ToReactiveProperty().AddTo(this.Disposable);
             this.Name = food.ObserveProperty(x => x.Name).ToReactiveProperty().AddTo(this.Disposable);
             this.LimitDate = food.ObserveProperty(x => x.LimitDate).ToReactiveProperty().AddTo(this.Disposable);

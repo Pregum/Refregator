@@ -25,7 +25,7 @@ namespace MVVM_Refregator.ViewModel
         private WorkStepModel _workStepModel;
 
         /// <summary>
-        /// 現在の作業ステップ
+        /// 現在の一連作業ステップ
         /// </summary>
         public ReactiveProperty<ObservableCollection<IStep>> WorkSteps { get; }
 
@@ -99,6 +99,9 @@ namespace MVVM_Refregator.ViewModel
         /// </summary>
         public ReactiveCommand Send_RemoveFood { get; } = new ReactiveCommand();
 
+        /// <summary>
+        /// Disposeをまとめる
+        /// </summary>
         private CompositeDisposable Disposable { get; } = new CompositeDisposable();
 
         /// <summary>
@@ -124,17 +127,16 @@ namespace MVVM_Refregator.ViewModel
                 this._workStepModel.SetStandBy();
             }
 
-            // 食材選択プロパティ変更時
+            // 選択食材プロパティの購読
             this.SelectedFood.Subscribe((_) =>
             {
                 this.IsSelectedFood.Value = this.SelectedFood?.Value != null;
             });
 
-            // 次へボタンのコンテントの変更
+            // 次へボタンのコンテントプロパティの購読
             this.IsLastStep = this._workStepModel.ObserveProperty(x => x.IsLastStep).ToReactiveProperty();
             this.IsLastStep.Subscribe((isLastStep) =>
             {
-                //this.NextContent.Value = isLastStep ? "登録" : "進む";
                 if (isLastStep)
                 {
                     switch (this._workStepModel.CurrentWorkStepsType)
@@ -168,7 +170,7 @@ namespace MVVM_Refregator.ViewModel
                 this.WorkLoadVisibility.Value = currentWorkStepsType != WorkType.StandBy;
             });
 
-            // 登録ボタンのコマンド
+            // 登録コマンドの購読
             this.Send_NavigateRegister.Subscribe((x) =>
             {
                 if (x is NavigationService navigation)
@@ -177,34 +179,7 @@ namespace MVVM_Refregator.ViewModel
                 }
             });
 
-            // 次へボタンのコマンド
-            this.Send_NextStep.Subscribe((navigationService) =>
-            {
-                if (navigationService is NavigationService navigation)
-                {
-                    this._workStepModel.NextStep(navigation);
-                }
-            });
-
-            // 戻るボタンをクリック時のコマンド
-            this.Send_PrevStep.Subscribe((namevigationService) =>
-            {
-                if (namevigationService is NavigationService navigation)
-                {
-                    this._workStepModel.PrevStep(navigation);
-                }
-            });
-
-            // 削除時のコマンド
-            this.Send_RemoveFood.Subscribe((x) =>
-            {
-                if (x is NavigationService navigation)
-                {
-                    this._workStepModel.NavigateDeleteWork(this.SelectedFood.Value, navigation);
-                }
-            });
-
-            // 変更時のコマンド
+            // 変更コマンドの購読
             this.Send_ModifyFood.Subscribe((x) =>
             {
                 if (x is NavigationService navigation)
@@ -215,6 +190,36 @@ namespace MVVM_Refregator.ViewModel
                     }
                 }
             });
+
+            // 削除コマンドの購読
+            this.Send_RemoveFood.Subscribe((x) =>
+            {
+                if (x is NavigationService navigation)
+                {
+                    if (this.SelectedFood.Value != null)
+                    {
+                        this._workStepModel.NavigateDeleteWork(this.SelectedFood.Value, navigation);
+                    }
+                }
+            });
+
+            // 次へコマンドの購読
+            this.Send_NextStep.Subscribe((navigationService) =>
+            {
+                if (navigationService is NavigationService navigation)
+                {
+                    this._workStepModel.NextStep(navigation);
+                }
+            });
+
+            // 戻るコマンドの購読
+            this.Send_PrevStep.Subscribe((namevigationService) =>
+            {
+                if (namevigationService is NavigationService navigation)
+                {
+                    this._workStepModel.PrevStep(navigation);
+                }
+            });
         }
 
         /// <summary>
@@ -222,6 +227,7 @@ namespace MVVM_Refregator.ViewModel
         /// </summary>
         public void Dispose()
         {
+            this.Disposable.Dispose();
         }
     }
 }

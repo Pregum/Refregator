@@ -11,7 +11,7 @@ using System.IO;
 namespace MVVM_Refregator.Model
 {
     /// <summary>
-    /// 食材のコンテナクラス
+    /// 食材管理クラス
     /// </summary>
     public class FoodShelfModel : BindableBase
     {
@@ -63,9 +63,8 @@ namespace MVVM_Refregator.Model
             {
                 return false;
             }
-            // todo: ここには、json.netを読み込んでコレクションを生成する処理を実装する
+            
             var food = JsonManager.LoadJsonFrom<ObservableCollection<FoodModel>>();
-            //this.FoodCollection = food;
             this.FoodCollection.Clear();
             foreach (var aFood in food)
             {
@@ -77,11 +76,11 @@ namespace MVVM_Refregator.Model
         /// <summary>
         /// 現在の食材データをJsonファイル等の外部バックアップを取ります
         /// </summary>
+        /// <param name="destinationPath">出力先のファイルパス</param>
         /// <returns></returns>
-        public bool Save()
+        public bool Save(string destinationPath = @"food_data.json")
         {
-            // todo: とりあえず現在の食材コレクションのデータをJsonファイル等に出力する処理を実装する
-            JsonManager.SaveJsonTo<ObservableCollection<FoodModel>>(this.FoodCollection);
+            JsonManager.SaveJsonTo<ObservableCollection<FoodModel>>(this.FoodCollection, destinationPath);
             return true;
         }
 
@@ -154,10 +153,15 @@ namespace MVVM_Refregator.Model
             return true;
         }
 
+        /// <summary>
+        /// 食材オブジェクトの中身を変更します
+        /// </summary>
+        /// <param name="food">変更後の食材</param>
+        /// <see cref="Update(uint, string, DateTime, DateTime, FoodType, BitmapImage)"/>
+        /// <returns></returns>
         public bool Update(FoodModel food)
         {
             return Update(food.Id, food.Name, food.LimitDate, food.BoughtDate, food.KindType, food.Image);
-
         }
 
     }

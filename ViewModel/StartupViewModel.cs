@@ -16,8 +16,14 @@ using MVVM_Refregator.Common;
 
 namespace MVVM_Refregator.ViewModel
 {
+    /// <summary>
+    /// 最初
+    /// </summary>
     public class StartupViewModel
     {
+        /// <summary>
+        /// 食材管理クラス
+        /// </summary>
         private FoodShelfModel _model;
 
         public ReactiveProperty<Uri> SelectedContentPage { get; private set; }
@@ -32,16 +38,9 @@ namespace MVVM_Refregator.ViewModel
 
         public ReactiveCommand LoadJsonCommand { get; } = new ReactiveCommand();
 
-        //public StartupViewModel()
-        //{
-        //    //this._model = new FoodShelfModel();
-        //    //InitProperty();
-        //}
 
-        //public StartupViewModel(FoodShelfModel model)
         public StartupViewModel()
         {
-            //this._model = model;
             this._model = FoodShelfModel.GetInstance();
             InitProperty();
         }
