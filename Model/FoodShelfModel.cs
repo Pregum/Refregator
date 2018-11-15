@@ -2,7 +2,6 @@
 using System;
 using System.Linq;
 using System.Collections.ObjectModel;
-using System.Collections.Generic;
 
 using System.Windows.Media.Imaging;
 using MVVM_Refregator.Common;
@@ -63,13 +62,9 @@ namespace MVVM_Refregator.Model
             {
                 return false;
             }
-            
+
             var food = JsonManager.LoadJsonFrom<ObservableCollection<FoodModel>>();
-            this.FoodCollection.Clear();
-            foreach (var aFood in food)
-            {
-                this.FoodCollection.Add(aFood);
-            }
+            this.FoodCollection = food;
             return true;
         }
 
@@ -80,7 +75,7 @@ namespace MVVM_Refregator.Model
         /// <returns></returns>
         public bool Save(string destinationPath = @"food_data.json")
         {
-            JsonManager.SaveJsonTo<ObservableCollection<FoodModel>>(this.FoodCollection, destinationPath);
+            JsonManager.SaveJsonTo(this.FoodCollection, destinationPath);
             return true;
         }
 
@@ -97,6 +92,7 @@ namespace MVVM_Refregator.Model
         {
             var newFood = new FoodModel(name, limitDate, boughtDate, kindType, image);
             this.FoodCollection.Add(newFood);
+            this.Save();
 
             return true;
         }
@@ -109,6 +105,7 @@ namespace MVVM_Refregator.Model
         public bool Create(FoodModel food)
         {
             this.FoodCollection.Add(food);
+            this.Save();
 
             return true;
         }
@@ -123,6 +120,11 @@ namespace MVVM_Refregator.Model
             if (this.FoodCollection.Count(x => x.Id == id) == 1)
             {
                 this.FoodCollection.Remove(this.FoodCollection.Single(x => x.Id == id));
+                this.Save();
+            }
+            else
+            {
+                return false;
             }
 
             return true;
@@ -149,6 +151,12 @@ namespace MVVM_Refregator.Model
                 targetFood.BoughtDate = boughtDate;
                 targetFood.KindType = kindType;
                 targetFood.Image = image;
+
+                this.Save();
+            }
+            else
+            {
+                return false;
             }
             return true;
         }
