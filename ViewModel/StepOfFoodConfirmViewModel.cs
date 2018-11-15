@@ -1,32 +1,34 @@
 ﻿using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Reactive.Bindings;
-using Reactive.Bindings.Extensions;
 
 using MVVM_Refregator.Model;
 
 namespace MVVM_Refregator.ViewModel
 {
+    /// <summary>
+    /// 作業の最終確認を行うViewModel
+    /// </summary>
     public class StepOfFoodConfirmViewModel : BindableBase
     {
-        //FoodConfirmStep _confirmModel;
-
+        /// <summary>
+        /// 一連のステップ管理オブジェクト
+        /// </summary>
         WorkStepModel _workStepModel;
 
+        /// <summary>
+        /// 操作される食材
+        /// </summary>
         public ReactiveProperty<FoodModel> ManipulateFoodModel { get; }
 
+        /// <summary>
+        /// ctor
+        /// </summary>
         public StepOfFoodConfirmViewModel()
         {
-            //this._confirmModel = FoodConfirmStep.GetInstance();
             this._workStepModel = WorkStepModel.GetInstance();
 
-            this.ManipulateFoodModel =
-                new ReactiveProperty<FoodModel>(this._workStepModel.ManipulateFood);
+            this.ManipulateFoodModel = new ReactiveProperty<FoodModel>(this._workStepModel.ManipulateFood);
         }
     }
 }

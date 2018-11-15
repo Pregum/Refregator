@@ -1,5 +1,4 @@
-﻿using MVVM_Refregator.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,20 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using MVVM_Refregator.ViewModel;
-
 namespace MVVM_Refregator.View
 {
     /// <summary>
-    /// FoodCalendarPage.xaml の相互作用ロジック
+    /// AnalysisPage.xaml の相互作用ロジック
     /// </summary>
-    public partial class FoodCalendarPage : Page
+    public partial class AnalysisPage : Page
     {
-        public FoodCalendarPage()
+        public AnalysisPage()
         {
             InitializeComponent();
-
-            //this.DataContext = this.DataContext ?? new FoodShelfViewModel();
         }
     }
 }

@@ -11,43 +11,81 @@ namespace MVVM_Refregator.Model
     /// </summary>
     public enum FoodType
     {
-        //米類
+        /// <summary>
+        /// 米類
+        /// </summary>
         Rice,
-        // パン類
+        /// <summary>
+        /// パン類
+        /// </summary>
         Bread,
-        // 麺類
+        /// <summary>
+        /// 麺類
+        /// </summary>
         Noodle,
-        // イモ類
+        /// <summary>
+        /// イモ類
+        /// </summary>
         Potato,
-        // 砂糖類
+        /// <summary>
+        /// 砂糖類
+        /// </summary>
         Sugar,
-        // 菓子類
+        /// <summary>
+        /// 菓子類
+        /// </summary>
         Confectionery,
-        // 油脂類
+        /// <summary>
+        /// 油脂類
+        /// </summary>
         Oil,
-        // 大豆製品
+        /// <summary>
+        /// 大豆製品
+        /// </summary>
         Soy,
-        // 味噌類
+        /// <summary>
+        /// 味噌類
+        /// </summary>
         Miso,
-        // 果実類
+        /// <summary>
+        /// 果実類
+        /// </summary>
         Fruit,
-        // 野菜
+        /// <summary>
+        /// 野菜
+        /// </summary>
         Vegetables,
-        // 海藻類
+        /// <summary>
+        /// 海藻類
+        /// </summary>
         Seaweed,
-        // 魚介類
+        /// <summary>
+        /// 魚介類
+        /// </summary>
         SeaFood,
-        // 獣鳥鯨肉類
+        /// <summary>
+        /// 獣鳥鯨肉類
+        /// </summary>
         BeastMeat,
-        // 卵類
+        /// <summary>
+        /// 卵類
+        /// </summary>
         Egg,
-        // 牛乳
+        /// <summary>
+        /// 牛乳
+        /// </summary>
         Milk,
-        // その他の乳製品
+        /// <summary>
+        /// その他の乳製品
+        /// </summary>
         OtherDairyProducts,
-        // 調味料
+        /// <summary>
+        /// 調味料
+        /// </summary>
         Seasoning,
-        // その他
+        /// <summary>
+        /// その他
+        /// </summary>
         Other
     }
 }

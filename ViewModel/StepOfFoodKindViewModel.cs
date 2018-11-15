@@ -1,22 +1,19 @@
-﻿using Prism.Mvvm;
-using System;
-
+﻿using MVVM_Refregator.Model;
+using Prism.Mvvm;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
-
-using MVVM_Refregator.Model;
 
 namespace MVVM_Refregator.ViewModel
 {
     /// <summary>
-    /// 食材の賞味期限を設定するViewModel
+    /// 食材の種類を設定するViewModel
     /// </summary>
-    public class StepOfFoodLimitDateViewModel : BindableBase
+    public class StepOfFoodKindViewModel : BindableBase
     {
         /// <summary>
         /// 一連のステップ管理オブジェクト
         /// </summary>
-        private WorkStepModel _workStepModel;
+        private WorkStepModel _workstepModel;
 
         /// <summary>
         /// 操作される食材
@@ -24,18 +21,13 @@ namespace MVVM_Refregator.ViewModel
         public ReactiveProperty<FoodModel> Food { get; }
 
         /// <summary>
-        /// 選択可能な最初の日付
-        /// </summary>
-        public ReactiveProperty<DateTime> StartDate { get; } = new ReactiveProperty<DateTime>(DateTime.Now.Date);
-
-        /// <summary>
         /// ctor
         /// </summary>
-        public StepOfFoodLimitDateViewModel()
+        public StepOfFoodKindViewModel()
         {
-            this._workStepModel = WorkStepModel.GetInstance();
+            this._workstepModel = WorkStepModel.GetInstance();
 
-            this.Food = this._workStepModel.ToReactivePropertyAsSynchronized(
+            this.Food = this._workstepModel.ToReactivePropertyAsSynchronized(
                 m => m.ManipulateFood,
                 convert => convert,
                 convertBack => convertBack,

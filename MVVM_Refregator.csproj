@@ -13,6 +13,8 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -23,6 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -43,6 +46,9 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>packages\NLog.4.5.11\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="Prism, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>packages\Prism.Core.6.3.0\lib\net45\Prism.dll</HintPath>
     </Reference>
@@ -54,7 +60,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Reactive, Version=4.1.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>packages\System.Reactive.4.1.1\lib\net46\System.Reactive.dll</HintPath>
     </Reference>
@@ -89,9 +97,11 @@
       <HintPath>packages\System.Runtime.CompilerServices.Unsafe.4.5.1\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Threading.Tasks.Extensions.4.5.1\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
     </Reference>
@@ -119,19 +129,24 @@
     <Compile Include="Common\DateFoodsMapMultiConverter.cs" />
     <Compile Include="Common\JsonManager.cs" />
     <Compile Include="Common\RadioButtonUriConverter.cs" />
+    <Compile Include="Model\AnalysisPageModel.cs" />
     <Compile Include="Model\IStep.cs" />
-    <Compile Include="Model\Nutrient.cs" />
+    <Compile Include="Model\FoodComposition.cs" />
     <Compile Include="Model\DisplayPageStatus.cs" />
+    <Compile Include="Model\Nutrient.cs" />
     <Compile Include="Model\StepStatusType.cs" />
+    <Compile Include="Model\UnitKind.cs" />
     <Compile Include="Model\WorkStep.cs" />
     <Compile Include="Model\WorkStepModel.cs" />
     <Compile Include="Model\WorkStepType.cs" />
+    <Compile Include="ViewModel\AnalysisPageViewModel.cs" />
     <Compile Include="ViewModel\EditPageViewModel.cs" />
     <Compile Include="ViewModel\FoodShelfViewModel.cs" />
     <Compile Include="ViewModel\FoodViewModel.cs" />
     <Compile Include="ViewModel\StartupViewModel.cs" />
     <Compile Include="ViewModel\StepOfFoodBoughtDateViewModel.cs" />
     <Compile Include="ViewModel\StepOfFoodConfirmViewModel.cs" />
+    <Compile Include="ViewModel\StepOfFoodKindViewModel.cs" />
     <Compile Include="ViewModel\StepOfFoodLimitDateViewModel.cs" />
     <Compile Include="ViewModel\StepOfFoodNameViewModel.cs" />
     <Compile Include="View\DashBoardPage.xaml.cs">
@@ -143,8 +158,8 @@
     <Compile Include="View\FoodCalendarPage.xaml.cs">
       <DependentUpon>FoodCalendarPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\NutrientInformation.xaml.cs">
-      <DependentUpon>NutrientInformation.xaml</DependentUpon>
+    <Compile Include="View\AnalysisPage.xaml.cs">
+      <DependentUpon>AnalysisPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\StartupWindow.xaml.cs">
       <DependentUpon>StartupWindow.xaml</DependentUpon>
@@ -156,14 +171,17 @@
     <Compile Include="View\StepOfSettingFoodBoughtDate.xaml.cs">
       <DependentUpon>StepOfSettingFoodBoughtDate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\StepOfSettingFoodKind.xaml.cs">
+      <DependentUpon>StepOfSettingFoodKind.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\StepOfSettingFoodLimitDate.xaml.cs">
       <DependentUpon>StepOfSettingFoodLimitDate.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\StepOfSettingFoodName.xaml.cs">
       <DependentUpon>StepOfSettingFoodName.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\StepOfSettingRegisterConfirm.xaml.cs">
-      <DependentUpon>StepOfSettingRegisterConfirm.xaml</DependentUpon>
+    <Compile Include="View\StepOfSettingConfirm.xaml.cs">
+      <DependentUpon>StepOfSettingConfirm.xaml</DependentUpon>
     </Compile>
     <Page Include="View\DashBoardPage.xaml">
       <SubType>Designer</SubType>
@@ -177,7 +195,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\NutrientInformation.xaml">
+    <Page Include="View\AnalysisPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -189,6 +207,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\StepOfSettingFoodKind.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\StepOfSettingFoodLimitDate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -197,7 +219,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\StepOfSettingRegisterConfirm.xaml">
+    <Page Include="View\StepOfSettingConfirm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
