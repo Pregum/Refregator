@@ -40,6 +40,11 @@ namespace MVVM_Refregator.ViewModel
         public ReactiveProperty<bool> WorkLoadVisibility { get; } = new ReactiveProperty<bool>(false);
 
         /// <summary>
+        /// 最初のステップか
+        /// </summary>
+        public ReactiveProperty<bool> IsFirsStep { get; }
+
+        /// <summary>
         /// 最後のステップか
         /// </summary>
         public ReactiveProperty<bool> IsLastStep { get; }
@@ -133,7 +138,7 @@ namespace MVVM_Refregator.ViewModel
                 this.IsSelectedFood.Value = this.SelectedFood?.Value != null;
             });
 
-            // 次へボタンのコンテントプロパティの購読
+            // 最後のステップ判定プロパティの購読
             this.IsLastStep = this._workStepModel.ObserveProperty(x => x.IsLastStep).ToReactiveProperty();
             this.IsLastStep.Subscribe((isLastStep) =>
             {
@@ -159,6 +164,31 @@ namespace MVVM_Refregator.ViewModel
                 else
                 {
                     this.NextContent.Value = "進む";
+                }
+            });
+
+            // 最初のステップ判定プロパティの購読
+            this.IsFirsStep = this._workStepModel.ObserveProperty(x => x.IsFirstStep).ToReactiveProperty();
+            this.IsFirsStep.Subscribe((isFirstStep) =>
+            {
+                if (isFirstStep == IsLastStep.Value)
+                {
+                    switch (this._workStepModel.CurrentWorkStepsType)
+                    {
+                        case WorkType.Create:
+                            this.NextContent.Value = "登録";
+                            break;
+                        case WorkType.Update:
+                            this.NextContent.Value = "更新";
+                            break;
+                        case WorkType.Delete:
+                            this.NextContent.Value = "削除";
+                            break;
+                        case WorkType.None:
+                        case WorkType.StandBy:
+                        default:
+                            break;
+                    }
                 }
             });
 

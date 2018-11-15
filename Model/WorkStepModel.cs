@@ -183,6 +183,7 @@ namespace MVVM_Refregator.Model
                 this._currentStep.Navigate(navigation);
             }
 
+            this.RaisePropertyChanged(nameof(this.IsFirstStep));
             // IsLastStepプロパティの通知
             this.RaisePropertyChanged(nameof(this.IsLastStep));
         }
@@ -290,6 +291,7 @@ namespace MVVM_Refregator.Model
             this._currentStep = this._currentWorkSteps.First();
             this._currentStep.Navigate(navigation);
 
+            this.RaisePropertyChanged(nameof(this.IsFirstStep));
             this.RaisePropertyChanged(nameof(this.IsLastStep));
         }
 
