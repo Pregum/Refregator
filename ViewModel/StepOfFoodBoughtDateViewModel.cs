@@ -13,32 +13,20 @@ namespace MVVM_Refregator.ViewModel
 {
     public class StepOfFoodBoughtDateViewModel : BindableBase
     {
-        //private FoodBoughtDateEditStep _foodBoughtDateEditStepModel;
 
         private WorkStepModel _workStepModel;
 
-        //public ReactiveProperty<DateTime> BoughtDate { get; }
         public ReactiveProperty<FoodModel> Food { get; }
 
         public StepOfFoodBoughtDateViewModel()
         {
-            //this._foodBoughtDateEditStepModel = FoodBoughtDateEditStep.GetInstance();
-
             this._workStepModel = WorkStepModel.GetInstance();
-
-            //this.BoughtDate = this._foodBoughtDateEditStepModel.ToReactivePropertyAsSynchronized(
-            //    m => m.BoughtDate,
-            //    convert => convert,
-            //    convertBack: cb => cb,
-            //    mode: ReactivePropertyMode.DistinctUntilChanged | ReactivePropertyMode.RaiseLatestValueOnSubscribe,
-            //    ignoreValidationErrorValue: false);
-
 
             this.Food = this._workStepModel.ToReactivePropertyAsSynchronized(
                 m => m.ManipulateFood,
                 convert => convert,
-                convertBack: cb => cb,
-                mode: ReactivePropertyMode.DistinctUntilChanged | ReactivePropertyMode.RaiseLatestValueOnSubscribe,
+                cb => cb,
+                ReactivePropertyMode.DistinctUntilChanged | ReactivePropertyMode.RaiseLatestValueOnSubscribe,
                 ignoreValidationErrorValue: false);
         }
     }
