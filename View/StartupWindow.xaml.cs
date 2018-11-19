@@ -31,7 +31,7 @@ namespace MVVM_Refregator.View
             //    //foodShelfModel.FoodCollection.Add(new Food());
             //    this.DataContext = new StartupViewModel(foodShelfModel);
             //}
-            this.DataContext = new StartupViewModel();
+            //this.DataContext = new StartupViewModel();
         }
     }
 }

@@ -167,30 +167,30 @@ namespace MVVM_Refregator.ViewModel
                 }
             });
 
-            // 最初のステップ判定プロパティの購読
-            this.IsFirsStep = this._workStepModel.ObserveProperty(x => x.IsFirstStep).ToReactiveProperty();
-            this.IsFirsStep.Subscribe((isFirstStep) =>
-            {
-                if (isFirstStep == IsLastStep.Value)
-                {
-                    switch (this._workStepModel.CurrentWorkStepsType)
-                    {
-                        case WorkType.Create:
-                            this.NextContent.Value = "登録";
-                            break;
-                        case WorkType.Update:
-                            this.NextContent.Value = "更新";
-                            break;
-                        case WorkType.Delete:
-                            this.NextContent.Value = "削除";
-                            break;
-                        case WorkType.None:
-                        case WorkType.StandBy:
-                        default:
-                            break;
-                    }
-                }
-            });
+            //// 最初のステップ判定プロパティの購読
+            //this.IsFirsStep = this._workStepModel.ObserveProperty(x => x.IsFirstStep).ToReactiveProperty();
+            //this.IsFirsStep.Subscribe((isFirstStep) =>
+            //{
+            //    if (isFirstStep == IsLastStep.Value)
+            //    {
+            //        switch (this._workStepModel.CurrentWorkStepsType)
+            //        {
+            //            case WorkType.Create:
+            //                this.NextContent.Value = "登録";
+            //                break;
+            //            case WorkType.Update:
+            //                this.NextContent.Value = "更新";
+            //                break;
+            //            case WorkType.Delete:
+            //                this.NextContent.Value = "削除";
+            //                break;
+            //            case WorkType.None:
+            //            case WorkType.StandBy:
+            //            default:
+            //                break;
+            //        }
+            //    }
+            //});
 
             // 現在の作業の種類プロパティの購読
             this.CurrentWorkStepsType = this._workStepModel.ObserveProperty(m => m.CurrentWorkStepsType).ToReactiveProperty();

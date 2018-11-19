@@ -6,6 +6,8 @@
       xmlns:local="clr-namespace:MVVM_Refregator.View"
       xmlns:vm="clr-namespace:MVVM_Refregator.ViewModel"
       xmlns:model="clr-namespace:MVVM_Refregator.Model"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="EditPage">
@@ -15,21 +17,36 @@
     </Page.DataContext>
 
     <Page.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolVisibilityConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.RadioButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <!--<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <materialDesignConverters:BooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible" />-->
 
-        <Style x:Key="EllipseStyle" TargetType="Ellipse">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding StepStatus}" Value="{x:Static model:StepStatusType.Done}">
-                    <Setter Property="Fill" Value="LightGreen" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding StepStatus}" Value="{x:Static model:StepStatusType.New}">
-                    <Setter Property="Fill" Value="Gray" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding StepStatus}" Value="{x:Static model:StepStatusType.Working}">
-                    <Setter Property="Fill" Value="Orange" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+
+            <BooleanToVisibilityConverter x:Key="BoolVisibilityConverter" />
+
+            <Style x:Key="EllipseStyle" TargetType="Ellipse">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding StepStatus}" Value="{x:Static model:StepStatusType.Done}">
+                        <Setter Property="Fill" Value="LightGreen" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding StepStatus}" Value="{x:Static model:StepStatusType.New}">
+                        <Setter Property="Fill" Value="Gray" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding StepStatus}" Value="{x:Static model:StepStatusType.Working}">
+                        <Setter Property="Fill" Value="Orange" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
     </Page.Resources>
 
     <Grid>
@@ -46,7 +63,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- 食材操作ボタン -->
-                <Button Grid.Column="0" Content="追加" Margin="10,10"
+                <Button Grid.Column="0" Content="追加" Margin="10,10" 
                         Command="{Binding Send_NavigateRegister}"
                         CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
                         Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}"/>
@@ -54,7 +71,7 @@
                         Command="{Binding Send_ModifyFood}"
                         CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
                         Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
-                <Button Grid.Column="4" Content="コピー" IsEnabled="{Binding IsSelectedFood.Value}" Margin="10,10"
+                <Button Grid.Column="4" Content="使用" IsEnabled="{Binding IsSelectedFood.Value}" Margin="10,10"
                         
                         Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
                 <Button Grid.Column="6" Content="削除" IsEnabled="{Binding IsSelectedFood.Value}" Margin="10,10"
@@ -98,68 +115,53 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Calendar Margin="5" Grid.Column="0"
+                <Calendar Margin="5" Grid.Column="0" Language="ja-JP"
                           Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
 
-                <ListBox ItemsSource="{Binding Foods}" Grid.Column="1" Grid.ColumnSpan="2" SelectedItem="{Binding SelectedFood.Value}"
+                <ListView ScrollViewer.VerticalScrollBarVisibility="Visible" ItemsSource="{Binding Foods}" Grid.Column="1" Grid.ColumnSpan="2" SelectedItem="{Binding SelectedFood.Value}"
                           Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" >
-                    <ListBox.Template>
-                        <ControlTemplate TargetType="ListBox">
-                            <ItemsPresenter Margin="10"/>
+                    <ListView.Template>
+                        <ControlTemplate TargetType="ListView">
+                            <ItemsPresenter  />
                         </ControlTemplate>
-                    </ListBox.Template>
+                    </ListView.Template>
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid Columns="2" />
+                            <WrapPanel Width="600" HorizontalAlignment="Stretch" />
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type model:FoodModel}">
-                            <Border BorderBrush="Black" BorderThickness="4" Padding="5" >
-                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
-                                    <StackPanel>
-                                        <TextBlock Text="{Binding Id}" FontSize="14" />
-                                        <TextBlock Text="{Binding Name}" FontSize="14" />
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
+                            <Grid VerticalAlignment="Stretch" MinWidth="220" Background="White" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock FontSize="20" Margin="5">
+                                    <Run Text="{Binding LimitDate, StringFormat={}{0:yyyy/MM/dd}}" />
+                                    <LineBreak />
+                                    <Run Text="{Binding Name}" />
+                                </TextBlock>
+                                <Image Source="{Binding Image}" Grid.Column="1" Stretch="Uniform" Height="40" VerticalAlignment="Center" />
+                            </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="OverridesDefaultStyle" Value="True" />
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type ContentControl}">
-                                        <Border Background="{TemplateBinding Background}" Margin="10">
-                                            <ContentPresenter Margin="0" />
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="SpringGreen" />
-                                </Trigger>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="LightGray" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                </ListBox>
+                </ListView>
 
                 <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Margin="10">
-                    <Frame x:Name="EditFrame" NavigationUIVisibility="Hidden" Visibility="{Binding WorkLoadVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" >
-
-                    </Frame>
+                    <Frame x:Name="EditFrame" NavigationUIVisibility="Hidden" Visibility="{Binding WorkLoadVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
                 </Grid>
-                <Button Grid.Column="1" VerticalAlignment="Bottom" Content="{Binding PrevContent.Value}" HorizontalAlignment="Left" Margin="10" Width="50" 
+
+                <Button Grid.Column="1" VerticalAlignment="Bottom" Content="{Binding PrevContent.Value}" HorizontalAlignment="Left" Margin="10" Width="60" 
                         Visibility="{Binding WorkLoadVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}"
-                        Command="{Binding Send_PrevStep}" CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"/>
-                <Button Grid.Column="2" VerticalAlignment="Bottom" Content="{Binding NextContent.Value}" HorizontalAlignment="Right" Margin="10" Width="50" 
+                        Command="{Binding Send_PrevStep}" CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
+                        Style="{DynamicResource MaterialDesignFloatingActionLightButton}"/>
+                <Button Grid.Column="2" VerticalAlignment="Bottom" Content="{Binding NextContent.Value}" HorizontalAlignment="Right" Margin="10" Width="60" 
                         Visibility="{Binding WorkLoadVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" 
-                        Command="{Binding Send_NextStep}" CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"/>
+                        Command="{Binding Send_NextStep}" CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
+                        Style="{DynamicResource MaterialDesignFloatingActionLightButton}"/>
+
             </Grid>
         </DockPanel>
     </Grid>

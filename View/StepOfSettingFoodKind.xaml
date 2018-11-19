@@ -46,9 +46,9 @@
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type m:FoodType}">
-                    <Grid Margin="10" Width="100" Height="30" Background="GreenYellow">
+                    <!--<Grid Margin="10" Width="100" Height="30" Background="GreenYellow">-->
                         <TextBlock Text="{Binding}" />
-                    </Grid>
+                    <!--</Grid>-->
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

@@ -8,10 +8,10 @@
         xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:common="clr-namespace:MVVM_Refregator.Common"
         mc:Ignorable="d"
-        Title="StartupWindow" Height="600" Width="1200">
-    <!--<Window.DataContext>
+        Title="StartupWindow" Height="800" Width="1200">
+    <Window.DataContext>
         <vm:StartupViewModel/>
-    </Window.DataContext>-->
+    </Window.DataContext>
     <Window.Resources>
         <common:RadioButtonUriConverter x:Key="RadioButtonUriConverter"/>
     </Window.Resources>
