@@ -60,9 +60,6 @@
             <TextBlock Text="食材の種類" Style="{StaticResource NormalBlock}" />
             <TextBlock Text="{Binding ManipulateFoodModel.Value.KindType}" Style="{StaticResource NormalBlock}" />
 
-            <TextBlock Text="購入日" Style="{StaticResource NormalBlock}" />
-            <TextBlock Text="{Binding ManipulateFoodModel.Value.BoughtDate, StringFormat={}{0:yyyy/MM/dd}}" Style="{StaticResource NormalBlock}" />
-
             <TextBlock Text="賞味期限" Style="{StaticResource NormalBlock}" />
             <TextBlock Text="{Binding ManipulateFoodModel.Value.LimitDate, StringFormat={}{0:yyyy/MM/dd}}" Style="{StaticResource NormalBlock}" />
 

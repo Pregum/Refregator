@@ -153,14 +153,12 @@
                     <Frame x:Name="EditFrame" NavigationUIVisibility="Hidden" Visibility="{Binding WorkLoadVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
                 </Grid>
 
-                <Button Grid.Column="1" VerticalAlignment="Bottom" Content="{Binding PrevContent.Value}" HorizontalAlignment="Left" Margin="10" Width="60" 
+                <Button Grid.Column="1" VerticalAlignment="Bottom" Content="{Binding PrevContent.Value}" HorizontalAlignment="Left" Margin="10" Width="80"  Height="40"
                         Visibility="{Binding WorkLoadVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}"
-                        Command="{Binding Send_PrevStep}" CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
-                        Style="{DynamicResource MaterialDesignFloatingActionLightButton}"/>
-                <Button Grid.Column="2" VerticalAlignment="Bottom" Content="{Binding NextContent.Value}" HorizontalAlignment="Right" Margin="10" Width="60" 
+                        Command="{Binding Send_PrevStep}" CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}" />
+                <Button Grid.Column="2" VerticalAlignment="Bottom" Content="{Binding NextContent.Value}" HorizontalAlignment="Right" Margin="10" Width="80"  Height="40"
                         Visibility="{Binding WorkLoadVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" 
-                        Command="{Binding Send_NextStep}" CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
-                        Style="{DynamicResource MaterialDesignFloatingActionLightButton}"/>
+                        Command="{Binding Send_NextStep}" CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}" />
 
             </Grid>
         </DockPanel>

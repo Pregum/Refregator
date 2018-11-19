@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MVVM_Refregator.View"
       xmlns:vm="clr-namespace:MVVM_Refregator.ViewModel"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="StepOfSettingFoodName">
@@ -13,13 +14,27 @@
         <vm:StepOfFoodNameViewModel/>
     </Page.DataContext>
 
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- note you only need bring in these extra resource dictionaries when using non-default styles, so only bring them into your controls where the default style is not what you want -->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ComboBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Slider.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MaterialDesignTextBox}">
+                <Setter Property="Margin" Value="0 8 0 8" />
+            </Style>
+        </ResourceDictionary>
+    </Page.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock TextWrapping="Wrap" Margin="10" FontSize="20">
+        <TextBlock TextWrapping="Wrap" Margin="10" FontSize="28">
             <Run Text="登録したい食材の名前"/>
             <LineBreak />
             <Run Text="表示アイコンを選択して下さい。"/>
@@ -27,16 +42,45 @@
             <LineBreak />
             <Run Text="例 )"/>
             <LineBreak />
-            <Run Text="食材名 : ブドウ"/>
+            <Run Text="食材名 : ブドウ" />
+            <LineBreak />
+            <LineBreak />
+            <StackPanel Orientation="Horizontal" >
+                <TextBlock Text="アイコン : " VerticalAlignment="Center" Margin="0,0,5,0" />
+                <Image Source="/Resources/information_image.png" Width="30" Stretch="Uniform" HorizontalAlignment="Center" />
+            </StackPanel>
+            <LineBreak />
+            <LineBreak />
+            <Run Text="賞味期限 : 2018/11/26" />
+            <LineBreak />
+            <Run Text="　※賞味期限は、右のアイコンを選択すると" FontSize="18" />
+            <LineBreak />
+            <Run Text="　　カレンダーが表示され、日付が設定できます。" FontSize="18" />
+
+
         </TextBlock>
 
         <StackPanel Grid.Column="1" >
-            <TextBlock Margin="10" Text="食材名" FontSize="20" />
-            <TextBox Margin="40,10" Text="{Binding Food.Value.Name, Mode=TwoWay}" FontSize="20" />
-            <TextBlock Margin="10" Text="アイコン" FontSize="20" />
+            <TextBlock Margin="10" Text="食材名" FontSize="24" />
+            <TextBox Margin="40,10" Padding="5" Text="{Binding Food.Value.Name, Mode=TwoWay}" FontSize="24" />
+            <TextBlock Margin="10" Text="アイコン" FontSize="24" />
             <Button Background="Transparent" HorizontalAlignment="Center" MinHeight="100" BorderBrush="Transparent" Margin="10" >
-                <Image Source="/Resources/information_image.png" Width="100" Stretch="Uniform" Margin="10" />
-            </Button>            
+                <!--<Image Source="/Resources/information_image.png" Width="100" Stretch="Uniform" Margin="10" />-->
+                <Image Source="{Binding Food.Value.Image, Mode=TwoWay}" Width="100" Stretch="Uniform" Margin="10" />
+            </Button>
+            <TextBlock Margin="10" Text="賞味期限" FontSize="24" />
+            <Viewbox>
+                
+            <DatePicker
+                x:Name="FutureDatePicker"
+                Width="250"
+                Margin="30,10"
+                FontSize="16"
+                SelectedDate="{Binding Food.Value.LimitDate}"
+                materialDesign:HintAssist.Hint="Future Date"
+                Language="ja-JP">
+            </DatePicker>
+            </Viewbox>
         </StackPanel>
     </Grid>
 </Page>
