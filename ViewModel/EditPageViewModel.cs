@@ -150,7 +150,7 @@ namespace MVVM_Refregator.ViewModel
                             this.NextContent.Value = "登録";
                             break;
                         case WorkType.Update:
-                            this.NextContent.Value = "更新";
+                            this.NextContent.Value = "変更";
                             break;
                         case WorkType.Delete:
                             this.NextContent.Value = "削除";

@@ -44,8 +44,9 @@
             <Run Text="最終確認を行います" />
             <LineBreak />
             <LineBreak />
-            <Run Text="右記の設定でよければ登録して下さい" />
-            <LineBreak />
+            <Run Text="右記の設定でよければ" />
+            <Run Text="{Binding CurrentWorkType.Value, Mode=OneWay}" />
+            <Run Text="して下さい" />
         </TextBlock>
 
         <!-- 結果 -->

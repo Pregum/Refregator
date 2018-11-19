@@ -31,9 +31,9 @@
                             <RadioButton.Template>
                                 <ControlTemplate TargetType="RadioButton">
                                     <Border Background="Turquoise" x:Name="myborder" CornerRadius="5">
-                                        <Grid x:Name="mygrid" Width="170" Margin="2">
+                                        <Grid x:Name="mygrid" Width="170" Margin="2" Height="30">
                                             <material:PackIcon Kind="ViewDashboard" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" />
-                                            <TextBlock HorizontalAlignment="Center" Text="DASHBOARD" FontFamily="HG正楷書体-PRO" FontSize="18" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                            <TextBlock HorizontalAlignment="Center" Text="DASHBOARD" FontWeight="Bold" FontSize="20" VerticalAlignment="Center" Margin="15,0,0,0"/>
                                         </Grid>
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroup x:Name="CheckStates">
@@ -57,7 +57,7 @@
                                     <Border x:Name="myborder" Background="Turquoise" CornerRadius="5">
                                         <Grid Width="170" Margin="2" Height="30">
                                             <material:PackIcon Kind="Calendar" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" />
-                                            <TextBlock HorizontalAlignment="Center" Text="賞味期限" FontFamily="Meiryo UI" VerticalAlignment="Center" FontSize="24" Margin="15,0,0,0"/>
+                                            <TextBlock HorizontalAlignment="Center" Text="賞味期限" FontWeight="Bold" FontFamily="Meiryo UI" VerticalAlignment="Center" FontSize="24" Margin="15,0,0,0"/>
                                         </Grid>
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroup x:Name="CheckStates">
@@ -80,8 +80,8 @@
                                 <ControlTemplate TargetType="{x:Type RadioButton}">
                                     <Border x:Name="myborder" Background="Turquoise" CornerRadius="5">
                                         <Grid Width="170" Margin="2" Height="30">
-                                            <material:PackIcon Kind="TableEdit" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"/>
-                                            <TextBlock HorizontalAlignment="Center" Text="編集" FontFamily="Meiryo UI" VerticalAlignment="Center" FontSize="24" Margin="15,0,0,0" />
+                                            <material:PackIcon Kind="TableEdit" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,3,5,0"/>
+                                            <TextBlock HorizontalAlignment="Center" Text="編集" FontWeight="Bold" FontFamily="Meiryo UI" VerticalAlignment="Center" FontSize="24" Margin="15,0,0,0" />
                                         </Grid>
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroup x:Name="CheckStates">
@@ -105,7 +105,7 @@
                                     <Border x:Name="myborder" Background="Turquoise" CornerRadius="5">
                                         <Grid Width="170" Margin="2" Height="30">
                                             <material:PackIcon Kind="Nutrition" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"/>
-                                            <TextBlock HorizontalAlignment="Center" Text="栄養素" FontFamily="Meiryo UI" VerticalAlignment="Center" FontSize="24" Margin="15,0,0,0"/>
+                                            <TextBlock HorizontalAlignment="Center" Text="栄養素" FontWeight="Bold" FontFamily="Meiryo UI" VerticalAlignment="Center" FontSize="24" Margin="15,0,0,0"/>
                                         </Grid>
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroup x:Name="CheckStates">
