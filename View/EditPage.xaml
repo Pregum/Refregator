@@ -51,7 +51,7 @@
 
     <Grid>
         <DockPanel>
-            <Grid DockPanel.Dock="Top" x:Name="TopGrid" >
+            <Grid DockPanel.Dock="Top" Height="80" x:Name="TopGrid" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -63,18 +63,18 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- 食材操作ボタン -->
-                <Button Grid.Column="0" Content="追加" Margin="10,10" 
+                <Button Grid.Column="0" Content="追加" Margin="10,0" Height="50" 
                         Command="{Binding Send_NavigateRegister}"
                         CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
                         Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}"/>
-                <Button Grid.Column="2" Content="変更" IsEnabled="{Binding IsSelectedFood.Value}" Margin="10,10"
+                <Button Grid.Column="2" Content="変更" IsEnabled="{Binding IsSelectedFood.Value}" Margin="10,10" Height="50"
                         Command="{Binding Send_ModifyFood}"
                         CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
                         Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
-                <Button Grid.Column="4" Content="使用" IsEnabled="{Binding IsSelectedFood.Value}" Margin="10,10"
+                <Button Grid.Column="4" Content="使用" IsEnabled="{Binding IsSelectedFood.Value}" Margin="10,10" Height="50"
                         
                         Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
-                <Button Grid.Column="6" Content="削除" IsEnabled="{Binding IsSelectedFood.Value}" Margin="10,10"
+                <Button Grid.Column="6" Content="削除" IsEnabled="{Binding IsSelectedFood.Value}" Margin="10,10" Height="50"
                         Command="{Binding Send_RemoveFood}"
                         CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
                         Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
@@ -153,10 +153,10 @@
                     <Frame x:Name="EditFrame" NavigationUIVisibility="Hidden" Visibility="{Binding WorkLoadVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
                 </Grid>
 
-                <Button Grid.Column="1" VerticalAlignment="Bottom" Content="{Binding PrevContent.Value}" HorizontalAlignment="Left" Margin="10" Width="80"  Height="40"
+                <Button Grid.Column="1" VerticalAlignment="Bottom" Content="{Binding PrevContent.Value}" HorizontalAlignment="Left" Margin="10"  Width="100" Height="50"
                         Visibility="{Binding WorkLoadVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}"
                         Command="{Binding Send_PrevStep}" CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}" />
-                <Button Grid.Column="2" VerticalAlignment="Bottom" Content="{Binding NextContent.Value}" HorizontalAlignment="Right" Margin="10" Width="80"  Height="40"
+                <Button Grid.Column="2" VerticalAlignment="Bottom" Content="{Binding NextContent.Value}" HorizontalAlignment="Right" Margin="10" Width="100"  Height="50"
                         Visibility="{Binding WorkLoadVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" 
                         Command="{Binding Send_NextStep}" CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}" />
 

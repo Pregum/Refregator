@@ -1,7 +1,11 @@
-﻿using MVVM_Refregator.Model;
+﻿using System;
+using MVVM_Refregator.Model;
 using Prism.Mvvm;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+
+using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace MVVM_Refregator.ViewModel
 {
@@ -20,6 +24,8 @@ namespace MVVM_Refregator.ViewModel
         /// </summary>
         public ReactiveProperty<FoodModel> Food { get; }
 
+        public ObservableCollection<FoodType> FoodKinds { get; }
+
         /// <summary>
         /// ctor
         /// </summary>
@@ -33,6 +39,18 @@ namespace MVVM_Refregator.ViewModel
                 convertBack => convertBack,
                 ReactivePropertyMode.DistinctUntilChanged | ReactivePropertyMode.RaiseLatestValueOnSubscribe,
                 false);
+
+            var ttt = Enum.GetValues(typeof(FoodType));
+            var list = new ObservableCollection<FoodType>();
+            foreach (FoodType foodType in ttt)
+            {
+                list.Add(foodType);
+            }
+
+            this.FoodKinds = list;
+
         }
+
+
     }
 }
