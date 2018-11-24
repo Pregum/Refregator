@@ -126,7 +126,8 @@ namespace MVVM_Refregator.Model
         public void CalculateFoodComposition()
         {
             Func<UnitKind, Nutrient> func = ((UnitKind uni) => new Nutrient(0.0d, uni, false));
-            var composition = new FoodComposition(0, 0, 0, "accumulate_composition", func(UnitKind.percent),
+            var composition = new FoodComposition(0, 0, 0, "accumulate_composition",
+                func(UnitKind.percent),
                 func(UnitKind.kcal),
                 func(UnitKind.kj),
                 func(UnitKind.g),
@@ -172,6 +173,7 @@ namespace MVVM_Refregator.Model
                 func(UnitKind.mg),
                 func(UnitKind.mg),
                 func(UnitKind.mg),
+                func(UnitKind.mg),
                 func(UnitKind.micro_g),
                 func(UnitKind.micro_g),
                 func(UnitKind.mg),
@@ -207,6 +209,7 @@ namespace MVVM_Refregator.Model
         /// <returns></returns>
         private FoodComposition GetFoodComposition(FoodType foodType)
         {
+            // TODO: 全食品を列挙するのは非効率的なので、配列で管理するなどして、パターン化できるか検討
             switch (foodType)
             {
                 case FoodType.Rice:

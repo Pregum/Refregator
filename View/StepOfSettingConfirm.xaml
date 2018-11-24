@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:vm="clr-namespace:MVVM_Refregator.ViewModel"
+      xmlns:common="clr-namespace:MVVM_Refregator.Common"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="StepOfSettingRegisterConfirm">
@@ -22,66 +23,51 @@
         <Style TargetType="TextBlock" x:Key="NormalBlock" >
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="5" />
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
         </Style>
 
         <Style TargetType="StackPanel" x:Key="NormalStackPanel" >
             <Setter Property="Margin" Value="5" />
             <Setter Property="Grid.Column" Value="1" />
         </Style>
+
+        <common:FoodKindLanguageConverter x:Key="FoodKindLanguageConverter" />
     </Page.Resources>
 
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+        <!-- 解説項目 -->
         <TextBlock FontSize="24" Margin="10" >
             <Run Text="最終確認を行います" />
             <LineBreak />
             <LineBreak />
-            <Run Text="右記の設定でよければ登録して下さい" />
-            <LineBreak />
+            <Run Text="右記の設定でよければ" />
+            <Run Text="{Binding CurrentWorkType.Value, Mode=OneWay}" />
+            <Run Text="を押して下さい" />
         </TextBlock>
 
-        <StackPanel Style="{StaticResource NormalStackPanel}" >
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="名前" Style="{StaticResource NormalBlock}" />
-                <Border Style="{StaticResource NormalBorder}">
-                    <TextBlock Text="{Binding ManipulateFoodModel.Value.Name}" Style="{StaticResource NormalBlock}" />
-                </Border>
-            </StackPanel>
+        <!-- 結果 -->
+        <UniformGrid Grid.Column="1" Grid.ColumnSpan="2" Margin="5, 0, 5, 50" Columns="2" Rows="5">
 
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="アイコン" Style="{StaticResource NormalBlock}" />
-                <Border Style="{StaticResource NormalBorder}">
-                    <Image Source="{Binding ManipulateFoodModel.Value.Image, Mode=OneWay}" Stretch="Uniform" Height="40" Width="40" />
-                </Border>
-            </StackPanel>
+            <TextBlock Text="名前" Style="{StaticResource NormalBlock}" Grid.Column="1" Margin="30,0" />
+            <TextBlock Text="{Binding ManipulateFoodModel.Value.Name}" Grid.Column="2" Style="{StaticResource NormalBlock}" FontSize="34" />
+                
+            <TextBlock Text="アイコン" Style="{StaticResource NormalBlock}" Grid.Column="1" Margin="30,0" />
+            <Image Source="{Binding ManipulateFoodModel.Value.Image}" Stretch="Uniform" HorizontalAlignment="Left" Height="40" Width="40" Grid.Column="2" />
 
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="食材の種類" Style="{StaticResource NormalBlock}" />
-                <Border Style="{StaticResource NormalBorder}">
-                    <TextBlock Text="{Binding ManipulateFoodModel.Value.KindType}" Style="{StaticResource NormalBlock}" />
-                </Border>
-            </StackPanel>
+            <TextBlock Text="食材の種類" Style="{StaticResource NormalBlock}" Margin="30,0" />
+            <TextBlock Text="{Binding ManipulateFoodModel.Value.KindType, Converter={StaticResource FoodKindLanguageConverter}}" Style="{StaticResource NormalBlock}" FontSize="34" />
 
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="購入日" Style="{StaticResource NormalBlock}" />
-                <Border Style="{StaticResource NormalBorder}">
-                    <TextBlock Text="{Binding ManipulateFoodModel.Value.BoughtDate}" Style="{StaticResource NormalBlock}" />
-                </Border>
-            </StackPanel>
+            <TextBlock Text="賞味期限" Style="{StaticResource NormalBlock}" Margin="30,0" />
+            <TextBlock Text="{Binding ManipulateFoodModel.Value.LimitDate, StringFormat={}{0:yyyy/MM/dd}}" Style="{StaticResource NormalBlock}" FontSize="34" />
 
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="賞味期限" Style="{StaticResource NormalBlock}" />
-                <Border Style="{StaticResource NormalBorder}">
-                    <TextBlock Text="{Binding ManipulateFoodModel.Value.LimitDate}" Style="{StaticResource NormalBlock}" />
-                </Border>
-            </StackPanel>
+        </UniformGrid>
 
-        </StackPanel>
     </Grid>
 </Page>

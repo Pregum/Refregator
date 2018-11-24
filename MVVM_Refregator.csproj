@@ -127,6 +127,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\DateFoodsMapMultiConverter.cs" />
+    <Compile Include="Common\FoodKindLanguageConverter.cs" />
     <Compile Include="Common\JsonManager.cs" />
     <Compile Include="Common\RadioButtonUriConverter.cs" />
     <Compile Include="Model\AnalysisPageModel.cs" />

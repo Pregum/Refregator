@@ -1,8 +1,12 @@
-﻿using Prism.Mvvm;
+﻿using System;
+using Prism.Mvvm;
 
 using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
+using Reactive.Bindings.ObjectExtensions;
 
 using MVVM_Refregator.Model;
+using System.Reactive.Linq;
 
 namespace MVVM_Refregator.ViewModel
 {
@@ -21,6 +25,8 @@ namespace MVVM_Refregator.ViewModel
         /// </summary>
         public ReactiveProperty<FoodModel> ManipulateFoodModel { get; }
 
+        public ReactiveProperty<string> CurrentWorkType { get; }
+
         /// <summary>
         /// ctor
         /// </summary>
@@ -29,6 +35,24 @@ namespace MVVM_Refregator.ViewModel
             this._workStepModel = WorkStepModel.GetInstance();
 
             this.ManipulateFoodModel = new ReactiveProperty<FoodModel>(this._workStepModel.ManipulateFood);
+
+            this.CurrentWorkType = this._workStepModel.ObserveProperty(x => x.CurrentWorkStepsType).Select(x =>
+            {
+                switch (x)
+                {
+                    case WorkType.Create:
+                        return "登録";
+                    case WorkType.Update:
+                        return "変更";
+                    case WorkType.Delete:
+                        return "削除";
+                    case WorkType.None:
+                    case WorkType.StandBy:
+                    default:
+                        //throw new InvalidOperationException("現在の作業では呼び出せません。");
+                        return "----";
+                }
+            }).ToReactiveProperty();
         }
     }
 }

@@ -39,7 +39,7 @@ namespace MVVM_Refregator.Model
         /// <param name="value">栄養素</param>
         /// <param name="unitKind">単位の種類</param>
         /// <returns>栄養素クラス</returns>
-        public static Nutrient Create(string value, UnitKind unitKind)
+        public static Nutrient Parse(string value, UnitKind unitKind)
         {
             double nutrientValue = 0.0;
             bool isEstimateValue = false;
@@ -48,7 +48,8 @@ namespace MVVM_Refregator.Model
             // 値が最小単位以下(Tr)の場合NaNに設定
             if (nutrientValueStr == "Tr" || nutrientValueStr == "(Tr)" || nutrientValueStr == "-" || nutrientValueStr == "*")
             {
-                nutrientValue = Double.NaN;
+                //nutrientValue = Double.NaN;
+                nutrientValue = 0.0d;
                 isEstimateValue = nutrientValueStr.Contains("(");
             }
             // カッコがあれば推定値とみなす

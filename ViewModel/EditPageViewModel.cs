@@ -150,7 +150,7 @@ namespace MVVM_Refregator.ViewModel
                             this.NextContent.Value = "登録";
                             break;
                         case WorkType.Update:
-                            this.NextContent.Value = "更新";
+                            this.NextContent.Value = "変更";
                             break;
                         case WorkType.Delete:
                             this.NextContent.Value = "削除";
@@ -164,31 +164,6 @@ namespace MVVM_Refregator.ViewModel
                 else
                 {
                     this.NextContent.Value = "進む";
-                }
-            });
-
-            // 最初のステップ判定プロパティの購読
-            this.IsFirsStep = this._workStepModel.ObserveProperty(x => x.IsFirstStep).ToReactiveProperty();
-            this.IsFirsStep.Subscribe((isFirstStep) =>
-            {
-                if (isFirstStep == IsLastStep.Value)
-                {
-                    switch (this._workStepModel.CurrentWorkStepsType)
-                    {
-                        case WorkType.Create:
-                            this.NextContent.Value = "登録";
-                            break;
-                        case WorkType.Update:
-                            this.NextContent.Value = "更新";
-                            break;
-                        case WorkType.Delete:
-                            this.NextContent.Value = "削除";
-                            break;
-                        case WorkType.None:
-                        case WorkType.StandBy:
-                        default:
-                            break;
-                    }
                 }
             });
 

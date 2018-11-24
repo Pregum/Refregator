@@ -194,9 +194,13 @@
         /// </summary>
         public Nutrient Vitamin_K { get; private set; }
         /// <summary>
-        /// ビタミンB
+        /// ビタミンB1
         /// </summary>
         public Nutrient Thiamin { get; private set; }
+        /// <summary>
+        /// ビタミンB2
+        /// </summary>
+        public Nutrient Riboflavin { get; private set; }
         /// <summary>
         /// ナイアシン
         /// </summary>
@@ -320,7 +324,8 @@
         /// <param name="gamma_Tocopherol">γ-トコフェロール(ビタミンE)</param>
         /// <param name="delta_Tocopherol">δ-トコフェロール(ビタミンE)</param>
         /// <param name="vitamin_K">ビタミンK</param>
-        /// <param name="thiamin">ビタミンB</param>
+        /// <param name="thiamin">ビタミンB1</param>
+        /// <param name="riboflavin">ビタミンB2</param>
         /// <param name="niacin">ナイアシン</param>
         /// <param name="vitamin_B6">ビタミンB6</param>
         /// <param name="vitamin_B12">ビタミンB12</param>
@@ -349,7 +354,7 @@
             Nutrient chromium, Nutrient molybdenum, Nutrient retinol, Nutrient alpha_Carotene, Nutrient beta_Carotene,
             Nutrient beta_Cryptoxathin, Nutrient beta_CaroteneEquivalents, Nutrient retinon_ActivityEquivalents,
             Nutrient vitamin_D, Nutrient alpha_Tocopherol, Nutrient beta_Tocopherol, Nutrient gamma_Tocopherol,
-            Nutrient delta_Tocopherol, Nutrient vitamin_K, Nutrient thiamin, Nutrient niacin, Nutrient vitamin_B6,
+            Nutrient delta_Tocopherol, Nutrient vitamin_K, Nutrient thiamin, Nutrient riboflavin,  Nutrient niacin, Nutrient vitamin_B6,
             Nutrient vitamin_B12, Nutrient folate, Nutrient pantothenic_Acid, Nutrient biotin, Nutrient ascorbic_Acid,
             Nutrient salt_Equivalents, Nutrient alcohol, Nutrient nitrate_Ion, Nutrient Theobromine, Nutrient caffeine,
             Nutrient tannin, Nutrient polyphenol, Nutrient acetic_Acid, Nutrient cooking_Oil, Nutrient organic_AcidsTotal,
@@ -403,6 +408,7 @@
             this.Delta_Tocopherol = delta_Tocopherol;
             this.Vitamin_K = vitamin_K;
             this.Thiamin = thiamin;
+            this.Riboflavin = riboflavin; 
             this.Niacin = niacin;
             this.Vitamin_B6 = vitamin_B6;
             this.Vitamin_B12 = vitamin_B12;
@@ -470,6 +476,7 @@
                 a.Delta_Tocopherol + b.Delta_Tocopherol,
                 a.Vitamin_K + b.Vitamin_K,
                 a.Thiamin + b.Thiamin,
+                a.Riboflavin + b.Riboflavin,
                 a.Niacin + b.Niacin,
                 a.Vitamin_B6 + b.Vitamin_B6,
                 a.Vitamin_B12 + b.Vitamin_B12,
