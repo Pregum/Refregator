@@ -31,6 +31,7 @@
         <TextBlock Grid.Row="2" Margin="5" Text="{Binding CalculateFoodComposition.Value.Energy_kcal}" />
         <DataGrid Grid.Row="0" Grid.Column="1" IsReadOnly="True" ItemsSource="{Binding FoodList}" Margin="10" SelectedItem="{Binding SelectedFood_AllGrid.Value, Mode=TwoWay}" />
         <Button Grid.Row="1" Grid.Column="1" Content="項目に追加" Margin="10" HorizontalAlignment="Left" Command="{Binding Send_AddAnalysisFood}" CommandParameter="{Binding SelectedFood_AllGrid.Value}" />
+        <!--<Button Grid.Row="1" Grid.Column="1" Content="エクスポート" Margin="10" HorizontalAlignment="Center" Command="{Binding Send_Serialize}" />-->
         <Button Grid.Row="1" Grid.Column="1" Content="項目から除外" Margin="10" HorizontalAlignment="Right" Command="{Binding Send_RemoveAnalysisFood}" CommandParameter="{Binding SelectedFood_AnalysisGrid.Value}" />
         <DataGrid Grid.Row="2" Grid.Column="1" IsReadOnly="True" ItemsSource="{Binding AnalysisFoodList}" Margin="10" SelectedItem="{Binding SelectedFood_AnalysisGrid.Value}" />
     </Grid>

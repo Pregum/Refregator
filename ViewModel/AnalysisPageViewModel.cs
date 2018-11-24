@@ -5,6 +5,7 @@ using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
 using MVVM_Refregator.Model;
+using MVVM_Refregator.Common;
 
 namespace MVVM_Refregator.ViewModel
 {
@@ -48,13 +49,18 @@ namespace MVVM_Refregator.ViewModel
         /// </summary>
         public ReactiveProperty<FoodModel> SelectedFood_AnalysisGrid { get; } = new ReactiveProperty<FoodModel>();
 
-        [Obsolete("Debug用")]
-        public ReactiveCommand Send_ReadJson { get; } = new ReactiveCommand();
+        //[Obsolete("Debug用")]
+        //public ReactiveCommand Send_ReadJson { get; } = new ReactiveCommand();
 
         /// <summary>
         /// 解析用コレクションに追加
         /// </summary>
         public ReactiveCommand Send_AddAnalysisFood { get; } = new ReactiveCommand();
+
+        ///// <summary>
+        ///// 食品成分表をエクスポートする(json形式)
+        ///// </summary>
+        //public ReactiveCommand Send_Serialize { get; } = new ReactiveCommand();
 
         /// <summary>
         /// 解析用コレクションから削除
@@ -108,6 +114,13 @@ namespace MVVM_Refregator.ViewModel
             {
                 this._analysisPageModel.CalculateFoodComposition();
             });
+
+            //// 食品成分表のシリアライズ
+            //this.Send_Serialize.Subscribe(() =>
+            //{
+            //    //JsonManager.SaveJsonTo(this._analysisPageModel.FoodCompositions, "serialized_food_composition.json");
+            //    JsonManager.SaveFoodComposition(this._analysisPageModel.FoodCompositions, "serialized_food_composition.json");
+            //});
         }
     }
 }
