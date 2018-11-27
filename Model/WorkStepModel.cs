@@ -300,6 +300,5 @@ namespace MVVM_Refregator.Model
         {
             this._foodShelfModel.SetUsed(targetFood);
         }
-
     }
 }

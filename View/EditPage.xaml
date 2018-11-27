@@ -115,7 +115,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Calendar Margin="5" Grid.Column="0" Language="ja-JP"
+                <Calendar Margin="5" Grid.Column="0" Language="ja-JP" HorizontalAlignment="Center"
                           Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
 
                 <ListView ScrollViewer.VerticalScrollBarVisibility="Visible" ItemsSource="{Binding Foods}" Grid.Column="1" Grid.ColumnSpan="2" SelectedItem="{Binding SelectedFood.Value}"
@@ -147,6 +147,15 @@
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HasUsed}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
                 </ListView>
 
                 <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Margin="10">

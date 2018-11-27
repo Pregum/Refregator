@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MVVM_Refregator.View"
+      xmlns:m="clr-namespace:MVVM_Refregator.Model"
       xmlns:vm="clr-namespace:MVVM_Refregator.ViewModel"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
@@ -20,19 +21,63 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="50" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <!--<Calendar Grid.RowSpan="2" x:Name="rootCalendar" HorizontalAlignment="Center" Language="ja-JP" VerticalAlignment="Center" Margin="5" >
+            <Calendar.Background>White</Calendar.Background>
+            <Calendar.CalendarDayButtonStyle>
+                <Style TargetType="{x:Type CalendarDayButton}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type CalendarDayButton}">
+                                <Grid Background="White">
+                                    <Border BorderThickness="1" BorderBrush="Turquoise">
+                                        <StackPanel MinHeight="40" MinWidth="40" >
+                                            <TextBlock Text="{Binding StringFormat={}{0:dd}}" Margin="2" FontSize="16"/>
+                                            <ItemsControl>
+                                                --><!--<ItemsControl.ItemsSource>
+                                                    <MultiBinding Converter="{StaticResource DateFoodMultiConverter}" UpdateSourceTrigger="PropertyChanged" Mode="OneWay">
+                                                        <Binding Path="Date" UpdateSourceTrigger="PropertyChanged"/>
+                                                        <Binding Path="DataContext.Foods" ElementName="rootGrid"  />
+                                                    </MultiBinding>
+                                                </ItemsControl.ItemsSource>--><!--
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <WrapPanel Margin="2" />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate DataType="{x:Type m:FoodModel}">
+                                                        <Image Source="{Binding Image, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Height="20" Stretch="Uniform" />
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                                <ControlTemplate.Resources>
+                                    <Style TargetType="{x:Type CalendarDayButton}">
+                                        <Setter Property="OverridesDefaultStyle" Value="True" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsToday" Value="True">
+                                                <Setter Property="Background" Value="Red" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ControlTemplate.Resources>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Calendar.CalendarDayButtonStyle>
+        </Calendar>-->
+
+
         <!--<TextBlock Text="栄養素情報ページです"/>-->
         <!--<Button Content="Jsonファイルを読み込みます" Command="{Binding Send_ReadJson}" Margin="10"/>-->
-        <Button Content="計算" Grid.Row="1" Margin="10" Command="{Binding Send_CalculateFoodComposition}" />
         <!--<TextBlock Grid.Row="2" Margin="5" Text="{Binding CalculateFoodComposition.Value}" />-->
-        <TextBlock Grid.Row="2" Margin="5" Text="{Binding CalculateFoodComposition.Value.Energy_kcal}" />
-        <DataGrid Grid.Row="0" Grid.Column="1" IsReadOnly="True" ItemsSource="{Binding FoodList}" Margin="10" SelectedItem="{Binding SelectedFood_AllGrid.Value, Mode=TwoWay}" />
-        <Button Grid.Row="1" Grid.Column="1" Content="項目に追加" Margin="10" HorizontalAlignment="Left" Command="{Binding Send_AddAnalysisFood}" CommandParameter="{Binding SelectedFood_AllGrid.Value}" />
+        <!--<TextBlock Grid.Row="2" Margin="5" Text="{Binding CalculateFoodComposition.Value.Energy_kcal}" />-->
         <!--<Button Grid.Row="1" Grid.Column="1" Content="エクスポート" Margin="10" HorizontalAlignment="Center" Command="{Binding Send_Serialize}" />-->
-        <Button Grid.Row="1" Grid.Column="1" Content="項目から除外" Margin="10" HorizontalAlignment="Right" Command="{Binding Send_RemoveAnalysisFood}" CommandParameter="{Binding SelectedFood_AnalysisGrid.Value}" />
-        <DataGrid Grid.Row="2" Grid.Column="1" IsReadOnly="True" ItemsSource="{Binding AnalysisFoodList}" Margin="10" SelectedItem="{Binding SelectedFood_AnalysisGrid.Value}" />
     </Grid>
 </Page>

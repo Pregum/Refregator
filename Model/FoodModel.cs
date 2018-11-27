@@ -207,5 +207,10 @@ namespace MVVM_Refregator.Model
         {
         }
 
+        public override string ToString()
+        {
+            return $"Id : {Id}, Name : {Name}, UsedDate : {UsedDate}, HasUsed : {HasUsed}";
+        }
+
     }
 }

@@ -44,7 +44,7 @@
                                                 </ItemsControl.ItemsSource>
                                                 <ItemsControl.ItemsPanel>
                                                     <ItemsPanelTemplate>
-                                                        <WrapPanel Margin="2" />
+                                                        <WrapPanel Margin="5" />
                                                     </ItemsPanelTemplate>
                                                 </ItemsControl.ItemsPanel>
                                                 <ItemsControl.ItemTemplate>
