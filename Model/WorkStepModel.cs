@@ -156,7 +156,8 @@ namespace MVVM_Refregator.Model
                     // 更新作業
                     case WorkType.Update:
                         var food = this._manipulateFood;
-                        this._foodShelfModel.Update(this._temporalFood.Id, food.Name, food.LimitDate, food.BoughtDate, food.KindType, food.Image);
+                        //this._foodShelfModel.Update(this._temporalFood.Id, food.Name, food.LimitDate, food.BoughtDate, food.KindType, food.Image);
+                        this._foodShelfModel.Update(this._temporalFood.Id, food.Name, food.LimitDate, food.UsedDate, food.KindType, food.Image, food.HasUsed); 
                         this.CurrentWorkStepsType = WorkType.StandBy;
                         break;
                     // 削除作業
@@ -289,6 +290,15 @@ namespace MVVM_Refregator.Model
 
             this.RaisePropertyChanged(nameof(this.IsFirstStep));
             this.RaisePropertyChanged(nameof(this.IsLastStep));
+        }
+
+        /// <summary>
+        /// 食品を使用済みに設定します
+        /// </summary>
+        /// <param name="targetFood">対象の食品</param>
+        public void SetUsed(FoodModel targetFood)
+        {
+            this._foodShelfModel.SetUsed(targetFood);
         }
 
     }

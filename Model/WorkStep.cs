@@ -277,6 +277,7 @@ namespace MVVM_Refregator.Model
         {
             this.SetProperty(ref _stepStatus, StepStatusType.Working, nameof(this.StepStatus));
             navigation.Navigate(this._editPage);
+            navigation.Refresh();
         }
 
         public void Update()

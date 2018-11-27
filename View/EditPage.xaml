@@ -72,7 +72,7 @@
                         CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
                         Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
                 <Button Grid.Column="4" Content="使用" IsEnabled="{Binding IsSelectedFood.Value}" Margin="10,10" Height="50"
-                        
+                        Command="{Binding Send_SetUsed}"
                         Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
                 <Button Grid.Column="6" Content="削除" IsEnabled="{Binding IsSelectedFood.Value}" Margin="10,10" Height="50"
                         Command="{Binding Send_RemoveFood}"

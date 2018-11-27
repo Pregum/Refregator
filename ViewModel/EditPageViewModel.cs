@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Windows.Navigation;
 using MVVM_Refregator.Model;
 using Prism.Mvvm;
@@ -57,7 +59,7 @@ namespace MVVM_Refregator.ViewModel
         /// <summary>
         /// 管理されている食材
         /// </summary>
-        public ReadOnlyReactiveCollection<FoodModel> Foods { get; }
+        public ReadOnlyReactiveCollection<FoodModel> Foods { get; private set; }
 
         /// <summary>
         /// 選択されている食材
@@ -85,24 +87,29 @@ namespace MVVM_Refregator.ViewModel
         public ReactiveCommand Send_NavigateRegister { get; } = new ReactiveCommand();
 
         /// <summary>
-        /// 次のステップへ遷移する際のコマンド
+        /// 次のステップへ遷移する次へコマンド
         /// </summary>
         public ReactiveCommand Send_NextStep { get; } = new ReactiveCommand();
 
         /// <summary>
-        /// 前のステップへ遷移する際のコマンド
+        /// 前のステップへ遷移する前へコマンド
         /// </summary>
         public ReactiveCommand Send_PrevStep { get; } = new ReactiveCommand();
 
         /// <summary>
-        /// 食材の変更を行う際のコマンド
+        /// 食材の変更を行う変更コマンド
         /// </summary>
         public ReactiveCommand Send_ModifyFood { get; } = new ReactiveCommand();
 
         /// <summary>
-        /// 食材の削除を行う際のコマンド
+        /// 食材の削除を行う削除コマンド
         /// </summary>
         public ReactiveCommand Send_RemoveFood { get; } = new ReactiveCommand();
+
+        /// <summary>
+        /// 食材を使用済みに設定する使用コマンド
+        /// </summary>
+        public ReactiveCommand Send_SetUsed { get; } = new ReactiveCommand();
 
         /// <summary>
         /// Disposeをまとめる
@@ -118,9 +125,12 @@ namespace MVVM_Refregator.ViewModel
             // FoodShelfModel関係
             this._foodShelfModel = FoodShelfModel.GetInstance();
             this.Foods = this._foodShelfModel.FoodCollection
+                .Where(x => !x.HasUsed)
                 .ToReadOnlyReactiveCollection(_foodShelfModel.FoodCollection.ToCollectionChanged(), System.Reactive.Concurrency.Scheduler.CurrentThread)
                 .AddTo(this.Disposable);
             this._foodShelfModel.FoodCollection.CollectionChangedAsObservable().Subscribe(x => RaisePropertyChanged(nameof(Foods)));
+
+            //this.Foods.CollectionChangedAsObservable().Subscribe(XamlGeneratedNamespace => System.Diagnostics.Debug.WriteLine($"EditPageで更新されました. {XamlGeneratedNamespace.NewItems.ToString()}"));
 
             // WorkStepModel関係
             this._workStepModel = WorkStepModel.GetInstance();
@@ -205,6 +215,21 @@ namespace MVVM_Refregator.ViewModel
                     {
                         this._workStepModel.NavigateDeleteWork(this.SelectedFood.Value, navigation);
                     }
+                }
+            });
+
+            // 使用コマンドの購読
+            this.Send_SetUsed.Subscribe(() =>
+            {
+                if (this.SelectedFood.Value != null)
+                {
+                    this._workStepModel.SetUsed(this.SelectedFood.Value);
+                    // このタイミングで使用済み食材をリストから消す
+                    this.Foods = this._foodShelfModel.FoodCollection
+                        .Where(x => !x.HasUsed)
+                        .ToReadOnlyReactiveCollection(_foodShelfModel.FoodCollection.ToCollectionChanged(), System.Reactive.Concurrency.Scheduler.CurrentThread)
+                        .AddTo(this.Disposable);
+                    this.RaisePropertyChanged(nameof(this.Foods));
                 }
             });
 
