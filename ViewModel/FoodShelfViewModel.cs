@@ -42,6 +42,7 @@ namespace MVVM_Refregator.ViewModel
             // CollectionChanged時にPropertyChangedを強制的に呼び出す
             _foodShelfModel.FoodCollection.CollectionChangedAsObservable().Subscribe(x => RaisePropertyChanged(nameof(Foods)));
 
+
             // デバッグ用
             //this.Send_AddFood.Subscribe((x) =>
             //{

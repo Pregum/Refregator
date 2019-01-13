@@ -34,7 +34,7 @@ namespace MVVM_Refregator.Common
                 return chunkItem;
             }
 
-            System.Diagnostics.Debug.WriteLine($"target food is Nothing)");
+            System.Diagnostics.Debug.WriteLine($"target food is nothing)");
 
             return DependencyProperty.UnsetValue;
         }

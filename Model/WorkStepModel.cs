@@ -171,6 +171,7 @@ namespace MVVM_Refregator.Model
                     default:
                         break;
                 }
+                SetStandBy();
             }
             else
             {

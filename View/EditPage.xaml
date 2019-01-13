@@ -62,7 +62,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- 食材操作ボタン -->
+                <!-- 食材操作ボタン --><!--
                 <Button Grid.Column="0" Content="追加" Margin="10,0" Height="50" 
                         Command="{Binding Send_NavigateRegister}"
                         CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
@@ -77,7 +77,7 @@
                 <Button Grid.Column="6" Content="削除" IsEnabled="{Binding IsSelectedFood.Value}" Margin="10,10" Height="50"
                         Command="{Binding Send_RemoveFood}"
                         CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
-                        Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
+                        Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />-->
 
                 <!-- Progress Tracker -->
                 <ItemsControl Grid.Row="0" Grid.ColumnSpan="7"
@@ -115,8 +115,28 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Calendar Margin="5" Grid.Column="0" Language="ja-JP" HorizontalAlignment="Center"
-                          Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="80" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Column="0" FontSize="24" Margin="5" Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" >
+                    <Run Text="この画面では、食材の編集を行います。" />
+                    <LineBreak />
+                    <Run Text="「追加」は、食材の追加を行います。" />
+                    <LineBreak />
+                    <Run Text="「変更」は、選択した食材情報の" />
+                    <LineBreak/>
+                    <Run Text="    変更を行います。" />
+                    <LineBreak />
+                    <Run Text="「使用」は、今日の日付で" />
+                    <LineBreak />
+                    <Run Text="    食材を使用します。" />
+                    <LineBreak />
+                    <Run Text="「削除」は、選択した食材の" />
+                    <LineBreak/>
+                    <Run Text="    削除を行います。" />
+                </TextBlock>
 
                 <ListView ScrollViewer.VerticalScrollBarVisibility="Visible" ItemsSource="{Binding Foods}" Grid.Column="1" Grid.ColumnSpan="2" SelectedItem="{Binding SelectedFood.Value}"
                           Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" >
@@ -127,7 +147,7 @@
                     </ListView.Template>
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <WrapPanel Width="600" HorizontalAlignment="Stretch" />
+                            <WrapPanel Width="500" HorizontalAlignment="Stretch" />
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <ListBox.ItemTemplate>
@@ -158,14 +178,45 @@
                     </ListBox.ItemContainerStyle>
                 </ListView>
 
-                <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Margin="10">
+                <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="2" Margin="10">
                     <Frame x:Name="EditFrame" NavigationUIVisibility="Hidden" Visibility="{Binding WorkLoadVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
                 </Grid>
 
-                <Button Grid.Column="1" VerticalAlignment="Bottom" Content="{Binding PrevContent.Value}" HorizontalAlignment="Left" Margin="10"  Width="100" Height="50"
+                <!-- 食材操作ボタン -->
+                <Grid Grid.Row="2" Grid.ColumnSpan="8" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    
+                <Button Grid.Column="0" Content="追加" Margin="10,0" Height="50" 
+                        Command="{Binding Send_NavigateRegister}"
+                        CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
+                        Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}"/>
+                <Button Grid.Column="2" Content="変更" IsEnabled="{Binding IsSelectedFood.Value}" Margin="10,10" Height="50"
+                        Command="{Binding Send_ModifyFood}"
+                        CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
+                        Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
+                <Button Grid.Column="4" Content="使用済" IsEnabled="{Binding IsSelectedFood.Value}" Margin="10,10" Height="50"
+                        Command="{Binding Send_SetUsed}"
+                        Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
+                <Button Grid.Column="6" Content="削除" IsEnabled="{Binding IsSelectedFood.Value}" Margin="10,10" Height="50"
+                        Command="{Binding Send_RemoveFood}"
+                        CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
+                        Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
+                </Grid>
+
+                <!-- 進む・戻るボタン -->
+                <Button Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" Content="{Binding PrevContent.Value}" HorizontalAlignment="Left" Margin="10"  Width="100" Height="50"
                         Visibility="{Binding WorkLoadVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}"
                         Command="{Binding Send_PrevStep}" CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}" />
-                <Button Grid.Column="2" VerticalAlignment="Bottom" Content="{Binding NextContent.Value}" HorizontalAlignment="Right" Margin="10" Width="100"  Height="50"
+                <Button Grid.Column="2" Grid.Row="1" VerticalAlignment="Bottom" Content="{Binding NextContent.Value}" HorizontalAlignment="Right" Margin="10" Width="100"  Height="50"
                         Visibility="{Binding WorkLoadVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" 
                         Command="{Binding Send_NextStep}" CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}" />
 

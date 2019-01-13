@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using MVVM_Refregator.Common;
@@ -98,6 +99,9 @@ namespace MVVM_Refregator.Model
         {
             this.AllFoods = new ObservableCollection<FoodModel>(_foodShelfModel.FoodCollection);
             this.AnalysisFoods = new ObservableCollection<FoodModel>();
+
+            this.AnalysisFoods =new ObservableCollection<FoodModel>( this.AllFoods.Where(x => x.HasUsed));
+            this.CalculateFoodComposition(this.AnalysisFoods);
         }
 
         /// <summary>
@@ -123,7 +127,7 @@ namespace MVVM_Refregator.Model
         /// <summary>
         /// 設定された食材の成分表を計算する
         /// </summary>
-        public void CalculateFoodComposition()
+        public void CalculateFoodComposition(IList<FoodModel> foodModels)
         {
             Func<UnitKind, Nutrient> func = ((UnitKind uni) => new Nutrient(0.0d, uni, false));
             var composition = new FoodComposition(0, 0, 0, "accumulate_composition",
@@ -193,7 +197,11 @@ namespace MVVM_Refregator.Model
 
             if (this.AnalysisFoods.Any())
             {
-                foreach (var food in this.AnalysisFoods)
+                //foreach (var food in this.AnalysisFoods)
+                //{
+                //    composition += GetFoodComposition(food.KindType);
+                //}
+                foreach (var food in foodModels)
                 {
                     composition += GetFoodComposition(food.KindType);
                 }
