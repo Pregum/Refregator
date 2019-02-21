@@ -33,6 +33,7 @@
         </Style>
 
         <common:FoodKindLanguageConverter x:Key="FoodKindLanguageConverter" />
+        <common:StringCuttingConverter x:Key="StringCuttingConverter" />
     </Page.Resources>
 
     <Grid Margin="10">
@@ -53,19 +54,20 @@
         </TextBlock>
 
         <!-- 結果 -->
-        <UniformGrid Grid.Column="1" Grid.ColumnSpan="2" Margin="5, 0, 5, 50" Columns="2" Rows="5">
+        <UniformGrid Grid.Column="1" Grid.ColumnSpan="2" Margin="0, 0, 5, 50" Columns="2" Rows="5">
 
-            <TextBlock Text="名前" Style="{StaticResource NormalBlock}" Grid.Column="1" Margin="30,0" />
-            <TextBlock Text="{Binding ManipulateFoodModel.Value.Name}" Grid.Column="2" Style="{StaticResource NormalBlock}" FontSize="34" />
+            <TextBlock Text="名前" Style="{StaticResource NormalBlock}" Grid.Column="1" Margin="20,0" />
+            <TextBlock Text="{Binding ManipulateFoodModel.Value.Name, Converter={StaticResource StringCuttingConverter}}" Grid.Column="2" Style="{StaticResource NormalBlock}" FontSize="30" />
                 
-            <TextBlock Text="アイコン" Style="{StaticResource NormalBlock}" Grid.Column="1" Margin="30,0" />
+            <TextBlock Text="アイコン" Style="{StaticResource NormalBlock}" Grid.Column="1" Margin="20,0" />
+            <!--<Image Source="{Binding ManipulateFoodModel.Value.Image}" Stretch="Uniform" HorizontalAlignment="Left" Height="40" Width="40" Grid.Column="2" />-->
             <Image Source="{Binding ManipulateFoodModel.Value.Image}" Stretch="Uniform" HorizontalAlignment="Left" Height="40" Width="40" Grid.Column="2" />
 
-            <TextBlock Text="食材の種類" Style="{StaticResource NormalBlock}" Margin="30,0" />
-            <TextBlock Text="{Binding ManipulateFoodModel.Value.KindType, Converter={StaticResource FoodKindLanguageConverter}}" Style="{StaticResource NormalBlock}" FontSize="34" />
+            <TextBlock Text="食材の種類" Style="{StaticResource NormalBlock}" Margin="20,0" />
+            <TextBlock Text="{Binding ManipulateFoodModel.Value.KindType, Converter={StaticResource FoodKindLanguageConverter}}" Style="{StaticResource NormalBlock}" FontSize="30" />
 
-            <TextBlock Text="賞味期限" Style="{StaticResource NormalBlock}" Margin="30,0" />
-            <TextBlock Text="{Binding ManipulateFoodModel.Value.LimitDate, StringFormat={}{0:yyyy/MM/dd}}" Style="{StaticResource NormalBlock}" FontSize="34" />
+            <TextBlock Text="賞味期限" Style="{StaticResource NormalBlock}" Margin="20,0" />
+            <TextBlock Text="{Binding ManipulateFoodModel.Value.LimitDate, StringFormat={}{0:yyyy/MM/dd}}" Style="{StaticResource NormalBlock}" FontSize="30" />
 
         </UniformGrid>
 

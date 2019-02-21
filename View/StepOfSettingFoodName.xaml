@@ -64,8 +64,7 @@
             <TextBlock Margin="10" Text="食材名" FontSize="24" />
             <TextBox Margin="40,10" Padding="5" Text="{Binding Food.Value.Name, Mode=TwoWay}" FontSize="24" />
             <TextBlock Margin="10" Text="アイコン" FontSize="24" />
-            <Button Background="Transparent" HorizontalAlignment="Center" MinHeight="100" BorderBrush="Transparent" Margin="10" >
-                <!--<Image Source="/Resources/information_image.png" Width="100" Stretch="Uniform" Margin="10" />-->
+            <Button Background="Transparent" HorizontalAlignment="Center" MinHeight="100" BorderBrush="Transparent" Margin="10" PreviewMouseUp="Button_PreviewMouseUp" >
                 <Image Source="{Binding Food.Value.Image, Mode=TwoWay}" Width="100" Stretch="Uniform" Margin="10" />
             </Button>
             <TextBlock Margin="10" Text="賞味期限" FontSize="24" />

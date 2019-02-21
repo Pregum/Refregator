@@ -4,6 +4,8 @@ using Prism.Mvvm;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using MVVM_Refregator.Model;
+using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace MVVM_Refregator.ViewModel
 {
@@ -21,6 +23,8 @@ namespace MVVM_Refregator.ViewModel
         /// 保持している食材コレクション
         /// </summary>
         public ReadOnlyReactiveCollection<FoodModel> Foods { get; }
+
+        public ObservableCollection<FoodModel> FutureFoods { get; }
 
         /// <summary>
         /// Disposeを行うオブジェクト
@@ -41,6 +45,9 @@ namespace MVVM_Refregator.ViewModel
                 .AddTo(this.Disposable);
             // CollectionChanged時にPropertyChangedを強制的に呼び出す
             _foodShelfModel.FoodCollection.CollectionChangedAsObservable().Subscribe(x => RaisePropertyChanged(nameof(Foods)));
+
+            this.FutureFoods = new ObservableCollection<FoodModel>(this.Foods.Where(x => x.LimitDate.Date >= DateTime.Today.Date && !x.HasUsed));
+
 
 
             // デバッグ用

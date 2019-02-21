@@ -14,17 +14,6 @@ namespace MVVM_Refregator.Common
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            //if (value is FoodType foodType)
-            //if (Enum.IsDefined(value.GetType(), value) == false)
-            //{
-            //    return DependencyProperty.UnsetValue;
-            //}
-
-            //if (value as string != null)
-            //{
-            //    var foodTypeStr = value as string;
-            //    return this.ConvertBack(foodTypeStr);
-            //}
 
             if(value is FoodType foodType)
             {

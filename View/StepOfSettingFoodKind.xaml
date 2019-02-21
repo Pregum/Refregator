@@ -9,7 +9,7 @@
       xmlns:vm="clr-namespace:MVVM_Refregator.ViewModel"
       xmlns:common="clr-namespace:MVVM_Refregator.Common"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="574.5" d:DesignWidth="948.5"
       Title="StepOfSettingFoodKind">
 
     <Page.DataContext>
@@ -35,11 +35,10 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <ListBox ItemsSource="{Binding FoodKinds}" SelectedItem="{Binding Food.Value.KindType}" Grid.Column="1" Margin="10" >
-        <!--<ListBox SelectedItem="{Binding FoodTypeViewModel.Value}" Grid.Column="1" Margin="10" >-->
+        <ListBox ItemsSource="{Binding FoodKinds}" SelectedItem="{Binding Food.Value.KindType}" Grid.Column="1" Margin="5" >
             <ListBox.Template>
                 <ControlTemplate TargetType="ListBox">
-                    <ItemsPresenter Margin="0" />
+                    <ItemsPresenter />
                 </ControlTemplate>
             </ListBox.Template>
             <ListBox.ItemsPanel>
@@ -50,23 +49,39 @@
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type m:FoodType}">
-                    <Border CornerRadius="10" BorderBrush="LightGray" BorderThickness="2" Background="White" >
-                        <Grid Width="200" Height="35" >
+                    <Border CornerRadius="10" BorderBrush="LightGray" BorderThickness="4" >
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                        <Setter Property="Background" Value="Orange" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="False">
+                                        <Setter Property="Background" Value="White" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Grid Width="200" Height="32" >
                             <TextBlock Padding="5,0" Text="{Binding Converter={StaticResource FoodKindLanguageConverter}}" FontWeight="Bold" FontSize="24" />
                         </Grid>
                     </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-            <!--<ListBox.ItemContainerStyle>
+            <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True" >
-                            --><!--<Setter Property="Background" Value="ForestGreen" />--><!--
-                            <Setter Property="Foreground" Value="Orange" />
-                        </Trigger>
-                    </Style.Triggers>
+                    <Setter Property="OverridesDefaultStyle" Value="True" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ContentControl}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter Margin="5" />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
-            </ListBox.ItemContainerStyle>-->
+            </ListBox.ItemContainerStyle>
         </ListBox>
 
         <TextBlock Grid.Column="0" Style="{StaticResource NormalTextBlock}" Margin="10" >

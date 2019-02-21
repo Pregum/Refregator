@@ -150,7 +150,6 @@ namespace MVVM_Refregator.Model
                 var targetFood = this.FoodCollection.First(x => x.Id == id);
                 targetFood.Name = name;
                 targetFood.LimitDate = limitDate;
-                //targetFood.BoughtDate = usedDate;
                 targetFood.UsedDate = usedDate;
                 targetFood.KindType = kindType;
                 targetFood.Image = image;

@@ -18,6 +18,7 @@
 
     <Page.Resources>
         <common:FoodKindLanguageConverter x:Key="FoodKindLanguageConverter" />
+        <common:StringCuttingConverter x:Key="StringCuttingConverter" />
     </Page.Resources>
 
     <Grid>
@@ -33,7 +34,7 @@
         <!-- 使用している食材ランキング -->
         <!--<DataGrid Grid.Column="1" Margin="5,40" ItemsSource="{Binding Foods}" AutoGenerateColumns="False" IsReadOnly="True">-->
         <DockPanel>
-            <TextBlock DockPanel.Dock="Top" Text="食品利用頻度ランキング" HorizontalAlignment="Left"  Margin="5,20" FontSize="28"/>
+            <TextBlock DockPanel.Dock="Top" Text="食品利用頻度ランキング" HorizontalAlignment="Left"  Margin="10,5" FontSize="22"/>
 
             <!--<ItemsControl ItemsSource="{Binding UsestFoods}" Margin="10">-->
             <ItemsControl ItemsSource="{Binding Test_2}" Margin="10">
@@ -65,17 +66,17 @@
 
         <!-- 賞味期限近いリストの表示 -->
         <DockPanel Grid.ColumnSpan="1" Grid.Column="1" Grid.Row="0">
-            <TextBlock DockPanel.Dock="Top" Margin="10,5" Text="賞味期限が近い食材" FontSize="20" />
+            <TextBlock DockPanel.Dock="Top" Margin="10,5" Text="賞味期限が近い食材" FontSize="22" />
             <DataGrid Margin="10" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding Test}" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="No" Binding="{Binding i, Mode=OneWay}" />
-                    <DataGridTextColumn Header="名前" Binding="{Binding x.Name}" />
+                    <DataGridTextColumn Header="名前" Binding="{Binding x.Name, Converter={StaticResource StringCuttingConverter}}" />
                     <DataGridTextColumn Header="期限日" Binding="{Binding x.LimitDate, StringFormat={}{0:yyyy/MM/dd(ddd)}}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
 
-        <Label Content="食品使用履歴" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontSize="18" Foreground="Black" />
+        <Label Content="食品使用履歴" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontSize="22" Foreground="Black" />
         <Label Content="日付" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontSize="18" Foreground="Black" VerticalAlignment="Bottom" />
         <lvc:CartesianChart Grid.ColumnSpan="2" Grid.Row="1" Margin="10,40" Series="{Binding GraphSources}" >
             <lvc:CartesianChart.AxisX>

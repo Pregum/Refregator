@@ -228,6 +228,7 @@ namespace MVVM_Refregator.ViewModel
                         .ToReadOnlyReactiveCollection(_foodShelfModel.FoodCollection.ToCollectionChanged(), System.Reactive.Concurrency.Scheduler.CurrentThread)
                         .AddTo(this.Disposable);
                     this.RaisePropertyChanged(nameof(this.Foods));
+                    this.SelectedFood.Value = null;
                 }
             });
 

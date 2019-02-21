@@ -17,10 +17,12 @@
     </Page.DataContext>
 
     <Page.Resources>
-        <common:DateFoodsMapMultiConverter x:Key="DateFoodMultiConverter"/>
+        <!--<common:DateFoodsMapMultiConverter x:Key="DateFoodMultiConverter"/>-->
+        <common:OutOfScopeMultiConverter x:Key="OutOfScopeMultiConverter" />
+        <common:UsedFoodsMapMultiConverter x:Key="UsedFoodsMultiConverter" />
     </Page.Resources>
 
-    <Grid>
+    <Grid x:Name="rootGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="3*"/>
@@ -30,32 +32,40 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Calendar Grid.RowSpan="2" x:Name="rootCalendar" HorizontalAlignment="Center" Language="ja-JP" VerticalAlignment="Center" Margin="5" >
+        <Calendar x:Name="rootCalendar" Grid.RowSpan="2" Grid.ColumnSpan="1" SelectedDatesChanged="rootCalendar_SelectedDatesChanged" HorizontalAlignment="Center" Language="ja-JP" VerticalAlignment="Center" Margin="5" >
             <Calendar.Background>White</Calendar.Background>
             <Calendar.CalendarDayButtonStyle>
                 <Style TargetType="{x:Type CalendarDayButton}">
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type CalendarDayButton}">
-                                <Grid Background="White">
+                                <Grid>
+                                    <Grid.Background>
+                                        <MultiBinding Converter="{StaticResource OutOfScopeMultiConverter}" >
+                                            <Binding Path="Date" />
+                                            <Binding ElementName="rootCalendar" Path="DisplayDate" />
+                                        </MultiBinding>
+                                    </Grid.Background>
                                     <Border BorderThickness="1" BorderBrush="Turquoise">
-                                        <StackPanel MinHeight="50" MinWidth="48" >
-                                            <TextBlock Text="{Binding StringFormat={}{0:dd}}" Margin="2" FontSize="16"/>
+                                        <StackPanel MinHeight="65" MinWidth="50" >
+                                            <TextBlock Text="{Binding Date.Day}" Margin="2" FontSize="16"/>
                                             <ItemsControl>
                                                 <ItemsControl.ItemsSource>
-                                                    <MultiBinding Converter="{StaticResource DateFoodMultiConverter}" UpdateSourceTrigger="PropertyChanged" Mode="OneWay">
+                                                    <MultiBinding Converter="{StaticResource UsedFoodsMultiConverter}" UpdateSourceTrigger="PropertyChanged" Mode="OneWay">
                                                         <Binding Path="Date" UpdateSourceTrigger="PropertyChanged"/>
                                                         <Binding Path="DataContext.Foods" ElementName="rootGrid"  />
                                                     </MultiBinding>
                                                 </ItemsControl.ItemsSource>
                                                 <ItemsControl.ItemsPanel>
                                                     <ItemsPanelTemplate>
-                                                        <WrapPanel Margin="2" />
+                                                        <!--<WrapPanel Margin="2" />-->
+                                                        <UniformGrid Columns="2" />
+
                                                     </ItemsPanelTemplate>
                                                 </ItemsControl.ItemsPanel>
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate DataType="{x:Type m:FoodModel}">
-                                                        <Image Source="{Binding Image, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Height="20" Stretch="Uniform" />
+                                                        <Image Source="{Binding Image, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Height="18" Stretch="Uniform" />
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
@@ -79,12 +89,12 @@
             </Calendar.CalendarDayButtonStyle>
         </Calendar>
 
-        <Grid Grid.Row="0" Grid.Column="1" >
-            <ComboBox IsReadOnly="True" Width="100" HorizontalAlignment="Right" Margin="20,0" SelectedValue="{Binding SelectedText.Value}" ItemsSource="{Binding ComboBoxGroup}"  IsEditable="True" />
+        <Grid Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" >
+            <ComboBox IsReadOnly="True" Width="150" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="50" FontSize="20" SelectedValue="{Binding SelectedText.Value}" ItemsSource="{Binding ComboBoxGroup}"  IsEditable="True" />
         </Grid>
 
         <Grid Margin="20,50" Grid.Column="1" Grid.ColumnSpan="1" Grid.RowSpan="1" Grid.Row="1"   >
-            <lvc:CartesianChart Series="{Binding SeriesCollection}">
+            <lvc:CartesianChart Series="{Binding SeriesCollection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                 <lvc:CartesianChart.AxisX>
                     <lvc:Axis FontSize="14" Foreground="Black" Labels="{Binding Labels}" />
                 </lvc:CartesianChart.AxisX>
@@ -97,10 +107,5 @@
 
         <TextBlock Text="栄養素" VerticalAlignment="Bottom" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" FontSize="18" Margin="10" />
 
-        <!--<TextBlock Text="栄養素情報ページです"/>-->
-        <!--<Button Content="Jsonファイルを読み込みます" Command="{Binding Send_ReadJson}" Margin="10"/>-->
-        <!--<TextBlock Grid.Row="2" Margin="5" Text="{Binding CalculateFoodComposition.Value}" />-->
-        <!--<TextBlock Grid.Row="2" Margin="5" Text="{Binding CalculateFoodComposition.Value.Energy_kcal}" />-->
-        <!--<Button Grid.Row="1" Grid.Column="1" Content="エクスポート" Margin="10" HorizontalAlignment="Center" Command="{Binding Send_Serialize}" />-->
     </Grid>
 </Page>

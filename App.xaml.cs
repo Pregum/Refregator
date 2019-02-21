@@ -19,7 +19,8 @@ namespace MVVM_Refregator
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             // 食材データを読み込む(既定値はfood_composition.json)
-            FoodShelfModel.GetInstance().Load();
+            var ins = FoodShelfModel.GetInstance();
+            ins.Load();
 
             // 食品成分表の読み込みを行う(既定値food_composition_japanese.json)
             AnalysisPageModel.GetInstance().LoadFoodComposition();
