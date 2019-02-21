@@ -1,0 +1,29 @@
+﻿<Page x:Class="MVVM_Refregator.View.SettingPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MVVM_Refregator.View"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="SettingPage">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Text="バージョン : 0.3.0" FontSize="24" Margin="5" />
+        <StackPanel Orientation="Horizontal" Grid.Row="1" VerticalAlignment="Center" >
+            <TextBlock Text="通知設定" FontSize="24" Margin="5" />
+            <RadioButton GroupName="Notify" Content="有り" FontSize="18" VerticalContentAlignment="Center" IsChecked="True" VerticalAlignment="Center" Margin="5" />
+            <RadioButton GroupName="Notify" Content="無し" FontSize="18" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="5" />
+        </StackPanel>
+        <TextBlock Text="ライセンス " FontSize="24" Margin="5" Grid.Row="2" />
+        <ScrollViewer Grid.Row="3">
+            <TextBlock Text="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" ScrollViewer.HorizontalScrollBarVisibility="Auto" Grid.Row="2" Margin="5,50,5,5" />
+        </ScrollViewer>
+    </Grid>
+</Page>

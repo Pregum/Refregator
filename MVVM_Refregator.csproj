@@ -21,7 +21,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\..\test_proj\debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -36,7 +36,19 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\cold_storage.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>MVVM_Refregator.TestStart</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\MaterialDesignColors.1.1.3\lib\net45\MaterialDesignColors.dll</HintPath>
     </Reference>
@@ -45,9 +57,6 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>packages\NLog.4.5.11\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Prism, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>packages\Prism.Core.6.3.0\lib\net45\Prism.dll</HintPath>
@@ -129,7 +138,10 @@
     <Compile Include="Common\DateFoodsMapMultiConverter.cs" />
     <Compile Include="Common\FoodKindLanguageConverter.cs" />
     <Compile Include="Common\JsonManager.cs" />
+    <Compile Include="Common\OutOfScoleMultiConverter.cs" />
     <Compile Include="Common\RadioButtonUriConverter.cs" />
+    <Compile Include="Common\StringCuttingConverter.cs" />
+    <Compile Include="Common\UsedFoodsMapMultiConverter.cs" />
     <Compile Include="Model\AnalysisPageModel.cs" />
     <Compile Include="Model\IStep.cs" />
     <Compile Include="Model\FoodComposition.cs" />
@@ -140,7 +152,9 @@
     <Compile Include="Model\WorkStep.cs" />
     <Compile Include="Model\WorkStepModel.cs" />
     <Compile Include="Model\WorkStepType.cs" />
+    <Compile Include="TestStart.cs" />
     <Compile Include="ViewModel\AnalysisPageViewModel.cs" />
+    <Compile Include="ViewModel\DashBoardPageViewModel.cs" />
     <Compile Include="ViewModel\EditPageViewModel.cs" />
     <Compile Include="ViewModel\FoodShelfViewModel.cs" />
     <Compile Include="ViewModel\FoodViewModel.cs" />
@@ -161,6 +175,12 @@
     </Compile>
     <Compile Include="View\AnalysisPage.xaml.cs">
       <DependentUpon>AnalysisPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\IconSelectDialog.xaml.cs">
+      <DependentUpon>IconSelectDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingPage.xaml.cs">
+      <DependentUpon>SettingPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\StartupWindow.xaml.cs">
       <DependentUpon>StartupWindow.xaml</DependentUpon>
@@ -197,6 +217,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AnalysisPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\IconSelectDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -268,7 +296,24 @@
   <ItemGroup>
     <Resource Include="Resources\information_image.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\cold_storage.ico" />
+    <Resource Include="Resources\039-steak.png" />
+    <Resource Include="Resources\041-orange.png" />
+    <Resource Include="Resources\043-fish.png" />
+    <Resource Include="Resources\046-salad.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icon1.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="AfterResolveReferences">
+    <ItemGroup>
+      <EmbeddedResource Include="@(ReferenceCopyLocalPaths)" Condition="'%(ReferenceCopyLocalPaths.Extension)' == '.dll'">
+        <LogicalName>%(ReferenceCopyLocalPaths.DestinationSubDirectory)%(ReferenceCopyLocalPaths.Filename)%(ReferenceCopyLocalPaths.Extension)</LogicalName>
+      </EmbeddedResource>
+    </ItemGroup>
+  </Target>
   <ProjectExtensions>
     <VisualStudio>
       <UserProperties Sample_4SampleData_1json__JSONSchema="http://json.schemastore.org/ansible-stable-2.5" />

@@ -51,7 +51,8 @@ namespace MVVM_Refregator.ViewModel
                 new Uri("/View/DashBoardPage.xaml", UriKind.Relative),
                 new Uri("/View/FoodCalendarPage.xaml", UriKind.Relative),
                 new Uri("/View/EditPage.xaml", UriKind.Relative),
-                new Uri("/View/AnalysisPage.xaml", UriKind.Relative)
+                new Uri("/View/AnalysisPage.xaml", UriKind.Relative),
+                new Uri("/View/SettingPage.xaml", UriKind.Relative)
             };
 
             this.SelectedContentPage = new ReactiveProperty<Uri>(this.ContentPages[0]);
@@ -82,6 +83,9 @@ namespace MVVM_Refregator.ViewModel
                         break;
                     case DisplayPageStatus.NutrientInfo:
                         this.SelectedContentPage.Value = this.ContentPages[3];
+                        break;
+                    case DisplayPageStatus.Setting:
+                        this.SelectedContentPage.Value = this.ContentPages[4];
                         break;
                     default:
                         break;

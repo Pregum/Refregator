@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:vm="clr-namespace:MVVM_Refregator.ViewModel"
-      xmlns:common="clr-namespace:MVVM_Refregator.Common"
-      xmlns:m="clr-namespace:MVVM_Refregator.Model"
-      mc:Ignorable="d"
+        xmlns:vm="clr-namespace:MVVM_Refregator.ViewModel"
+        xmlns:common="clr-namespace:MVVM_Refregator.Common"
+        xmlns:m="clr-namespace:MVVM_Refregator.Model"
+        mc:Ignorable="d"
         Title="CalendarWindow" MinHeight="550" MinWidth="800" >
 
     <Page.DataContext>
@@ -15,6 +15,8 @@
 
     <Page.Resources>
         <common:DateFoodsMapMultiConverter x:Key="DateFoodMultiConverter"/>
+        <common:OutOfScopeMultiConverter x:Key="OutOfScopeMultiConverter"/>
+        <common:StringCuttingConverter x:Key="StringCuttingConverter" />
     </Page.Resources>
 
     <Grid x:Name="rootGrid">
@@ -24,18 +26,23 @@
         </Grid.ColumnDefinitions>
 
         <!-- 食材カレンダー -->
-        <Calendar x:Name="rootCalendar" HorizontalAlignment="Center" Language="ja-JP" VerticalAlignment="Center" Margin="5" >
-            <Calendar.Background>White</Calendar.Background>
+        <Calendar SelectionMode="SingleDate" x:Name="rootCalendar" HorizontalAlignment="Center" Language="ja-JP" VerticalAlignment="Center" Margin="5" IsTodayHighlighted="True">
             <Calendar.CalendarDayButtonStyle>
                 <Style TargetType="{x:Type CalendarDayButton}">
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type CalendarDayButton}">
-                                <Grid Background="White">
+                                <Grid x:Name="dayGrid">
+                                    <Grid.Background>
+                                        <MultiBinding Converter="{StaticResource OutOfScopeMultiConverter}" >
+                                            <Binding Path="Date" />
+                                            <Binding ElementName="rootCalendar" Path="DisplayDate" />
+                                        </MultiBinding>
+                                    </Grid.Background>
                                     <Border BorderThickness="1" BorderBrush="Turquoise">
                                         <StackPanel MinHeight="80" MinWidth="80" >
-                                            <TextBlock Text="{Binding StringFormat={}{0:dd}}" Margin="2" FontSize="16"/>
-                                            <ItemsControl >
+                                            <TextBlock Text="{Binding Date.Day}" Margin="2" FontSize="16"/>
+                                            <ItemsControl>
                                                 <ItemsControl.ItemsSource>
                                                     <MultiBinding Converter="{StaticResource DateFoodMultiConverter}" UpdateSourceTrigger="PropertyChanged" Mode="OneWay">
                                                         <Binding Path="Date" UpdateSourceTrigger="PropertyChanged"/>
@@ -44,7 +51,8 @@
                                                 </ItemsControl.ItemsSource>
                                                 <ItemsControl.ItemsPanel>
                                                     <ItemsPanelTemplate>
-                                                        <WrapPanel Margin="2" />
+                                                        <!--<WrapPanel Margin="5" />-->
+                                                        <UniformGrid Columns="2" />
                                                     </ItemsPanelTemplate>
                                                 </ItemsControl.ItemsPanel>
                                                 <ItemsControl.ItemTemplate>
@@ -56,16 +64,6 @@
                                         </StackPanel>
                                     </Border>
                                 </Grid>
-                                <ControlTemplate.Resources>
-                                    <Style TargetType="{x:Type CalendarDayButton}">
-                                        <Setter Property="OverridesDefaultStyle" Value="True" />
-                                        <Style.Triggers>
-                                            <Trigger Property="IsToday" Value="True">
-                                                <Setter Property="Background" Value="Red" />
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ControlTemplate.Resources>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
@@ -74,10 +72,9 @@
         </Calendar>
 
         <!-- 食材一覧表 -->
-        <DataGrid Grid.Column="1" Margin="5,40" ItemsSource="{Binding Foods}" AutoGenerateColumns="False" IsReadOnly="True">
+        <DataGrid Grid.Column="1" Margin="5,40" ItemsSource="{Binding FutureFoods}" AutoGenerateColumns="False" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Id" Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}" />
-                <DataGridTextColumn Header="名前" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Header="名前" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringCuttingConverter}}" />
                 <DataGridTextColumn Header="期限日" Binding="{Binding LimitDate, StringFormat={}{0:yyyy/MM/dd(ddd)}}"/>
             </DataGrid.Columns>
         </DataGrid>

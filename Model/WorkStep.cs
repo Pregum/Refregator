@@ -263,7 +263,7 @@ namespace MVVM_Refregator.Model
     {
         private StepStatusType _stepStatus = StepStatusType.New;
 
-        private Uri _editPage = new Uri("/View/StepOfSettingConfirm.xaml", UriKind.Relative);
+        private Uri _editPage = new Uri("View/StepOfSettingConfirm.xaml", UriKind.Relative);
 
         public StepStatusType StepStatus { get => _stepStatus; }
 
@@ -276,8 +276,14 @@ namespace MVVM_Refregator.Model
         public void Navigate(NavigationService navigation)
         {
             this.SetProperty(ref _stepStatus, StepStatusType.Working, nameof(this.StepStatus));
-            navigation.Navigate(this._editPage);
-            navigation.Refresh();
+            if (navigation.CurrentSource != this._editPage)
+            {
+                navigation.Navigate(this._editPage);
+            }
+            else
+            {
+                navigation.Refresh();
+            }
         }
 
         public void Update()

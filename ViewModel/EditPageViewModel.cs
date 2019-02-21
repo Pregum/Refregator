@@ -125,12 +125,10 @@ namespace MVVM_Refregator.ViewModel
             // FoodShelfModel関係
             this._foodShelfModel = FoodShelfModel.GetInstance();
             this.Foods = this._foodShelfModel.FoodCollection
-                .Where(x => !x.HasUsed)
+                //.Where(x => !x.HasUsed)
                 .ToReadOnlyReactiveCollection(_foodShelfModel.FoodCollection.ToCollectionChanged(), System.Reactive.Concurrency.Scheduler.CurrentThread)
                 .AddTo(this.Disposable);
             this._foodShelfModel.FoodCollection.CollectionChangedAsObservable().Subscribe(x => RaisePropertyChanged(nameof(Foods)));
-
-            //this.Foods.CollectionChangedAsObservable().Subscribe(XamlGeneratedNamespace => System.Diagnostics.Debug.WriteLine($"EditPageで更新されました. {XamlGeneratedNamespace.NewItems.ToString()}"));
 
             // WorkStepModel関係
             this._workStepModel = WorkStepModel.GetInstance();
@@ -226,10 +224,11 @@ namespace MVVM_Refregator.ViewModel
                     this._workStepModel.SetUsed(this.SelectedFood.Value);
                     // このタイミングで使用済み食材をリストから消す
                     this.Foods = this._foodShelfModel.FoodCollection
-                        .Where(x => !x.HasUsed)
+                        //.Where(x => !x.HasUsed)
                         .ToReadOnlyReactiveCollection(_foodShelfModel.FoodCollection.ToCollectionChanged(), System.Reactive.Concurrency.Scheduler.CurrentThread)
                         .AddTo(this.Disposable);
                     this.RaisePropertyChanged(nameof(this.Foods));
+                    this.SelectedFood.Value = null;
                 }
             });
 

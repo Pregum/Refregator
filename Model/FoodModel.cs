@@ -136,8 +136,14 @@ namespace MVVM_Refregator.Model
             get { return _image; }
             set
             {
+                if (value != null)
+                {
                 SetProperty(ref _image, value);
-                this.ImageString = this.Image.UriSource.OriginalString;
+                    //this.ImageString = this.Image.UriSource.OriginalString;
+                    //this.ImageString = this.Image.BaseUri.OriginalString;
+                    //this.ImageString = "/" + this.Image.UriSource.ToString();
+                    this.ImageString = this.Image.UriSource.ToString().StartsWith("/") ? this.Image.UriSource.ToString() : "/" + this.Image.UriSource.ToString();
+                }
             }
         }
 
@@ -155,13 +161,14 @@ namespace MVVM_Refregator.Model
             set
             {
                 SetProperty(ref _imageString, value);
-                this.Image.UriSource = new Uri(_imageString, UriKind.Relative);
+                this._image = new BitmapImage(new Uri(value, UriKind.Relative));
             }
         }
 
         /// <summary>
         /// id用カウンタ
         /// </summary>
+        [JsonIgnore]
         private static uint _id_num = 1;
 
         /// <summary>
@@ -169,6 +176,11 @@ namespace MVVM_Refregator.Model
         /// </summary>
         [JsonIgnore]
         public static uint NextId { get { return _id_num; } }
+
+        /// <summary>
+        /// idの値を1つ進める
+        /// </summary>
+        public static void IncrementId() { _id_num++; }
 
         /// <summary>
         /// ctor
@@ -205,6 +217,11 @@ namespace MVVM_Refregator.Model
         /// </summary>
         public FoodModel() : this("created_" + DateTime.Today.ToShortDateString(), DateTime.Now.AddDays(7), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)), false)
         {
+        }
+
+        public override string ToString()
+        {
+            return $"Id : {Id}, Name : {Name}, UsedDate : {UsedDate}, HasUsed : {HasUsed}";
         }
 
     }

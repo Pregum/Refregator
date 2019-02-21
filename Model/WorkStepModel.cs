@@ -150,6 +150,11 @@ namespace MVVM_Refregator.Model
                 {
                     // 作成作業
                     case WorkType.Create:
+                        while (this._foodShelfModel.FoodCollection.All(x => x.Id != this._manipulateFood.Id) == false)
+                        {
+                            FoodModel.IncrementId();
+                            this._manipulateFood.Id = FoodModel.NextId;
+                        }
                         this._foodShelfModel.Create(this._manipulateFood);
                         this.CurrentWorkStepsType = WorkType.StandBy;
                         break;
@@ -171,6 +176,7 @@ namespace MVVM_Refregator.Model
                     default:
                         break;
                 }
+                SetStandBy();
             }
             else
             {
@@ -300,6 +306,5 @@ namespace MVVM_Refregator.Model
         {
             this._foodShelfModel.SetUsed(targetFood);
         }
-
     }
 }
