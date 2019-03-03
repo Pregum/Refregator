@@ -155,7 +155,7 @@
                                         <ColumnDefinition Width="2*"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock FontSize="20" Margin="5" TextTrimming="CharacterEllipsis" Width="230">
+                                    <TextBlock FontSize="20" Margin="5" TextTrimming="CharacterEllipsis" Width="160" >
                                     <Run Text="{Binding LimitDate, StringFormat=期限 : {0:yyyy/MM/dd}}" />
                                     <LineBreak />
                                     <!--<Run Text="{Binding Name, Converter={StaticResource StringCuttingConverter}}" />-->

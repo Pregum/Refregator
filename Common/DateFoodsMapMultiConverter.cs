@@ -24,8 +24,8 @@ namespace MVVM_Refregator.Common
             {
                 //System.Diagnostics.Debug.WriteLine($" updating Calendar.ItemsSource  ...");
 
-                //var chunkItem = foodCollection.Where(x => x.LimitDate.Date == targetDate.Date && x.HasUsed == false).Take(4);
-                var chunkItem = foodCollection.Where(x => x.LimitDate.Date == targetDate.Date && x.HasUsed == false && x.LimitDate.Date >= DateTime.Today.Date).Take(4);
+                var chunkItem = foodCollection.Where(x => x.LimitDate.Date == targetDate.Date && x.HasUsed == false).Take(4);
+                //var chunkItem = foodCollection.Where(x => x.LimitDate.Date == targetDate.Date && x.HasUsed == false && x.LimitDate.Date >= DateTime.Today.Date).Take(4);
 
                 if (chunkItem.Any())
                 {

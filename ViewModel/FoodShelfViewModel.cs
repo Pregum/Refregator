@@ -46,7 +46,8 @@ namespace MVVM_Refregator.ViewModel
             // CollectionChanged時にPropertyChangedを強制的に呼び出す
             _foodShelfModel.FoodCollection.CollectionChangedAsObservable().Subscribe(x => RaisePropertyChanged(nameof(Foods)));
 
-            this.FutureFoods = new ObservableCollection<FoodModel>(this.Foods.Where(x => x.LimitDate.Date >= DateTime.Today.Date && !x.HasUsed));
+            //this.FutureFoods = new ObservableCollection<FoodModel>(this.Foods.Where(x => x.LimitDate.Date >= DateTime.Today.Date && !x.HasUsed));
+            this.FutureFoods = new ObservableCollection<FoodModel>(this.Foods.Where(x => !x.HasUsed));
 
 
 

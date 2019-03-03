@@ -51,7 +51,6 @@
                                                 </ItemsControl.ItemsSource>
                                                 <ItemsControl.ItemsPanel>
                                                     <ItemsPanelTemplate>
-                                                        <!--<WrapPanel Margin="5" />-->
                                                         <UniformGrid Columns="2" />
                                                     </ItemsPanelTemplate>
                                                 </ItemsControl.ItemsPanel>
