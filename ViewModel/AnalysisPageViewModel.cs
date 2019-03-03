@@ -25,7 +25,6 @@ namespace MVVM_Refregator.ViewModel
         /// <summary>
         /// 全食材コレクション
         /// </summary>
-        // public ObservableCollection<FoodModel> Foods { get; }
         public ReadOnlyReactiveCollection<FoodModel> Foods { get; }
 
         /// <summary>
@@ -39,11 +38,6 @@ namespace MVVM_Refregator.ViewModel
         public ObservableCollection<FoodComposition> FoodCompositions { get; }
 
         /// <summary>
-        /// グラフ化する食材コレクション
-        /// </summary>
-        //public ObservableCollection<FoodModel> AnalysisFoodList { get; }
-
-        /// <summary>
         /// 全食材コレクションのDataGridで選択中のFoodModel
         /// </summary>
         public ReactiveProperty<FoodModel> SelectedFood_AllGrid { get; } = new ReactiveProperty<FoodModel>();
@@ -53,36 +47,18 @@ namespace MVVM_Refregator.ViewModel
         /// </summary>
         public ReactiveProperty<FoodModel> SelectedFood_AnalysisGrid { get; } = new ReactiveProperty<FoodModel>();
 
-        //[Obsolete("Debug用")]
-        //public ReactiveCommand Send_ReadJson { get; } = new ReactiveCommand();
-
         public SeriesCollection SeriesCollection { get; private set; } = new SeriesCollection();
         public ObservableCollection<string> Labels { get; private set; }
         public Dictionary<string, ObservableCollection<Nutrient>> NutrientGroup { get; private set; }
         public Dictionary<string, ObservableCollection<string>> LabelGroup { get; }
         public ObservableCollection<string> ComboBoxGroup { get; }
-        public ReactiveProperty<string> SelectedText { get; } = new ReactiveProperty<string>("廃棄率");
+        public ReactiveProperty<string> SelectedText { get; } = new ReactiveProperty<string>("エネルギー");
         public Func<double, string> Formatter { get; } = val => val.ToString("0.##");
 
         /// <summary>
         /// 解析用コレクションに追加
         /// </summary>
         public ReactiveCommand Send_AddAnalysisFood { get; } = new ReactiveCommand();
-
-        ///// <summary>
-        ///// 食品成分表をエクスポートする(json形式)
-        ///// </summary>
-        //public ReactiveCommand Send_Serialize { get; } = new ReactiveCommand();
-
-        ///// <summary>
-        ///// 解析用コレクションから削除
-        ///// </summary>
-        //public ReactiveCommand Send_RemoveAnalysisFood { get; } = new ReactiveCommand();
-
-        ///// <summary>
-        ///// 解析用コレクションの成分表を計算
-        ///// </summary>
-        //public ReactiveCommand Send_CalculateFoodComposition { get; } = new ReactiveCommand();
 
         /// <summary>
         /// ctor
@@ -116,10 +92,10 @@ namespace MVVM_Refregator.ViewModel
             this.Labels = new ObservableCollection<string>() { "飽和脂肪酸", "多価不飽和脂肪酸", "一価不和飽和脂肪酸", "エネルギー(kcal)" };
 
             this.ComboBoxGroup = new ObservableCollection<string>() {
-                "廃棄率", "エネルギー", "水分", "タンパク質",
+                "エネルギー", "水分", "タンパク質",
                 "脂質", "脂肪酸", "コレステロール", "炭水化物", "食物繊維", "灰分",
                 "無機質その1", "無機質その2", "無機質その3", "無機質その4",
-                "ビタミンその1", "ビタミンその2", "ビタミンその3", "ビタミンその4", "ビタミンその5", "ビタミンその6" };
+                "ビタミンその1", "ビタミンその2", "ビタミンその3", "ビタミンその4", "ビタミンその5", "ビタミンその6","廃棄率"  };
 
             this.NutrientGroup = new Dictionary<string, ObservableCollection<Nutrient>>
             {

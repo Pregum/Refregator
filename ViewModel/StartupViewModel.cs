@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 
 using MVVM_Refregator.Common;
+using System.Reactive.Linq;
 
 namespace MVVM_Refregator.ViewModel
 {
@@ -57,12 +58,13 @@ namespace MVVM_Refregator.ViewModel
 
             this.SelectedContentPage = new ReactiveProperty<Uri>(this.ContentPages[0]);
 
-            this.NavigationViewModel.Subscribe((dataContext) =>
-            {
-                if ((dataContext is NavigationService) == false) return;
-                ((NavigationService)dataContext).Navigate(this.SelectedContentPage.Value);
-                System.Diagnostics.Debug.WriteLine($"debug {this.SelectedContentPage.Value}に遷移しました.");
-            });
+            this.NavigationViewModel
+                .Where((dataContext) => dataContext is NavigationService)
+                .Subscribe((dataContext) =>
+                {
+                    ((NavigationService)dataContext).Navigate(this.SelectedContentPage.Value);
+                    System.Diagnostics.Debug.WriteLine($"Debug {this.SelectedContentPage.Value}に遷移しました.");
+                });
 
 
             this.CheckedPage.Subscribe((checkedButton) =>

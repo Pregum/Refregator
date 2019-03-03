@@ -139,9 +139,6 @@ namespace MVVM_Refregator.Model
                 if (value != null)
                 {
                 SetProperty(ref _image, value);
-                    //this.ImageString = this.Image.UriSource.OriginalString;
-                    //this.ImageString = this.Image.BaseUri.OriginalString;
-                    //this.ImageString = "/" + this.Image.UriSource.ToString();
                     this.ImageString = this.Image.UriSource.ToString().StartsWith("/") ? this.Image.UriSource.ToString() : "/" + this.Image.UriSource.ToString();
                 }
             }
