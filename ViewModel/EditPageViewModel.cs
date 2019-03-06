@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Windows.Navigation;
 using MVVM_Refregator.Model;
 using Prism.Mvvm;
@@ -25,7 +27,7 @@ namespace MVVM_Refregator.ViewModel
         private WorkStepModel _workStepModel;
 
         /// <summary>
-        /// 現在の作業ステップ
+        /// 現在の一連作業ステップ
         /// </summary>
         public ReactiveProperty<ObservableCollection<IStep>> WorkSteps { get; }
 
@@ -40,6 +42,11 @@ namespace MVVM_Refregator.ViewModel
         public ReactiveProperty<bool> WorkLoadVisibility { get; } = new ReactiveProperty<bool>(false);
 
         /// <summary>
+        /// 最初のステップか
+        /// </summary>
+        public ReactiveProperty<bool> IsFirsStep { get; }
+
+        /// <summary>
         /// 最後のステップか
         /// </summary>
         public ReactiveProperty<bool> IsLastStep { get; }
@@ -52,7 +59,7 @@ namespace MVVM_Refregator.ViewModel
         /// <summary>
         /// 管理されている食材
         /// </summary>
-        public ReadOnlyReactiveCollection<FoodModel> Foods { get; }
+        public ReadOnlyReactiveCollection<FoodModel> Foods { get; private set; }
 
         /// <summary>
         /// 選択されている食材
@@ -80,25 +87,33 @@ namespace MVVM_Refregator.ViewModel
         public ReactiveCommand Send_NavigateRegister { get; } = new ReactiveCommand();
 
         /// <summary>
-        /// 次のステップへ遷移する際のコマンド
+        /// 次のステップへ遷移する次へコマンド
         /// </summary>
         public ReactiveCommand Send_NextStep { get; } = new ReactiveCommand();
 
         /// <summary>
-        /// 前のステップへ遷移する際のコマンド
+        /// 前のステップへ遷移する前へコマンド
         /// </summary>
         public ReactiveCommand Send_PrevStep { get; } = new ReactiveCommand();
 
         /// <summary>
-        /// 食材の変更を行う際のコマンド
+        /// 食材の変更を行う変更コマンド
         /// </summary>
         public ReactiveCommand Send_ModifyFood { get; } = new ReactiveCommand();
 
         /// <summary>
-        /// 食材の削除を行う際のコマンド
+        /// 食材の削除を行う削除コマンド
         /// </summary>
         public ReactiveCommand Send_RemoveFood { get; } = new ReactiveCommand();
 
+        /// <summary>
+        /// 食材を使用済みに設定する使用コマンド
+        /// </summary>
+        public ReactiveCommand Send_SetUsed { get; } = new ReactiveCommand();
+
+        /// <summary>
+        /// Disposeをまとめる
+        /// </summary>
         private CompositeDisposable Disposable { get; } = new CompositeDisposable();
 
         /// <summary>
@@ -110,6 +125,7 @@ namespace MVVM_Refregator.ViewModel
             // FoodShelfModel関係
             this._foodShelfModel = FoodShelfModel.GetInstance();
             this.Foods = this._foodShelfModel.FoodCollection
+                //.Where(x => !x.HasUsed)
                 .ToReadOnlyReactiveCollection(_foodShelfModel.FoodCollection.ToCollectionChanged(), System.Reactive.Concurrency.Scheduler.CurrentThread)
                 .AddTo(this.Disposable);
             this._foodShelfModel.FoodCollection.CollectionChangedAsObservable().Subscribe(x => RaisePropertyChanged(nameof(Foods)));
@@ -124,17 +140,16 @@ namespace MVVM_Refregator.ViewModel
                 this._workStepModel.SetStandBy();
             }
 
-            // 食材選択プロパティ変更時
+            // 選択食材プロパティの購読
             this.SelectedFood.Subscribe((_) =>
             {
                 this.IsSelectedFood.Value = this.SelectedFood?.Value != null;
             });
 
-            // 次へボタンのコンテントの変更
+            // 最後のステップ判定プロパティの購読
             this.IsLastStep = this._workStepModel.ObserveProperty(x => x.IsLastStep).ToReactiveProperty();
             this.IsLastStep.Subscribe((isLastStep) =>
             {
-                //this.NextContent.Value = isLastStep ? "登録" : "進む";
                 if (isLastStep)
                 {
                     switch (this._workStepModel.CurrentWorkStepsType)
@@ -143,7 +158,7 @@ namespace MVVM_Refregator.ViewModel
                             this.NextContent.Value = "登録";
                             break;
                         case WorkType.Update:
-                            this.NextContent.Value = "更新";
+                            this.NextContent.Value = "変更";
                             break;
                         case WorkType.Delete:
                             this.NextContent.Value = "削除";
@@ -168,7 +183,7 @@ namespace MVVM_Refregator.ViewModel
                 this.WorkLoadVisibility.Value = currentWorkStepsType != WorkType.StandBy;
             });
 
-            // 登録ボタンのコマンド
+            // 登録コマンドの購読
             this.Send_NavigateRegister.Subscribe((x) =>
             {
                 if (x is NavigationService navigation)
@@ -177,34 +192,7 @@ namespace MVVM_Refregator.ViewModel
                 }
             });
 
-            // 次へボタンのコマンド
-            this.Send_NextStep.Subscribe((navigationService) =>
-            {
-                if (navigationService is NavigationService navigation)
-                {
-                    this._workStepModel.NextStep(navigation);
-                }
-            });
-
-            // 戻るボタンをクリック時のコマンド
-            this.Send_PrevStep.Subscribe((namevigationService) =>
-            {
-                if (namevigationService is NavigationService navigation)
-                {
-                    this._workStepModel.PrevStep(navigation);
-                }
-            });
-
-            // 削除時のコマンド
-            this.Send_RemoveFood.Subscribe((x) =>
-            {
-                if (x is NavigationService navigation)
-                {
-                    this._workStepModel.NavigateDeleteWork(this.SelectedFood.Value, navigation);
-                }
-            });
-
-            // 変更時のコマンド
+            // 変更コマンドの購読
             this.Send_ModifyFood.Subscribe((x) =>
             {
                 if (x is NavigationService navigation)
@@ -215,6 +203,52 @@ namespace MVVM_Refregator.ViewModel
                     }
                 }
             });
+
+            // 削除コマンドの購読
+            this.Send_RemoveFood.Subscribe((x) =>
+            {
+                if (x is NavigationService navigation)
+                {
+                    if (this.SelectedFood.Value != null)
+                    {
+                        this._workStepModel.NavigateDeleteWork(this.SelectedFood.Value, navigation);
+                    }
+                }
+            });
+
+            // 使用コマンドの購読
+            this.Send_SetUsed.Subscribe(() =>
+            {
+                if (this.SelectedFood.Value != null)
+                {
+                    this._workStepModel.SetUsed(this.SelectedFood.Value);
+                    // このタイミングで使用済み食材をリストから消す
+                    this.Foods = this._foodShelfModel.FoodCollection
+                        //.Where(x => !x.HasUsed)
+                        .ToReadOnlyReactiveCollection(_foodShelfModel.FoodCollection.ToCollectionChanged(), System.Reactive.Concurrency.Scheduler.CurrentThread)
+                        .AddTo(this.Disposable);
+                    this.RaisePropertyChanged(nameof(this.Foods));
+                    this.SelectedFood.Value = null;
+                }
+            });
+
+            // 次へコマンドの購読
+            this.Send_NextStep.Subscribe((navigationService) =>
+            {
+                if (navigationService is NavigationService navigation)
+                {
+                    this._workStepModel.NextStep(navigation);
+                }
+            });
+
+            // 戻るコマンドの購読
+            this.Send_PrevStep.Subscribe((namevigationService) =>
+            {
+                if (namevigationService is NavigationService navigation)
+                {
+                    this._workStepModel.PrevStep(navigation);
+                }
+            });
         }
 
         /// <summary>
@@ -222,6 +256,7 @@ namespace MVVM_Refregator.ViewModel
         /// </summary>
         public void Dispose()
         {
+            this.Disposable.Dispose();
         }
     }
 }

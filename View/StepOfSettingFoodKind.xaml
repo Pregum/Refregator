@@ -7,9 +7,14 @@
       xmlns:m="clr-namespace:MVVM_Refregator.Model"
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
       xmlns:vm="clr-namespace:MVVM_Refregator.ViewModel"
+      xmlns:common="clr-namespace:MVVM_Refregator.Common"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="574.5" d:DesignWidth="948.5"
       Title="StepOfSettingFoodKind">
+
+    <Page.DataContext>
+        <vm:StepOfFoodKindViewModel />
+    </Page.DataContext>
 
     <Page.Resources>
         <ObjectDataProvider x:Key="Detectors" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
@@ -17,11 +22,12 @@
                 <x:Type TypeName="m:FoodType" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
-    </Page.Resources>
 
-    <Page.DataContext>
-        <vm:StepOfFoodKindViewModel />
-    </Page.DataContext>
+        <Style x:Key="NormalTextBlock" TargetType="{x:Type TextBlock}" >
+            <Setter Property="FontSize" Value="24" />
+        </Style>
+        <common:FoodKindLanguageConverter x:Key="FoodKindLanguageConverter" />
+    </Page.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -29,33 +35,63 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <ListBox ItemsSource="{Binding Source={StaticResource Detectors}}" SelectedItem="{Binding Food.Value.KindType}" Grid.Column="1" Margin="10" >
+        <ListBox ItemsSource="{Binding FoodKinds}" SelectedItem="{Binding Food.Value.KindType}" Grid.Column="1" Margin="5" >
             <ListBox.Template>
                 <ControlTemplate TargetType="ListBox">
-                    <ItemsPresenter Margin="10" />
+                    <ItemsPresenter />
                 </ControlTemplate>
             </ListBox.Template>
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Columns="2" />
+                    <!--<UniformGrid Columns="2" />-->
+                    <WrapPanel Width="500" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type m:FoodType}">
-                    <Grid Margin="10" Width="100" Height="30" Background="GreenYellow">
-                        <TextBlock Text="{Binding}" />
-                    </Grid>
+                    <Border CornerRadius="10" BorderBrush="LightGray" BorderThickness="4" >
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                        <Setter Property="Background" Value="Orange" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="False">
+                                        <Setter Property="Background" Value="White" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Grid Width="200" Height="32" >
+                            <TextBlock Padding="5,0" Text="{Binding Converter={StaticResource FoodKindLanguageConverter}}" FontWeight="Bold" FontSize="24" />
+                        </Grid>
+                    </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="OverridesDefaultStyle" Value="True" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ContentControl}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter Margin="5" />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
         </ListBox>
 
-        <!--<ListBox ItemsSource="{Binding Source={StaticResource Detectors}}" Grid.Column="1" Margin="10" >
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Button Content="{Binding}" />
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>-->
+        <TextBlock Grid.Column="0" Style="{StaticResource NormalTextBlock}" Margin="10" >
+            <Run Text="食材の種類を選択します。"  />
+            <LineBreak />
+            <LineBreak />
+            <Run Text="選択した食材の種類によって" />
+            <LineBreak />
+            <Run Text="食材の栄養素を設定します。" />
+        </TextBlock>
+
     </Grid>
 </Page>

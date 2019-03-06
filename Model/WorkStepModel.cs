@@ -55,8 +55,6 @@ namespace MVVM_Refregator.Model
             = new ObservableCollection<IStep>() {
                 new FoodNameEditStep(),
                 new FoodKindStep(),
-                new FoodBoughtDateEditStep(),
-                new FoodLimitDateEditStep(),
                 new FoodConfirmStep() };
 
         /// <summary>
@@ -66,8 +64,6 @@ namespace MVVM_Refregator.Model
             = new ObservableCollection<IStep>(){
                 new FoodNameEditStep(),
                 new FoodKindStep(),
-                new FoodBoughtDateEditStep(),
-                new FoodLimitDateEditStep(),
                 new FoodConfirmStep() };
 
         /// <summary>
@@ -154,13 +150,19 @@ namespace MVVM_Refregator.Model
                 {
                     // 作成作業
                     case WorkType.Create:
+                        while (this._foodShelfModel.FoodCollection.All(x => x.Id != this._manipulateFood.Id) == false)
+                        {
+                            FoodModel.IncrementId();
+                            this._manipulateFood.Id = FoodModel.NextId;
+                        }
                         this._foodShelfModel.Create(this._manipulateFood);
                         this.CurrentWorkStepsType = WorkType.StandBy;
                         break;
                     // 更新作業
                     case WorkType.Update:
                         var food = this._manipulateFood;
-                        this._foodShelfModel.Update(this._temporalFood.Id, food.Name, food.LimitDate, food.BoughtDate, food.KindType, food.Image);
+                        //this._foodShelfModel.Update(this._temporalFood.Id, food.Name, food.LimitDate, food.BoughtDate, food.KindType, food.Image);
+                        this._foodShelfModel.Update(this._temporalFood.Id, food.Name, food.LimitDate, food.UsedDate, food.KindType, food.Image, food.HasUsed); 
                         this.CurrentWorkStepsType = WorkType.StandBy;
                         break;
                     // 削除作業
@@ -174,6 +176,7 @@ namespace MVVM_Refregator.Model
                     default:
                         break;
                 }
+                SetStandBy();
             }
             else
             {
@@ -183,6 +186,7 @@ namespace MVVM_Refregator.Model
                 this._currentStep.Navigate(navigation);
             }
 
+            this.RaisePropertyChanged(nameof(this.IsFirstStep));
             // IsLastStepプロパティの通知
             this.RaisePropertyChanged(nameof(this.IsLastStep));
         }
@@ -205,6 +209,7 @@ namespace MVVM_Refregator.Model
         /// <summary>
         /// 前のステップへ戻ります
         /// </summary>
+        /// <param name="navigation">遷移元のフレームの</param>
         public void PrevStep(NavigationService navigation)
         {
             // 現作業ステップが2番目以降の場合、変更を戻し一つ前の作業に戻る
@@ -255,7 +260,6 @@ namespace MVVM_Refregator.Model
         public void NavigateUpdateWork(FoodModel updateFood, NavigationService navigation)
         {
             this._temporalFood = updateFood;
-            //this.ManipulateFood = new FoodModel();
             this.ManipulateFood = new FoodModel(this._temporalFood);
             this.CurrentWorkSteps = this._updateSteps;
             foreach (IStep aStep in this.CurrentWorkSteps)
@@ -290,8 +294,17 @@ namespace MVVM_Refregator.Model
             this._currentStep = this._currentWorkSteps.First();
             this._currentStep.Navigate(navigation);
 
+            this.RaisePropertyChanged(nameof(this.IsFirstStep));
             this.RaisePropertyChanged(nameof(this.IsLastStep));
         }
 
+        /// <summary>
+        /// 食品を使用済みに設定します
+        /// </summary>
+        /// <param name="targetFood">対象の食品</param>
+        public void SetUsed(FoodModel targetFood)
+        {
+            this._foodShelfModel.SetUsed(targetFood);
+        }
     }
 }

@@ -29,11 +29,10 @@ namespace MVVM_Refregator.ViewModel
 
         public FoodViewModel(FoodModel food)
         {
-
             this.Id = food.ObserveProperty(x => x.Id).ToReactiveProperty().AddTo(this.Disposable);
             this.Name = food.ObserveProperty(x => x.Name).ToReactiveProperty().AddTo(this.Disposable);
             this.LimitDate = food.ObserveProperty(x => x.LimitDate).ToReactiveProperty().AddTo(this.Disposable);
-            this.BoughtDate = food.ObserveProperty(x => x.BoughtDate).ToReactiveProperty().AddTo(this.Disposable);
+            //this.BoughtDate = food.ObserveProperty(x => x.BoughtDate).ToReactiveProperty().AddTo(this.Disposable);
             this.KindType = food.ObserveProperty(x => x.KindType).ToReactiveProperty().AddTo(this.Disposable);
             this.StatusType = food.ObserveProperty(x => x.StatusType).ToReactiveProperty().AddTo(this.Disposable);
             this.Image = food.ObserveProperty(x => x.Image).ToReactiveProperty().AddTo(this.Disposable);

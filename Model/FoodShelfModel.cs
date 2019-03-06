@@ -2,7 +2,6 @@
 using System;
 using System.Linq;
 using System.Collections.ObjectModel;
-using System.Collections.Generic;
 
 using System.Windows.Media.Imaging;
 using MVVM_Refregator.Common;
@@ -11,7 +10,7 @@ using System.IO;
 namespace MVVM_Refregator.Model
 {
     /// <summary>
-    /// 食材のコンテナクラス
+    /// 食材管理クラス
     /// </summary>
     public class FoodShelfModel : BindableBase
     {
@@ -63,25 +62,20 @@ namespace MVVM_Refregator.Model
             {
                 return false;
             }
-            // todo: ここには、json.netを読み込んでコレクションを生成する処理を実装する
+
             var food = JsonManager.LoadJsonFrom<ObservableCollection<FoodModel>>();
-            //this.FoodCollection = food;
-            this.FoodCollection.Clear();
-            foreach (var aFood in food)
-            {
-                this.FoodCollection.Add(aFood);
-            }
+            this.FoodCollection = food;
             return true;
         }
 
         /// <summary>
         /// 現在の食材データをJsonファイル等の外部バックアップを取ります
         /// </summary>
+        /// <param name="destinationPath">出力先のファイルパス</param>
         /// <returns></returns>
-        public bool Save()
+        public bool Save(string destinationPath = @"food_data.json")
         {
-            // todo: とりあえず現在の食材コレクションのデータをJsonファイル等に出力する処理を実装する
-            JsonManager.SaveJsonTo<ObservableCollection<FoodModel>>(this.FoodCollection);
+            JsonManager.SaveJsonTo(this.FoodCollection, destinationPath);
             return true;
         }
 
@@ -93,11 +87,13 @@ namespace MVVM_Refregator.Model
         /// <param name="boughtDate">購入日</param>
         /// <param name="kindType">食材のタイプ</param>
         /// <param name="image">食材画像</param>
+        /// <param name="hasUsed">食材は使用済みか確認用フラグ</param>
         /// <returns></returns>
-        public bool Create(string name, DateTime limitDate, DateTime boughtDate, FoodType kindType, BitmapImage image)
+        public bool Create(string name, DateTime limitDate, DateTime boughtDate, FoodType kindType, BitmapImage image, bool hasUsed)
         {
-            var newFood = new FoodModel(name, limitDate, boughtDate, kindType, image);
+            var newFood = new FoodModel(name, limitDate, boughtDate, kindType, image, hasUsed);
             this.FoodCollection.Add(newFood);
+            this.Save();
 
             return true;
         }
@@ -110,6 +106,7 @@ namespace MVVM_Refregator.Model
         public bool Create(FoodModel food)
         {
             this.FoodCollection.Add(food);
+            this.Save();
 
             return true;
         }
@@ -124,6 +121,11 @@ namespace MVVM_Refregator.Model
             if (this.FoodCollection.Count(x => x.Id == id) == 1)
             {
                 this.FoodCollection.Remove(this.FoodCollection.Single(x => x.Id == id));
+                this.Save();
+            }
+            else
+            {
+                return false;
             }
 
             return true;
@@ -135,11 +137,12 @@ namespace MVVM_Refregator.Model
         /// <param name="id">食材オブジェクトに紐づいたId</param>
         /// <param name="name">食材名</param>
         /// <param name="limitDate">賞味期限日</param>
-        /// <param name="boughtDate">購入日</param>
+        /// <param name="usedDate">使用日</param>
         /// <param name="kindType">食材の種類</param>
         /// <param name="image">食材画像</param>
+        /// <param name="hasUsed">使用済みか判別フラグ</param>
         /// <returns></returns>
-        public bool Update(uint id, string name, DateTime limitDate, DateTime boughtDate, FoodType kindType, BitmapImage image)
+        public bool Update(uint id, string name, DateTime limitDate, DateTime usedDate, FoodType kindType, BitmapImage image, bool hasUsed)
         {
             if (this.FoodCollection.Count(x => x.Id == id) == 1)
             {
@@ -147,17 +150,42 @@ namespace MVVM_Refregator.Model
                 var targetFood = this.FoodCollection.First(x => x.Id == id);
                 targetFood.Name = name;
                 targetFood.LimitDate = limitDate;
-                targetFood.BoughtDate = boughtDate;
+                targetFood.UsedDate = usedDate;
                 targetFood.KindType = kindType;
                 targetFood.Image = image;
+                targetFood.HasUsed = hasUsed;
+
+                this.Save();
+            }
+            else
+            {
+                return false;
             }
             return true;
         }
 
+        /// <summary>
+        /// 食材オブジェクトの中身を変更します
+        /// </summary>
+        /// <param name="food">変更後の食材</param>
+        /// <see cref="Update(uint, string, DateTime, DateTime, FoodType, BitmapImage)"/>
+        /// <returns></returns>
         public bool Update(FoodModel food)
         {
-            return Update(food.Id, food.Name, food.LimitDate, food.BoughtDate, food.KindType, food.Image);
+            //return Update(food.Id, food.Name, food.LimitDate, food.BoughtDate, food.KindType, food.Image);
+            return Update(food.Id, food.Name, food.LimitDate, food.UsedDate, food.KindType, food.Image, food.HasUsed);
+        }
 
+        /// <summary>
+        /// 食材を使用済みに設定します
+        /// </summary>
+        /// <param name="targetFood">対象の食品</param>
+        public void SetUsed(FoodModel targetFood)
+        {
+            targetFood.HasUsed = true;
+            targetFood.UsedDate = DateTime.Today;
+
+            this.Save();
         }
 
     }

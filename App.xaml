@@ -4,10 +4,35 @@
              xmlns:local="clr-namespace:MVVM_Refregator"
              xmlns:v="clr-namespace:MVVM_Refregator.View"
              xmlns:m="clr-namespace:MVVM_Refregator.Model"
+             xmlns:dra="clr-namespace:System.Windows.Media.Imaging"
              Startup="Application_Startup">
     <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
 
-        <!--<m:FoodShelfModel x:Key="FoodShelfKey" />-->
-        <!--StartupUri="View/TestView.xaml">-->
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="GreenBackground" TargetType="{x:Type Grid}">
+                <Setter Property="Background" Value="#FFE9FFE9" />
+            </Style>
+            <Style x:Key="GreenBorder" TargetType="{x:Type Border}">
+                <Setter Property="BorderBrush" Value="#FF009B07" />
+                <Setter Property="BorderThickness" Value="2" />
+            </Style>
+
+
+            <BitmapImage x:Key="Steak" CacheOption="OnLoad" UriSource="Resources/039-steak.png" />
+            <BitmapImage x:Key="Orange" CacheOption="OnLoad" UriSource="Resources/041-orange.png" />
+            <BitmapImage x:Key="fish"  CacheOption="OnLoad" UriSource="Resources/043-fish.png" />
+            <!--<BitmapImage x:Key="salad"  CacheOption="OnLoad" UriSource="Resources/046-salad.png" />-->
+            <BitmapImage x:Key="salad"  CacheOption="OnLoad" UriSource="Resources/046-salad.png" >
+            </BitmapImage>
+            <BitmapImage x:Key="Info"  CacheOption="OnLoad" UriSource="Resources/information_image.png" />
+
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

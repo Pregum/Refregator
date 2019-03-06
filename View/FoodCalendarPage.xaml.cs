@@ -27,19 +27,7 @@ namespace MVVM_Refregator.View
         {
             InitializeComponent();
 
-            //if (App.Current.Resources["FoodShelfKey"] is FoodShelfModel foodShelfModel)
-            //{
-            //    if (this.DataContext == null)
-            //    {
-            //        this.DataContext = new ViewModel.FoodShelfViewModel(foodShelfModel);
-            //    }
-            //}
-            //else
-            //{
-            //    this.DataContext = new ViewModel.FoodShelfViewModel();
-            //}
-
-            this.DataContext = this.DataContext ?? new FoodShelfViewModel();
+            //this.DataContext = this.DataContext ?? new FoodShelfViewModel();
         }
     }
 }

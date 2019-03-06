@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using MVVM_Refregator.Common;
@@ -27,10 +28,15 @@ namespace MVVM_Refregator.Model
             private set { this.SetProperty(ref _foodCompositions, value); }
         }
 
+        private FoodComposition _calculateResultFoodComposition;
         /// <summary>
         /// 計算された成分表
         /// </summary>
-        public FoodComposition CalculatedResultFoodComposition { get; private set; }
+        public FoodComposition CalculatedResultFoodComposition
+        {
+            get => this._calculateResultFoodComposition;
+            private set => this.SetProperty(ref this._calculateResultFoodComposition, value);
+        }
 
         /// <summary>
         /// 今保存されているすべての食材情報
@@ -80,8 +86,14 @@ namespace MVVM_Refregator.Model
         /// </summary>
         public AnalysisPageModel()
         {
-            this.FoodCompositions = JsonManager.ReadJson();
+        }
 
+        /// <summary>
+        /// 食材成分表データの読み込み
+        /// </summary>
+        public void LoadFoodComposition(string targetPath = @"food_composition_japanese.json")
+        {
+            this.FoodCompositions = JsonManager.ReadJson(targetPath);
             this.InitFoodCollection();
         }
 
@@ -92,6 +104,17 @@ namespace MVVM_Refregator.Model
         {
             this.AllFoods = new ObservableCollection<FoodModel>(_foodShelfModel.FoodCollection);
             this.AnalysisFoods = new ObservableCollection<FoodModel>();
+
+            //this.AnalysisFoods =new ObservableCollection<FoodModel>( this.AllFoods.Where(x => x.HasUsed));
+            this.AnalysisFoods = new ObservableCollection<FoodModel>(this.AllFoods.Where(x => x.HasUsed && x.UsedDate.Date == DateTime.Today.Date));
+            this.CalculateFoodComposition(this.AnalysisFoods);
+        }
+
+
+        public void CalculateComposition(DateTime date)
+        {
+            this.AnalysisFoods = new ObservableCollection<FoodModel>(this.AllFoods.Where(x => x.HasUsed && x.UsedDate.Date == date.Date));
+            this.CalculateFoodComposition(this.AnalysisFoods);
         }
 
         /// <summary>
@@ -117,10 +140,11 @@ namespace MVVM_Refregator.Model
         /// <summary>
         /// 設定された食材の成分表を計算する
         /// </summary>
-        public void CalculateFoodComposition()
+        public void CalculateFoodComposition(IList<FoodModel> foodModels)
         {
             Func<UnitKind, Nutrient> func = ((UnitKind uni) => new Nutrient(0.0d, uni, false));
-            var composition = new FoodComposition(0, 0, 0, "accumulate_composition", func(UnitKind.percent),
+            var composition = new FoodComposition(0, 0, 0, "accumulate_composition",
+                func(UnitKind.percent),
                 func(UnitKind.kcal),
                 func(UnitKind.kj),
                 func(UnitKind.g),
@@ -166,6 +190,7 @@ namespace MVVM_Refregator.Model
                 func(UnitKind.mg),
                 func(UnitKind.mg),
                 func(UnitKind.mg),
+                func(UnitKind.mg),
                 func(UnitKind.micro_g),
                 func(UnitKind.micro_g),
                 func(UnitKind.mg),
@@ -185,10 +210,21 @@ namespace MVVM_Refregator.Model
 
             if (this.AnalysisFoods.Any())
             {
-                foreach (var food in this.AnalysisFoods)
+                //foreach (var food in this.AnalysisFoods)
+                //{
+                //    composition += GetFoodComposition(food.KindType);
+                //}
+                foreach (var food in foodModels)
                 {
                     composition += GetFoodComposition(food.KindType);
+                    System.Diagnostics.Debug.WriteLine($"id : {food.Id} の {food.Name}が栄養素計算されました。");
                 }
+                this.CalculatedResultFoodComposition = composition;
+                this.RaisePropertyChanged(nameof(this.CalculatedResultFoodComposition));
+            }
+            if (this.AnalysisFoods.Count == 0)
+            {
+                System.Diagnostics.Debug.WriteLine($"選択日に使用された食材が存在しませんでした。");
                 this.CalculatedResultFoodComposition = composition;
                 this.RaisePropertyChanged(nameof(this.CalculatedResultFoodComposition));
             }
@@ -201,6 +237,7 @@ namespace MVVM_Refregator.Model
         /// <returns></returns>
         private FoodComposition GetFoodComposition(FoodType foodType)
         {
+            // TODO: 全食品を列挙するのは非効率的なので、配列で管理するなどして、パターン化できるか検討
             switch (foodType)
             {
                 case FoodType.Rice:
@@ -244,6 +281,6 @@ namespace MVVM_Refregator.Model
                 default:
                     throw new InvalidOperationException();
             }
-        } 
+        }
     }
 }

@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using MVVM_Refregator.Model;
+using Reactive.Bindings;
+using System;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using MVVM_Refregator.Model;
-using MVVM_Refregator.ViewModel;
-
-using Reactive.Bindings;
 
 namespace MVVM_Refregator.Common
 {
-    public class DateFoodsMapMultiConverter : IMultiValueConverter
+    class UsedFoodsMapMultiConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
@@ -24,8 +18,7 @@ namespace MVVM_Refregator.Common
             {
                 //System.Diagnostics.Debug.WriteLine($" updating Calendar.ItemsSource  ...");
 
-                var chunkItem = foodCollection.Where(x => x.LimitDate.Date == targetDate.Date && x.HasUsed == false).Take(4);
-                //var chunkItem = foodCollection.Where(x => x.LimitDate.Date == targetDate.Date && x.HasUsed == false && x.LimitDate.Date >= DateTime.Today.Date).Take(4);
+                var chunkItem = foodCollection.Where(x => x.UsedDate.Date == targetDate.Date).Take(4);
 
                 if (chunkItem.Any())
                 {
@@ -39,6 +32,7 @@ namespace MVVM_Refregator.Common
 
             return DependencyProperty.UnsetValue;
         }
+
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {

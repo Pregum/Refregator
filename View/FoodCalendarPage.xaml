@@ -3,70 +3,80 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:vm="clr-namespace:MVVM_Refregator.ViewModel"
-      xmlns:common="clr-namespace:MVVM_Refregator.Common"
-      xmlns:m="clr-namespace:MVVM_Refregator.Model"
-      mc:Ignorable="d"
-        Title="CalendarWindow" Height="550" Width="800">
-    <!--<Page.DataContext>
-        <vm:FoodShelfViewModel x:Name="foodShelf"/>
-    </Page.DataContext>-->
+        xmlns:vm="clr-namespace:MVVM_Refregator.ViewModel"
+        xmlns:common="clr-namespace:MVVM_Refregator.Common"
+        xmlns:m="clr-namespace:MVVM_Refregator.Model"
+        mc:Ignorable="d"
+        Title="CalendarWindow" MinHeight="550" MinWidth="800" >
+
+    <Page.DataContext>
+        <vm:FoodShelfViewModel />
+    </Page.DataContext>
+
     <Page.Resources>
         <common:DateFoodsMapMultiConverter x:Key="DateFoodMultiConverter"/>
+        <common:OutOfScopeMultiConverter x:Key="OutOfScopeMultiConverter"/>
+        <common:StringCuttingConverter x:Key="StringCuttingConverter" />
     </Page.Resources>
 
     <Grid x:Name="rootGrid">
-        <StackPanel Orientation="Horizontal">
-            <Calendar x:Name="rootCalendar" Margin="5" >
-                <Calendar.Background>White</Calendar.Background>
-                <Calendar.CalendarDayButtonStyle>
-                    <Style TargetType="{x:Type CalendarDayButton}">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type CalendarDayButton}">
-                                    <Grid Background="Azure" Margin="2">
-                                        <Border BorderThickness="2" BorderBrush="Turquoise">
-                                            <StackPanel MinHeight="60" MinWidth="60">
-                                                <TextBlock Text="{Binding StringFormat={}{0:dd}}" Margin="5"/>
-                                                <ItemsControl>
-                                                    <ItemsControl.ItemsSource>
-                                                        <MultiBinding Converter="{StaticResource DateFoodMultiConverter}" UpdateSourceTrigger="PropertyChanged" Mode="OneWay">
-                                                            <Binding Path="Date" UpdateSourceTrigger="PropertyChanged"/>
-                                                            <Binding Path="DataContext.Foods" ElementName="rootGrid"  />
-                                                        </MultiBinding>
-                                                    </ItemsControl.ItemsSource>
-                                                    <ItemsControl.ItemsPanel>
-                                                        <ItemsPanelTemplate>
-                                                            <WrapPanel MaxHeight="55" MaxWidth="60" />
-                                                        </ItemsPanelTemplate>
-                                                    </ItemsControl.ItemsPanel>
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate DataType="{x:Type m:FoodModel}">
-                                                            <Image Source="{Binding Image, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Height="20" Stretch="Uniform" />
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
-                                            </StackPanel>
-                                        </Border>
-                                    </Grid>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Calendar.CalendarDayButtonStyle>
-            </Calendar>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
 
-            <DataGrid Margin="5" VerticalAlignment="Top" MaxHeight="500" ItemsSource="{Binding Foods}" AutoGenerateColumns="False" IsReadOnly="True">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Id" Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}" MaxWidth="50" MinWidth="30"/>
-                    <DataGridTextColumn Header="名前" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" MaxWidth="50"/>
-                    <DataGridTextColumn Header="期限日" Binding="{Binding LimitDate, StringFormat={}{00:yyyy/MM/dd(ddd)}, UpdateSourceTrigger=PropertyChanged}"/>
-                </DataGrid.Columns>
-            </DataGrid>
+        <!-- 食材カレンダー -->
+        <Calendar SelectionMode="SingleDate" x:Name="rootCalendar" HorizontalAlignment="Center" Language="ja-JP" VerticalAlignment="Center" Margin="5" IsTodayHighlighted="True">
+            <Calendar.CalendarDayButtonStyle>
+                <Style TargetType="{x:Type CalendarDayButton}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type CalendarDayButton}">
+                                <Grid x:Name="dayGrid">
+                                    <Grid.Background>
+                                        <MultiBinding Converter="{StaticResource OutOfScopeMultiConverter}" >
+                                            <Binding Path="Date" />
+                                            <Binding ElementName="rootCalendar" Path="DisplayDate" />
+                                        </MultiBinding>
+                                    </Grid.Background>
+                                    <Border BorderThickness="1" BorderBrush="Turquoise">
+                                        <StackPanel MinHeight="80" MinWidth="80" >
+                                            <TextBlock Text="{Binding Date.Day}" Margin="2" FontSize="16"/>
+                                            <ItemsControl>
+                                                <ItemsControl.ItemsSource>
+                                                    <MultiBinding Converter="{StaticResource DateFoodMultiConverter}" UpdateSourceTrigger="PropertyChanged" Mode="OneWay">
+                                                        <Binding Path="Date" UpdateSourceTrigger="PropertyChanged"/>
+                                                        <Binding Path="DataContext.Foods" ElementName="rootGrid"  />
+                                                    </MultiBinding>
+                                                </ItemsControl.ItemsSource>
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <UniformGrid Columns="2" />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate DataType="{x:Type m:FoodModel}">
+                                                        <Image Source="{Binding Image, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Height="20" Stretch="Uniform" />
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Calendar.CalendarDayButtonStyle>
+        </Calendar>
 
-            <!--<Button Content="食材追加" VerticalAlignment="Top" Click="Button_Click" Command="{Binding Send_AddFood}" CommandParameter="{Binding ElementName=rootCalendar}" Margin="10"/>-->
-            <!--<Button Content="食材追加" VerticalAlignment="Top" Command="{Binding Send_AddFood}" Margin="10"/>-->
-            <!--<Button Content="食材追加" VerticalAlignment="Top" Click="Button_Click" Margin="10"/>-->
-        </StackPanel>
+        <!-- 食材一覧表 -->
+        <DataGrid Grid.Column="1" Margin="5,40" ItemsSource="{Binding FutureFoods}" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="名前" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringCuttingConverter}}" />
+                <DataGridTextColumn Header="期限日" Binding="{Binding LimitDate, StringFormat={}{0:yyyy/MM/dd(ddd)}}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
     </Grid>
 </Page>

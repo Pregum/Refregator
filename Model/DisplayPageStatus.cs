@@ -26,6 +26,10 @@ namespace MVVM_Refregator.Model
         /// <summary>
         /// 栄養素情報ページ
         /// </summary>
-        NutrientInfo = 4
+        NutrientInfo = 4,
+        /// <summary>
+        /// 設定ページ
+        /// </summary>
+        Setting = 5,
     }
 }

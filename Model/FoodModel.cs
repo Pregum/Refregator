@@ -53,19 +53,19 @@ namespace MVVM_Refregator.Model
             set { SetProperty(ref _limitDate, value); }
         }
 
-        /// <summary>
-        /// 購入期限
-        /// </summary>
-        private DateTime _boughtDate;
-        /// <summary>
-        /// 購入期限
-        /// </summary>
-        [JsonProperty("BoughtDate")]
-        public DateTime BoughtDate
-        {
-            get { return _boughtDate; }
-            set { SetProperty(ref _boughtDate, value); }
-        }
+        ///// <summary>
+        ///// 購入期限
+        ///// </summary>
+        //private DateTime _boughtDate;
+        ///// <summary>
+        ///// 購入期限
+        ///// </summary>
+        //[JsonProperty("BoughtDate")]
+        //public DateTime BoughtDate
+        //{
+        //    get { return _boughtDate; }
+        //    set { SetProperty(ref _boughtDate, value); }
+        //}
 
         /// <summary>
         /// 種類
@@ -79,6 +79,34 @@ namespace MVVM_Refregator.Model
         {
             get { return _kindType; }
             set { SetProperty(ref _kindType, value); }
+        }
+
+        /// <summary>
+        /// 使用日
+        /// </summary>
+        private DateTime _usedDate;
+        /// <summary>
+        /// 使用日
+        /// </summary>
+        [JsonProperty("UsedDate")]
+        public DateTime UsedDate
+        {
+            get { return _usedDate; }
+            set { SetProperty(ref _usedDate, value); }
+        }
+
+        /// <summary>
+        /// この食材は使用されたか判別するフラグ
+        /// </summary>
+        private bool _hasUsed;
+        /// <summary>
+        /// この食材は使用されたか判別するフラグ
+        /// </summary>
+        [JsonProperty("HasUsed")]
+        public bool HasUsed
+        {
+            get { return _hasUsed; }
+            set { SetProperty(ref _hasUsed, value); }
         }
 
         /// <summary>
@@ -108,8 +136,11 @@ namespace MVVM_Refregator.Model
             get { return _image; }
             set
             {
+                if (value != null)
+                {
                 SetProperty(ref _image, value);
-                this.ImageString = this.Image.UriSource.OriginalString;
+                    this.ImageString = this.Image.UriSource.ToString().StartsWith("/") ? this.Image.UriSource.ToString() : "/" + this.Image.UriSource.ToString();
+                }
             }
         }
 
@@ -127,47 +158,67 @@ namespace MVVM_Refregator.Model
             set
             {
                 SetProperty(ref _imageString, value);
-                this.Image.UriSource = new Uri(_imageString, UriKind.Relative);
+                this._image = new BitmapImage(new Uri(value, UriKind.Relative));
             }
         }
 
         /// <summary>
         /// id用カウンタ
         /// </summary>
+        [JsonIgnore]
         private static uint _id_num = 1;
+
+        /// <summary>
+        /// 次に設定される
+        /// </summary>
+        [JsonIgnore]
+        public static uint NextId { get { return _id_num; } }
+
+        /// <summary>
+        /// idの値を1つ進める
+        /// </summary>
+        public static void IncrementId() { _id_num++; }
 
         /// <summary>
         /// ctor
         /// </summary>
         /// <param name="name">名前</param>
         /// <param name="limitDate">消費期限</param>
-        /// <param name="boughtDate">購入期限</param>
+        /// <param name="usedDate">使用日</param>
         /// <param name="kindType">種類</param>
         /// <param name="statusType">状態</param>
         /// <param name="image">食材画像</param>
-        public FoodModel(string name, DateTime limitDate, DateTime boughtDate, FoodType kindType, BitmapImage image)
+        /// <param name="hasUsed">使用されたか</param>
+        public FoodModel(string name, DateTime limitDate, DateTime usedDate, FoodType kindType, BitmapImage image, bool hasUsed)
         {
             _id = _id_num++;
             _name = name;
             _limitDate = limitDate;
-            _boughtDate = boughtDate;
+            //_boughtDate = boughtDate;
+            _usedDate = usedDate;
             _kindType = kindType;
             _statusType = FoodStatusType.Fresh;
             _image = image;
             _imageString = _image.UriSource.OriginalString;
+            _hasUsed = hasUsed;
         }
 
         /// <summary>
         /// ctor
         /// </summary>
         /// <param name="food">コピー元食材</param>
-        public FoodModel(FoodModel food) : this(food.Name, food.LimitDate, food.BoughtDate, food.KindType, food.Image) { }
+        public FoodModel(FoodModel food) : this(food.Name, food.LimitDate, food.UsedDate, food.KindType, food.Image, food.HasUsed) { }
 
         /// <summary>
         /// 開発用ctor
         /// </summary>
-        public FoodModel() : this("none", DateTime.Now.AddDays(7), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)))
+        public FoodModel() : this("created_" + DateTime.Today.ToShortDateString(), DateTime.Now.AddDays(7), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)), false)
         {
+        }
+
+        public override string ToString()
+        {
+            return $"Id : {Id}, Name : {Name}, UsedDate : {UsedDate}, HasUsed : {HasUsed}";
         }
 
     }

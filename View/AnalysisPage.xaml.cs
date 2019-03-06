@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MVVM_Refregator.ViewModel;
 
 namespace MVVM_Refregator.View
 {
@@ -23,6 +24,12 @@ namespace MVVM_Refregator.View
         public AnalysisPage()
         {
             InitializeComponent();
+        }
+
+        private void rootCalendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var dc = this.DataContext as AnalysisPageViewModel;
+            dc.CalcComposition( (DateTime)e.AddedItems[0] );
         }
     }
 }
