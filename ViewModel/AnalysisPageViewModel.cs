@@ -40,12 +40,12 @@ namespace MVVM_Refregator.ViewModel
         /// <summary>
         /// 全食材コレクションのDataGridで選択中のFoodModel
         /// </summary>
-        public ReactiveProperty<FoodModel> SelectedFood_AllGrid { get; } = new ReactiveProperty<FoodModel>();
+        //public ReactiveProperty<FoodModel> SelectedFood_AllGrid { get; } = new ReactiveProperty<FoodModel>();
 
         /// <summary>
         /// グラフ化する食材コレクションのDataGridで選択中のFoodModel
         /// </summary>
-        public ReactiveProperty<FoodModel> SelectedFood_AnalysisGrid { get; } = new ReactiveProperty<FoodModel>();
+        //public ReactiveProperty<FoodModel> SelectedFood_AnalysisGrid { get; } = new ReactiveProperty<FoodModel>();
 
         public SeriesCollection SeriesCollection { get; private set; } = new SeriesCollection();
         public ObservableCollection<string> Labels { get; private set; }
