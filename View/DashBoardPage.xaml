@@ -64,8 +64,15 @@
             <DataGrid Margin="10" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding FoodLimitDateList}" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="No" Binding="{Binding i, Mode=OneWay}" />
-                    <DataGridTextColumn Header="名前" Binding="{Binding x.Name, Converter={StaticResource StringCuttingConverter}}" />
-                    <DataGridTextColumn Header="期限日" Binding="{Binding x.LimitDate, StringFormat={}{0:yyyy/MM/dd(ddd)}}"/>
+                    <!--<DataGridTextColumn Header="名前" Binding="{Binding x.Name, Converter={StaticResource StringCuttingConverter}}" Width="200" />-->
+                    <DataGridTextColumn Header="名前" Binding="{Binding x.Name}" Width="200" >
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="期限日" Binding="{Binding x.LimitDate, StringFormat={}{0:yyyy/MM/dd(ddd)}}" />
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
