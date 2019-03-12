@@ -155,6 +155,7 @@
     <Compile Include="Model\WorkStep.cs" />
     <Compile Include="Model\WorkStepModel.cs" />
     <Compile Include="Model\WorkStepType.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="TestStart.cs" />
     <Compile Include="ViewModel\AnalysisPageViewModel.cs" />
     <Compile Include="ViewModel\DashBoardPageViewModel.cs" />
@@ -282,7 +283,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Sample\SampleData.json" />
