@@ -46,6 +46,8 @@ namespace MVVM_Refregator.ViewModel
                         return "変更";
                     case WorkType.Delete:
                         return "削除";
+                    case WorkType.Use:
+                        return "使用済";
                     case WorkType.None:
                     case WorkType.StandBy:
                     default:

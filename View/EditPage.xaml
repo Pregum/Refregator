@@ -122,7 +122,7 @@
 
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Grid.Column="1" Grid.ColumnSpan="2">
                     
-                <ListView ItemsSource="{Binding Foods}"  SelectedItem="{Binding SelectedFood.Value}"
+                <ListView SelectionMode="Single" ItemsSource="{Binding Foods}"  SelectedItem="{Binding SelectedFood.Value}"
                           Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" >
                     <ListView.Template>
                         <ControlTemplate TargetType="ListView">
@@ -215,6 +215,7 @@
                         Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
                     <Button Grid.Column="4" Content="使用済" IsEnabled="{Binding IsSelectedFood.Value}" Margin="10,10" Height="50"
                         Command="{Binding Send_SetUsed}"
+                        CommandParameter="{Binding ElementName=EditFrame, Path=NavigationService}"
                         Visibility="{Binding ButtonVisibility.Value, Converter={StaticResource BoolVisibilityConverter}}" />
                     <Button Grid.Column="6" Content="削除" IsEnabled="{Binding IsSelectedFood.Value}" Margin="10,10" Height="50"
                         Command="{Binding Send_RemoveFood}"

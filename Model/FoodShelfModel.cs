@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Media.Imaging;
 using MVVM_Refregator.Common;
 using System.IO;
+using System.Collections.Specialized;
 
 namespace MVVM_Refregator.Model
 {
@@ -182,11 +183,16 @@ namespace MVVM_Refregator.Model
         /// <param name="targetFood">対象の食品</param>
         public void SetUsed(FoodModel targetFood)
         {
-            targetFood.HasUsed = true;
-            targetFood.UsedDate = DateTime.Today;
+            var destinationFood = this.FoodCollection.SingleOrDefault(x => x.Id == targetFood.Id);
 
-            this.Save();
+            if (destinationFood != null)
+            {
+                destinationFood.HasUsed = true;
+                destinationFood.UsedDate = DateTime.Today;
+
+                this.Save();
+                this.RaisePropertyChanged(nameof(this.FoodCollection));
+            }
         }
-
     }
 }
