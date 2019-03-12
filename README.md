@@ -90,7 +90,10 @@ MIT ライセンスです。
 * ライセンス : The MIT License (MIT)
 * ライセンス全文 : [Licenses/corefx.txt](https://github.com/Pregum/Refregator/blob/master/Licenses/corefx.txt)
 
-
-
-
-
+[Notifications.Wpf](https://github.com/Federerer/Notifications.Wpf)
+> MIT License
+> 
+> Copyright (c) 2017 xfedererx
+* 用途 : 通知
+* ライセンス : The MIT License (MIT)
+* ライセンス全文 : [LIcenses/Notifications.Wpf.txt](https://github.com/Pregum/Refregator/blob/master/Licenses/Notifications.Wpf.txt) 

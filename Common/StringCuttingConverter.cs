@@ -15,7 +15,7 @@ namespace MVVM_Refregator.Common
         {
             if (value is string word)
             {
-                int length = 15;
+                int length = 10;
                 var hoge = word.Length >= length ? (word.Substring(0, length) + "...").ToString() : word.ToString();
                 return hoge;
             }

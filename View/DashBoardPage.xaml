@@ -32,31 +32,25 @@
         </Grid.RowDefinitions>
 
         <!-- 使用している食材ランキング -->
-        <!--<DataGrid Grid.Column="1" Margin="5,40" ItemsSource="{Binding Foods}" AutoGenerateColumns="False" IsReadOnly="True">-->
         <DockPanel>
             <TextBlock DockPanel.Dock="Top" Text="食品利用頻度ランキング" HorizontalAlignment="Left"  Margin="10,5" FontSize="22"/>
 
-            <!--<ItemsControl ItemsSource="{Binding UsestFoods}" Margin="10">-->
-            <ItemsControl ItemsSource="{Binding Test_2}" Margin="10">
+            <ItemsControl ItemsSource="{Binding UsedCountFrequencyFoodList}" Margin="10">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel Margin="5" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
-                    <!--<DataTemplate DataType="{x:Type m:FoodModel}">-->
                     <DataTemplate >
                         <StackPanel Margin="5,5,0,0" >
-                            <!--<TextBlock Text="{Binding Number}" FontSize="18" Margin="5" />-->
-                            <!--<TextBlock Text="{Binding i}" FontSize="18" Margin="5" />-->
                             <TextBlock FontSize="18" Margin="5" >
                                 <Run Text="No." />
                                 <Run Text="{Binding i, Mode=OneWay}" />
                             </TextBlock>
                             <material:Card Margin="5" Padding="10" Height="150" Width="150">
-                                <!--<TextBlock Text="{Binding KindType, Converter={StaticResource FoodKindLanguageConverter}}" />-->
-                                <TextBlock Text="{Binding x.KindType, Converter={StaticResource FoodKindLanguageConverter}}" FontSize="14" />
-                                <!--<Image Source="{Binding Image}" />-->
+                                <TextBlock Text="{Binding x.KindType, Converter={StaticResource FoodKindLanguageConverter}}"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="WrapWithOverflow" FontSize="22" />
                             </material:Card>
                         </StackPanel>
                     </DataTemplate>
@@ -65,32 +59,46 @@
         </DockPanel>
 
         <!-- 賞味期限近いリストの表示 -->
-        <DockPanel Grid.ColumnSpan="1" Grid.Column="1" Grid.Row="0">
-            <TextBlock DockPanel.Dock="Top" Margin="10,5" Text="賞味期限が近い食材" FontSize="22" />
-            <DataGrid Margin="10" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding Test}" >
+        <DockPanel Grid.ColumnSpan="1" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">
+            <TextBlock DockPanel.Dock="Top" Margin="0,5" Text="賞味期限一覧" FontSize="22" />
+            <DataGrid Margin="10" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding FoodLimitDateList}" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="No" Binding="{Binding i, Mode=OneWay}" />
-                    <DataGridTextColumn Header="名前" Binding="{Binding x.Name, Converter={StaticResource StringCuttingConverter}}" />
-                    <DataGridTextColumn Header="期限日" Binding="{Binding x.LimitDate, StringFormat={}{0:yyyy/MM/dd(ddd)}}"/>
+                    <!--<DataGridTextColumn Header="名前" Binding="{Binding x.Name, Converter={StaticResource StringCuttingConverter}}" Width="200" />-->
+                    <DataGridTextColumn Header="名前" Binding="{Binding x.Name}" Width="200" >
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="期限日" Binding="{Binding x.LimitDate, StringFormat={}{0:yyyy/MM/dd(ddd)}}" />
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
 
-        <Label Content="食品使用履歴" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontSize="22" Foreground="Black" />
-        <Label Content="日付" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontSize="18" Foreground="Black" VerticalAlignment="Bottom" />
-        <lvc:CartesianChart Grid.ColumnSpan="2" Grid.Row="1" Margin="10,40" Series="{Binding GraphSources}" >
-            <lvc:CartesianChart.AxisX>
-                <lvc:Axis FontSize="14" Foreground="Black" Labels="{Binding Labels, StringFormat={}{0:yyyy/MM/dd}}" >
-                </lvc:Axis>
-            </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
-                <lvc:Axis Title="食品数" Margin="5,0" FontSize="18" Foreground="Black" MinValue="0" >
-                    <lvc:Axis.Separator>
-                        <lvc:Separator Step="1" IsEnabled="True" />
-                    </lvc:Axis.Separator>
-                </lvc:Axis>
-            </lvc:CartesianChart.AxisY>
-        </lvc:CartesianChart>
+        <TextBlock Grid.Row="1"  FontSize="22" Text="食材使用回数一覧" Margin="10,5" />
+        <ScrollViewer Grid.Row="1" Grid.ColumnSpan="1" Margin="10,50,60,0" VerticalScrollBarVisibility="Auto" >
+            <ItemsControl ItemsSource="{Binding FoodTypeCatalog}" >
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Margin="5" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <material:Card UniformCornerRadius="5" Height="120" Width="130" Margin="10" >
+                            <StackPanel>
+                                <TextBlock Text="種類名" FontSize="14" />
+                                <TextBlock Text="{Binding FoodType, Converter={StaticResource FoodKindLanguageConverter}}" FontSize="18" HorizontalAlignment="Center" />
+                                <TextBlock Text="使用回数" FontSize="14" Margin="0,20,0,0" />
+                                <TextBlock Text="{Binding UsedTime, StringFormat={}{0}回}" FontSize="18" HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </material:Card>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
 
     </Grid>
 </Page>

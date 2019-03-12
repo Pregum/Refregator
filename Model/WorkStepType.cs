@@ -30,6 +30,10 @@ namespace MVVM_Refregator.Model
         /// <summary>
         /// 削除
         /// </summary>
-        Delete = 8
+        Delete = 8,
+        /// <summary>
+        /// 使用
+        /// </summary>
+        Use = 16,
     }
 }

@@ -8,7 +8,7 @@ namespace MVVM_Refregator.Model
     public class Nutrient
     {
         /// <summary>
-        /// 栄養素の値
+        /// 栄養価
         /// </summary>
         public double Value { get; private set; }
         /// <summary>
@@ -31,6 +31,85 @@ namespace MVVM_Refregator.Model
             this.Value = value;
             this.UnitKind = unitKind;
             this.IsEstimateValue = isEstimateValue;
+        }
+
+        /// <summary>
+        /// 引数の単位に栄養価を変換する
+        /// </summary>
+        /// <param name="unit"></param>
+        /// <returns></returns>
+        public double ConvertValue(UnitKind unit)
+        {
+            if (unit == UnitKind.Undefine)
+            {
+                throw new ArgumentException("UnitKindが未定義です。");
+            }
+
+            switch (this.UnitKind)
+            {
+                case UnitKind.kcal:
+                    if (unit == UnitKind.kj)
+                    {
+                        return this.Value * 4.184;
+                    }
+                    else
+                    {
+                        throw new ArgumentException($"{this.UnitKind}を{unit}に変換できません。");
+                    }
+                case UnitKind.kj:
+                    if (unit == UnitKind.kcal)
+                    {
+                        return this.Value / 4.184;
+                    }
+                    else
+                    {
+                        throw new ArgumentException($"{this.UnitKind}を{unit}に変換できません。");
+                    }
+                case UnitKind.g:
+                    if (unit == UnitKind.mg)
+                    {
+                        return this.Value * 1000;
+                    }
+                    else if(unit == UnitKind.micro_g)
+                    {
+                        return this.Value * 1000000;
+                    }
+                    else
+                    {
+                        throw new ArgumentException($"{this.UnitKind}を{unit}に変換できません。");
+                    }
+                case UnitKind.mg:
+                    if (unit == UnitKind.g)
+                    {
+                        return this.Value * 0.001;
+                    }
+                    else if(unit == UnitKind.micro_g)
+                    {
+                        return this.Value * 1000;
+                    }
+                    else
+                    {
+                        throw new ArgumentException($"{this.UnitKind}を{unit}に変換できません。");
+                    }
+                case UnitKind.micro_g:
+                    if (unit == UnitKind.g)
+                    {
+                        return this.Value * 0.000001;
+                    }
+                    else if(unit == UnitKind.mg)
+                    {
+                        return this.Value * 0.001;
+                    }
+                    else
+                    {
+                        throw new ArgumentException($"{this.UnitKind}を{unit}に変換できません。");
+                    }
+                case UnitKind.percent:
+                    throw new ArgumentException("%は変換先がありません。");
+                case UnitKind.Undefine:
+                default:
+                    throw new ArgumentException("UnitKindが未定義です。");
+            }
         }
 
         /// <summary>

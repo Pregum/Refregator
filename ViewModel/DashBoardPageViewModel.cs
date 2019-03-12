@@ -2,11 +2,7 @@
 using System.Linq;
 using MVVM_Refregator.Model;
 using System.Collections.ObjectModel;
-using System.Collections.Generic;
 using System;
-using System.Collections;
-using LiveCharts.Wpf;
-using LiveCharts;
 
 namespace MVVM_Refregator.ViewModel
 {
@@ -18,45 +14,71 @@ namespace MVVM_Refregator.ViewModel
 
         public ObservableCollection<FoodModel> DangerousFoods { get; }
 
-        public IEnumerable<object> Test { get; }
+        public ObservableCollection<object> UsedCountFrequencyFoodList { get; }
 
-        public IEnumerable<object> Test_2 { get; }
+        public ObservableCollection<object> FoodLimitDateList { get; }
 
-        public SeriesCollection GraphSources { get; }
-
-        public ObservableCollection<string> Labels { get; }
-
-        public Func<string, string> Format { get; }
-
+        public ObservableCollection<object> FoodTypeCatalog { get; }
 
         public DashBoardPageViewModel()
         {
-            //this.UsestFoods = new ObservableCollection<FoodModel>(this._foodShelfModel.FoodCollection.Where(x => x.HasUsed).GroupBy(x => x.KindType).OrderBy(x => x.Count()).Take(3).Select(x => x.First()));
-            this.Test_2 = new ObservableCollection<object>(this._foodShelfModel.FoodCollection.Where(x => x.HasUsed).GroupBy(x => x.KindType).OrderBy(x => x.Count()).Take(3).Select(x => x.First()).Select((x, i) => new { x, i = (i + 1) }));
+            this.UsedCountFrequencyFoodList = new ObservableCollection<object>(this._foodShelfModel
+                .FoodCollection
+                .Where(x => x.HasUsed)
+                .GroupBy(x => x.KindType)
+                .OrderByDescending(x => x.Count())
+                .ThenBy(x => x.First().KindType)
+                .Take(3)
+                .Select(x => x.First())
+                .Select((x, i) => new { x, i = (i + 1) }));
 
-            //this.DangerousFoods = new ObservableCollection<FoodModel>(this._foodShelfModel.FoodCollection.Where(x => !x.HasUsed).OrderBy(x => x.LimitDate));
-            //this.Test = new ObservableCollection<object>(this._foodShelfModel.FoodCollection.Where(x => !x.HasUsed).OrderBy(x => x.LimitDate)).Select((x, i) => new { x, i = (i + 1) });
-            this.Test = new ObservableCollection<object>(this._foodShelfModel.FoodCollection.Where(x => !x.HasUsed && x.LimitDate.Date >= DateTime.Today.Date).OrderBy(x => x.LimitDate)).Select((x, i) => new { x, i = (i + 1) });
+            this.FoodLimitDateList = new ObservableCollection<object>(this._foodShelfModel
+                .FoodCollection
+                .Where(x => !x.HasUsed && x.LimitDate.Date >= DateTime.Today.Date)
+                .OrderBy(x => x.LimitDate)
+                .Select((x, i) => new { x, i = (i + 1) }));
 
-            var sources = this._foodShelfModel.FoodCollection.Where(x => x.HasUsed && x.UsedDate > DateTime.Today.AddMonths(-1)).GroupBy(x => x.UsedDate);
-            var hoge = Enumerable.Range(1, (DateTime.Today - DateTime.Today.AddMonths(-1)).Days).Select(x => DateTime.Today.AddMonths(-1).AddDays(x))
-                .GroupJoin(sources, (x) => x.Date, source => source.Key, (date, values) => new { Key = date, Num = values.FirstOrDefault(x => x.Key == date)?.Count() ?? 0});   // new { Key = x.Key, Num = x.Count() }));
+            var foodTypes = Enum.GetValues(typeof(FoodType)).Cast<FoodType>();
+            var usedFoods = this._foodShelfModel
+                .FoodCollection
+                .Where(x => x.HasUsed)
+                .GroupBy(x => x.KindType);
+            //.OrderBy(x => x.First().KindType);
 
-            this.GraphSources = new SeriesCollection
-            {
-                new LineSeries
-                {
-                    Values = new ChartValues<int>( hoge.Select(x => x.Num))
-                }
-            };
+            //this.FoodTypeCatalog = new ObservableCollection<object>(
+            //    foodTypes.Select(x =>
+            //        new {
+            //            FoodType = x,
+            //            UsedTime = usedFoods.Count(y => y.First().KindType == x)
+            //        }));
 
-            this.Labels = new ObservableCollection<string>(hoge.Select(x => x.Key.ToString("yyyy/MM/dd")));
+            //this.FoodTypeCatalog = new ObservableCollection<object>(
+            //    foodTypes.Select(x =>
+            //        new
+            //        {
+            //            FoodType = x,
+            //            UsedTime = usedFoods.Where(y => y.First().KindType == x).Count()
+            //        }));
 
-            this.Format = new Func<string, string>(x => x + "  hoge ");
-            
+            this.FoodTypeCatalog = new ObservableCollection<object>(
+                foodTypes.GroupJoin(
+                    usedFoods,
+                    foodType => foodType,
+                    usedFood => usedFood.Key,
+                    (fType, usedType) =>
+                    new
+                    {
+                        fType = fType,
+                        usedType = usedType,
+                    }).
+                    SelectMany(
+                    x => x.usedType.DefaultIfEmpty(),
+                    (x, t) => new
+                    {
+                        FoodType = x.fType,
+                        UsedTime = t?.Count() ?? 0
+                    }));
 
-
-            //this.Labels = new ObservableCollection<string>(Enumerable.Range(0,(DateTime.Today - DateTime.Today.AddMonths(-1)).Days).Select(x => DateTime.Today.AddMonths(-1).AddDays(x).ToString("yyyy/MM/dd")));
         }
     }
 }
