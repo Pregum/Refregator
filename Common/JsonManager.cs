@@ -148,8 +148,6 @@ namespace MVVM_Refregator.Common
             var seri = foodCompositions.Select(x =>
             {
 
-                //var hoge = new
-                //{
                 return new JObject(
                     new JProperty("Food Group", x.FoodGroup),
                     new JProperty("Item No.", x.ItemNo),
