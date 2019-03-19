@@ -96,9 +96,9 @@ MIT ライセンスです。
 > Copyright (c) 2017 xfedererx
 * 用途 : 通知
 * ライセンス : The MIT License (MIT)
-* ライセンス全文 : [LIcenses/Notifications.Wpf.txt](https://github.com/Pregum/Refregator/blob/master/Licenses/Notifications.Wpf.txt) 
+* ライセンス全文 : [Licenses/Notifications.Wpf.txt](https://github.com/Pregum/Refregator/blob/master/Licenses/Notifications.Wpf.txt) 
 
 [UwpDesktop](https://github.com/ljw1004/uwp-desktop/blob/master/README.md)
 * 用途 : LocalStorage使用
 * ライセンス : Apache License Version 2.0 
-* ライセンス全文(https://github.com/Pregum/Refregator/blob/master/Licenses/Notifications.Wpf.txt)
+* ライセンス全文 : [Licenses/UwpDesktop.txt](https://github.com/Pregum/Refregator/blob/master/Licenses/UwpDesktop.txt)
