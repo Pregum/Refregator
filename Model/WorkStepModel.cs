@@ -74,6 +74,13 @@ namespace MVVM_Refregator.Model
                 new FoodConfirmStep() };
 
         /// <summary>
+        /// 使用済作業のステップ
+        /// </summary>
+        private ObservableCollection<IStep> _useStep
+            = new ObservableCollection<IStep>
+            { new FoodConfirmStep() };
+
+        /// <summary>
         /// 現在の作業ステップ
         /// </summary>
         private IStep _currentStep;
@@ -133,7 +140,7 @@ namespace MVVM_Refregator.Model
         /// <summary>
         /// 次のステップへ移ります
         /// </summary>
-        public void NextStep(NavigationService navigation)
+        public async System.Threading.Tasks.Task NextStepAsync(NavigationService navigation)
         {
             this._currentStep.Update();
             // 現在の作業が完了していなければ終了
@@ -155,22 +162,21 @@ namespace MVVM_Refregator.Model
                             FoodModel.IncrementId();
                             this._manipulateFood.Id = FoodModel.NextId;
                         }
-                        this._foodShelfModel.Create(this._manipulateFood);
-                        this.CurrentWorkStepsType = WorkType.StandBy;
+                        await this._foodShelfModel.CreateAsync(this._manipulateFood);
                         break;
                     // 更新作業
                     case WorkType.Update:
                         var food = this._manipulateFood;
-                        //this._foodShelfModel.Update(this._temporalFood.Id, food.Name, food.LimitDate, food.BoughtDate, food.KindType, food.Image);
-                        this._foodShelfModel.Update(this._temporalFood.Id, food.Name, food.LimitDate, food.UsedDate, food.KindType, food.Image, food.HasUsed); 
-                        this.CurrentWorkStepsType = WorkType.StandBy;
+                        await this._foodShelfModel.UpdateAsync(this._temporalFood.Id, food.Name, food.LimitDate, food.UsedDate, food.KindType, food.Image, food.HasUsed); 
                         break;
                     // 削除作業
                     case WorkType.Delete:
-                        this._foodShelfModel.Delete(this._manipulateFood.Id);
-                        this.CurrentWorkStepsType = WorkType.StandBy;
+                        await this._foodShelfModel.DeleteAsync(this._manipulateFood.Id);
                         break;
-                    // 未定義または読込作業またはデフォルト
+                    case WorkType.Use:
+                        await this._foodShelfModel.SetUsedAsync(this._manipulateFood);
+                        break;
+                        // 未定義または読込作業またはデフォルト
                     case WorkType.StandBy:
                     case WorkType.None:
                     default:
@@ -187,7 +193,6 @@ namespace MVVM_Refregator.Model
             }
 
             this.RaisePropertyChanged(nameof(this.IsFirstStep));
-            // IsLastStepプロパティの通知
             this.RaisePropertyChanged(nameof(this.IsLastStep));
         }
 
@@ -196,7 +201,7 @@ namespace MVVM_Refregator.Model
         /// </summary>
         public void SetStandBy()
         {
-            this._currentWorkSteps = this._registerSteps;
+            this.CurrentWorkSteps = this._registerSteps;
             this._currentStepIndex = 0;
             this._currentStep = this._currentWorkSteps[this._currentStepIndex];
             this.CurrentWorkStepsType = WorkType.StandBy;
@@ -299,12 +304,35 @@ namespace MVVM_Refregator.Model
         }
 
         /// <summary>
+        /// 食材の使用済み作業に移ります
+        /// </summary>
+        /// <param name="useFood"></param>
+        /// <param name="navigation"></param>
+        public void NavigateUseWork(FoodModel useFood, NavigationService navigation)
+        {
+            this.ManipulateFood = useFood;
+            this.CurrentWorkSteps = this._useStep;
+            foreach (IStep aStep in this.CurrentWorkSteps)
+            {
+                aStep.Init();
+            }
+
+            this._currentStepIndex = 0;
+            this.CurrentWorkStepsType = WorkType.Use;
+            this._currentStep = this._currentWorkSteps.First();
+            this._currentStep.Navigate(navigation);
+
+            this.RaisePropertyChanged(nameof(this.IsFirstStep));
+            this.RaisePropertyChanged(nameof(this.IsLastStep));
+        }
+
+        /// <summary>
         /// 食品を使用済みに設定します
         /// </summary>
         /// <param name="targetFood">対象の食品</param>
-        public void SetUsed(FoodModel targetFood)
+        public async System.Threading.Tasks.Task SetUsedAsync(FoodModel targetFood)
         {
-            this._foodShelfModel.SetUsed(targetFood);
+            await this._foodShelfModel.SetUsedAsync(targetFood);
         }
     }
 }

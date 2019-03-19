@@ -22,9 +22,27 @@ namespace MVVM_Refregator.View
     {
         public SettingPage()
         {
+            var canNotify = Properties.Settings.Default.WindowNotificationStatus; 
             InitializeComponent();
 
-            this.DataContext = System.IO.File.ReadAllText(@"license.txt");
+            //this.DataContext = System.IO.File.ReadAllText(@"license.txt");
+            //this.DataContext = System.IO.File.ReadAllText(MVVM_Refregator.Properties.Resources.license);
+            this.DataContext = MVVM_Refregator.Properties.Resources.license;
+
+            if (canNotify) { this.OnNotification.IsChecked = true; }
+            else { this.OffNotification.IsChecked = true; }
+        }
+
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.WindowNotificationStatus = true;
+            Properties.Settings.Default.Save();
+        }
+
+        private void RadioButton_Checked_1(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.WindowNotificationStatus = false;
+            Properties.Settings.Default.Save();
         }
     }
 }

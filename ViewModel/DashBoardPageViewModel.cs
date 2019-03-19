@@ -42,14 +42,41 @@ namespace MVVM_Refregator.ViewModel
             var usedFoods = this._foodShelfModel
                 .FoodCollection
                 .Where(x => x.HasUsed)
-                .GroupBy(x => x.KindType)
-                .OrderBy(x => x.First().KindType);
+                .GroupBy(x => x.KindType);
+            //.OrderBy(x => x.First().KindType);
+
+            //this.FoodTypeCatalog = new ObservableCollection<object>(
+            //    foodTypes.Select(x =>
+            //        new {
+            //            FoodType = x,
+            //            UsedTime = usedFoods.Count(y => y.First().KindType == x)
+            //        }));
+
+            //this.FoodTypeCatalog = new ObservableCollection<object>(
+            //    foodTypes.Select(x =>
+            //        new
+            //        {
+            //            FoodType = x,
+            //            UsedTime = usedFoods.Where(y => y.First().KindType == x).Count()
+            //        }));
 
             this.FoodTypeCatalog = new ObservableCollection<object>(
-                foodTypes.Select(x =>
-                    new {
-                        FoodType = x,
-                        UsedTime = usedFoods.Count(y => y.First().KindType == x)
+                foodTypes.GroupJoin(
+                    usedFoods,
+                    foodType => foodType,
+                    usedFood => usedFood.Key,
+                    (fType, usedType) =>
+                    new
+                    {
+                        fType = fType,
+                        usedType = usedType,
+                    }).
+                    SelectMany(
+                    x => x.usedType.DefaultIfEmpty(),
+                    (x, t) => new
+                    {
+                        FoodType = x.fType,
+                        UsedTime = t?.Count() ?? 0
                     }));
 
         }

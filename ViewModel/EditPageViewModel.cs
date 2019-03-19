@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows.Navigation;
@@ -125,14 +124,61 @@ namespace MVVM_Refregator.ViewModel
             // FoodShelfModel関係
             this._foodShelfModel = FoodShelfModel.GetInstance();
             this.Foods = this._foodShelfModel.FoodCollection
-                //.Where(x => !x.HasUsed)
                 .ToReadOnlyReactiveCollection(_foodShelfModel.FoodCollection.ToCollectionChanged(), System.Reactive.Concurrency.Scheduler.CurrentThread)
                 .AddTo(this.Disposable);
-            this._foodShelfModel.FoodCollection.CollectionChangedAsObservable().Subscribe(x => RaisePropertyChanged(nameof(Foods)));
+
+            this._foodShelfModel.FoodCollection.CollectionChangedAsObservable().Subscribe(x =>
+            {
+                switch (x.Action)
+                {
+                    // 食材追加時
+                    case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
+                        foreach (FoodModel food in x.NewItems)
+                        {
+                            food.PropertyChanged += this.Afood_PropertyChanged;
+                        }
+                        break;
+                    // 食材削除時
+                    case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
+                        foreach (FoodModel food in x.OldItems)
+                        {
+                            food.PropertyChanged -= this.Afood_PropertyChanged;
+                        }
+                        break;
+                    // 食材置き換え時
+                    case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
+                        foreach (FoodModel food in x.OldItems)
+                        {
+                            food.PropertyChanged -= this.Afood_PropertyChanged;
+                        }
+                        foreach (FoodModel food in x.NewItems)
+                        {
+                            food.PropertyChanged += this.Afood_PropertyChanged;
+                        }
+                        break;
+                    // 食材移動時
+                    case System.Collections.Specialized.NotifyCollectionChangedAction.Move:
+                        break;
+                    // 食材リセット時
+                    case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
+                        foreach (var food in this._foodShelfModel.FoodCollection)
+                        {
+                            food.PropertyChanged -= this.Afood_PropertyChanged;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            });
+
+            foreach (var afood in this._foodShelfModel.FoodCollection)
+            {
+                afood.PropertyChanged += this.Afood_PropertyChanged;
+            }
 
             // WorkStepModel関係
             this._workStepModel = WorkStepModel.GetInstance();
-            this.WorkSteps = this._workStepModel.ObserveProperty(x => x.CurrentWorkSteps).ToReactiveProperty();
+            this.WorkSteps = this._workStepModel.ObserveProperty(x => x.CurrentWorkSteps).ToReactiveProperty().AddTo(this.Disposable);
 
             // スタンバイモードでなければスタンバイモードに変更する
             if (this._workStepModel.CurrentWorkStepsType != WorkType.StandBy)
@@ -141,47 +187,42 @@ namespace MVVM_Refregator.ViewModel
             }
 
             // 選択食材プロパティの購読
-            this.SelectedFood.Subscribe((_) =>
-            {
-                this.IsSelectedFood.Value = this.SelectedFood?.Value != null;
-            });
-
-            // 最後のステップ判定プロパティの購読
-            this.IsLastStep = this._workStepModel.ObserveProperty(x => x.IsLastStep).ToReactiveProperty();
-            this.IsLastStep.Subscribe((isLastStep) =>
-            {
-                if (isLastStep)
-                {
-                    switch (this._workStepModel.CurrentWorkStepsType)
-                    {
-                        case WorkType.Create:
-                            this.NextContent.Value = "登録";
-                            break;
-                        case WorkType.Update:
-                            this.NextContent.Value = "変更";
-                            break;
-                        case WorkType.Delete:
-                            this.NextContent.Value = "削除";
-                            break;
-                        case WorkType.None:
-                        case WorkType.StandBy:
-                        default:
-                            break;
-                    }
-                }
-                else
-                {
-                    this.NextContent.Value = "進む";
-                }
-            });
+            //this.SelectedFood.Subscribe((_) =>
+            //{
+            //    this.IsSelectedFood.Value = this.SelectedFood?.Value != null;
+            //});
+            this.IsSelectedFood = this.SelectedFood.Select(x => x != null).ToReactiveProperty().AddTo(this.Disposable);
 
             // 現在の作業の種類プロパティの購読
-            this.CurrentWorkStepsType = this._workStepModel.ObserveProperty(m => m.CurrentWorkStepsType).ToReactiveProperty();
-            this.CurrentWorkStepsType.Subscribe((currentWorkStepsType) =>
-            {
-                this.ButtonVisibility.Value = currentWorkStepsType == WorkType.StandBy;
-                this.WorkLoadVisibility.Value = currentWorkStepsType != WorkType.StandBy;
-            });
+            this.CurrentWorkStepsType = this._workStepModel.ObserveProperty(m => m.CurrentWorkStepsType).ToReactiveProperty().AddTo(this.Disposable);
+            this.ButtonVisibility = this.CurrentWorkStepsType.Select(x => x == WorkType.StandBy).ToReactiveProperty().AddTo(this.Disposable);
+            this.WorkLoadVisibility = this.CurrentWorkStepsType.Select(x => x != WorkType.StandBy).ToReactiveProperty().AddTo(this.Disposable);
+
+            // 最後のステップ判定プロパティの購読
+            this.IsLastStep = this._workStepModel.ObserveProperty(x => x.IsLastStep).ToReactiveProperty().AddTo(this.Disposable);
+
+            this.NextContent = this.CurrentWorkStepsType.CombineLatest(this.IsLastStep, (currentWorkStepsType, isLastStep) =>
+             {
+                 if (isLastStep == false)
+                 {
+                     return "進む";
+                 }
+                 switch (currentWorkStepsType)
+                 {
+                     case WorkType.Create:
+                         return "登録";
+                     case WorkType.Update:
+                         return "変更";
+                     case WorkType.Delete:
+                         return "削除";
+                     case WorkType.Use:
+                         return "使用済";
+                     case WorkType.None:
+                     case WorkType.StandBy:
+                     default:
+                         return "---";
+                 }
+             }).ToReactiveProperty().AddTo(this.Disposable);
 
             // 登録コマンドの購読
             this.Send_NavigateRegister.Subscribe((x) =>
@@ -217,27 +258,23 @@ namespace MVVM_Refregator.ViewModel
             });
 
             // 使用コマンドの購読
-            this.Send_SetUsed.Subscribe(() =>
+            this.Send_SetUsed.Subscribe((x) =>
             {
-                if (this.SelectedFood.Value != null)
+                if (x is NavigationService navigation)
                 {
-                    this._workStepModel.SetUsed(this.SelectedFood.Value);
-                    // このタイミングで使用済み食材をリストから消す
-                    this.Foods = this._foodShelfModel.FoodCollection
-                        //.Where(x => !x.HasUsed)
-                        .ToReadOnlyReactiveCollection(_foodShelfModel.FoodCollection.ToCollectionChanged(), System.Reactive.Concurrency.Scheduler.CurrentThread)
-                        .AddTo(this.Disposable);
-                    this.RaisePropertyChanged(nameof(this.Foods));
-                    this.SelectedFood.Value = null;
+                    if (this.SelectedFood.Value != null)
+                    {
+                        this._workStepModel.NavigateUseWork(this.SelectedFood.Value, navigation);
+                    }
                 }
             });
 
             // 次へコマンドの購読
-            this.Send_NextStep.Subscribe((navigationService) =>
+            this.Send_NextStep.Subscribe(async (navigationService) =>
             {
                 if (navigationService is NavigationService navigation)
                 {
-                    this._workStepModel.NextStep(navigation);
+                    await this._workStepModel.NextStepAsync(navigation);
                 }
             });
 
@@ -249,6 +286,25 @@ namespace MVVM_Refregator.ViewModel
                     this._workStepModel.PrevStep(navigation);
                 }
             });
+        }
+
+        /// <summary>
+        /// 食材のコレクションが変更されたときに発火されるイベント
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Afood_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (sender is FoodModel food)
+            {
+                if (e.PropertyName == "HasUsed")
+                {
+                    if (food.HasUsed)
+                    {
+                        this.SelectedFood.Value = null;
+                    }
+                }
+            }
         }
 
         /// <summary>

@@ -49,15 +49,6 @@ namespace MVVM_Refregator.ViewModel
             //this.FutureFoods = new ObservableCollection<FoodModel>(this.Foods.Where(x => x.LimitDate.Date >= DateTime.Today.Date && !x.HasUsed));
             this.FutureFoods = new ObservableCollection<FoodModel>(this.Foods.Where(x => !x.HasUsed));
 
-
-
-            // デバッグ用
-            //this.Send_AddFood.Subscribe((x) =>
-            //{
-            //    var ram = new Random();
-            //    this._foodShelfModel.Create("second", DateTime.Now.AddDays(ram.Next(1,8)), DateTime.Now, FoodType.Other, new BitmapImage(new Uri("/Resources/information_image.png", UriKind.Relative)));
-            //    System.Diagnostics.Debug.WriteLine($" create food.  foodName : {this._foodShelfModel.FoodCollection[0].Name}");
-            //});
         }
 
 

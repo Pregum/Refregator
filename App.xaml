@@ -5,7 +5,8 @@
              xmlns:v="clr-namespace:MVVM_Refregator.View"
              xmlns:m="clr-namespace:MVVM_Refregator.Model"
              xmlns:dra="clr-namespace:System.Windows.Media.Imaging"
-             Startup="Application_Startup">
+             Startup="Application_StartupAsync"
+             Exit="Application_Exit">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -28,9 +29,7 @@
             <BitmapImage x:Key="Steak" CacheOption="OnLoad" UriSource="Resources/039-steak.png" />
             <BitmapImage x:Key="Orange" CacheOption="OnLoad" UriSource="Resources/041-orange.png" />
             <BitmapImage x:Key="fish"  CacheOption="OnLoad" UriSource="Resources/043-fish.png" />
-            <!--<BitmapImage x:Key="salad"  CacheOption="OnLoad" UriSource="Resources/046-salad.png" />-->
-            <BitmapImage x:Key="salad"  CacheOption="OnLoad" UriSource="Resources/046-salad.png" >
-            </BitmapImage>
+            <BitmapImage x:Key="salad"  CacheOption="OnLoad" UriSource="Resources/046-salad.png" />
             <BitmapImage x:Key="Info"  CacheOption="OnLoad" UriSource="Resources/information_image.png" />
 
         </ResourceDictionary>

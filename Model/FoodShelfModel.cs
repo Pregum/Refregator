@@ -6,6 +6,8 @@ using System.Collections.ObjectModel;
 using System.Windows.Media.Imaging;
 using MVVM_Refregator.Common;
 using System.IO;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace MVVM_Refregator.Model
 {
@@ -68,6 +70,35 @@ namespace MVVM_Refregator.Model
             return true;
         }
 
+        public async Task<bool> LoadAsync(string jsonFilePath = @"food_data.json")
+        {
+            ObservableCollection<FoodModel> food = default(ObservableCollection<FoodModel>);
+            try
+            {
+                food = await JsonManager.LoadJsonFromAsync<ObservableCollection<FoodModel>>();
+            }
+            catch (Exception)
+            {
+                var result = MessageBox.Show("食材データの読み込みに失敗しました。食材データを初期化してもよろしいでしょうか?", "食材管理アプリ", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    var storage = Windows.Storage.ApplicationData.Current.LocalFolder;
+                    var file = await storage.CreateFileAsync(jsonFilePath, Windows.Storage.CreationCollisionOption.ReplaceExisting);
+                    food = default(ObservableCollection<FoodModel>);
+                }
+                else
+                {
+                    MessageBox.Show("アプリを終了します。");
+                    return false;
+                }
+            }
+            finally
+            {
+                this.FoodCollection = food ?? new ObservableCollection<FoodModel>();
+            }
+            return true;
+        }
+
         /// <summary>
         /// 現在の食材データをJsonファイル等の外部バックアップを取ります
         /// </summary>
@@ -76,6 +107,17 @@ namespace MVVM_Refregator.Model
         public bool Save(string destinationPath = @"food_data.json")
         {
             JsonManager.SaveJsonTo(this.FoodCollection, destinationPath);
+            return true;
+        }
+
+        public async Task<bool> SaveAsync(string destinationPath = @"food_data.json")
+        {
+            return await JsonManager.SaveJsonToAsync(this.FoodCollection, destinationPath);
+        }
+
+        public bool Save(Action<string, string> pathToTextFunc, string path)
+        {
+            JsonManager.SaveJsonTo(this.FoodCollection, pathToTextFunc, path);
             return true;
         }
 
@@ -89,11 +131,11 @@ namespace MVVM_Refregator.Model
         /// <param name="image">食材画像</param>
         /// <param name="hasUsed">食材は使用済みか確認用フラグ</param>
         /// <returns></returns>
-        public bool Create(string name, DateTime limitDate, DateTime boughtDate, FoodType kindType, BitmapImage image, bool hasUsed)
+        public async Task<bool> CreateAsync(string name, DateTime limitDate, DateTime boughtDate, FoodType kindType, BitmapImage image, bool hasUsed)
         {
             var newFood = new FoodModel(name, limitDate, boughtDate, kindType, image, hasUsed);
             this.FoodCollection.Add(newFood);
-            this.Save();
+            await this.SaveAsync();
 
             return true;
         }
@@ -103,12 +145,11 @@ namespace MVVM_Refregator.Model
         /// </summary>
         /// <param name="food">追加される食材</param>
         /// <returns></returns>
-        public bool Create(FoodModel food)
+        public async Task<bool> CreateAsync(FoodModel food)
         {
             this.FoodCollection.Add(food);
-            this.Save();
-
-            return true;
+            var result = await this.SaveAsync();
+            return result;
         }
 
         /// <summary>
@@ -116,12 +157,13 @@ namespace MVVM_Refregator.Model
         /// </summary>
         /// <param name="id">食材に紐づいたId</param>
         /// <returns></returns>
-        public bool Delete(uint id)
+        public async Task<bool> DeleteAsync(uint id)
         {
             if (this.FoodCollection.Count(x => x.Id == id) == 1)
             {
                 this.FoodCollection.Remove(this.FoodCollection.Single(x => x.Id == id));
-                this.Save();
+                //this.Save();
+                await this.SaveAsync();
             }
             else
             {
@@ -142,7 +184,7 @@ namespace MVVM_Refregator.Model
         /// <param name="image">食材画像</param>
         /// <param name="hasUsed">使用済みか判別フラグ</param>
         /// <returns></returns>
-        public bool Update(uint id, string name, DateTime limitDate, DateTime usedDate, FoodType kindType, BitmapImage image, bool hasUsed)
+        public async Task<bool> UpdateAsync(uint id, string name, DateTime limitDate, DateTime usedDate, FoodType kindType, BitmapImage image, bool hasUsed)
         {
             if (this.FoodCollection.Count(x => x.Id == id) == 1)
             {
@@ -155,7 +197,8 @@ namespace MVVM_Refregator.Model
                 targetFood.Image = image;
                 targetFood.HasUsed = hasUsed;
 
-                this.Save();
+                //this.Save();
+                await this.SaveAsync();
             }
             else
             {
@@ -170,23 +213,29 @@ namespace MVVM_Refregator.Model
         /// <param name="food">変更後の食材</param>
         /// <see cref="Update(uint, string, DateTime, DateTime, FoodType, BitmapImage)"/>
         /// <returns></returns>
-        public bool Update(FoodModel food)
+        public async Task<bool> UpdateAsync(FoodModel food)
         {
             //return Update(food.Id, food.Name, food.LimitDate, food.BoughtDate, food.KindType, food.Image);
-            return Update(food.Id, food.Name, food.LimitDate, food.UsedDate, food.KindType, food.Image, food.HasUsed);
+            return await this.UpdateAsync(food.Id, food.Name, food.LimitDate, food.UsedDate, food.KindType, food.Image, food.HasUsed);
         }
 
         /// <summary>
         /// 食材を使用済みに設定します
         /// </summary>
         /// <param name="targetFood">対象の食品</param>
-        public void SetUsed(FoodModel targetFood)
+        public async Task SetUsedAsync(FoodModel targetFood)
         {
-            targetFood.HasUsed = true;
-            targetFood.UsedDate = DateTime.Today;
+            var destinationFood = this.FoodCollection.SingleOrDefault(x => x.Id == targetFood.Id);
 
-            this.Save();
+            if (destinationFood != null)
+            {
+                destinationFood.HasUsed = true;
+                destinationFood.UsedDate = DateTime.Today;
+
+                //this.Save();
+                await this.SaveAsync();
+                this.RaisePropertyChanged(nameof(this.FoodCollection));
+            }
         }
-
     }
 }
