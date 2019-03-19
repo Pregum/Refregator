@@ -101,4 +101,4 @@ MIT ライセンスです。
 [UwpDesktop](https://github.com/ljw1004/uwp-desktop/blob/master/README.md)
 * 用途 : LocalStorage使用
 * ライセンス : Apache License Version 2.0 
-* ライセンス全文(https://github.com/Pregum/Refregator/blob/master/Licenses/Notifications.Wpf.txt)
+* ライセンス全文(https://github.com/Pregum/Refregator/blob/master/Licenses/UwpDesktop.txt)
