@@ -25,7 +25,9 @@ namespace MVVM_Refregator.View
             var canNotify = Properties.Settings.Default.WindowNotificationStatus; 
             InitializeComponent();
 
-            this.DataContext = System.IO.File.ReadAllText(@"license.txt");
+            //this.DataContext = System.IO.File.ReadAllText(@"license.txt");
+            //this.DataContext = System.IO.File.ReadAllText(MVVM_Refregator.Properties.Resources.license);
+            this.DataContext = MVVM_Refregator.Properties.Resources.license;
 
             if (canNotify) { this.OnNotification.IsChecked = true; }
             else { this.OffNotification.IsChecked = true; }

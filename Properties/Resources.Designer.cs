@@ -22,7 +22,7 @@ namespace MVVM_Refregator.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace MVVM_Refregator.Properties {
         ///   このクラスで使用されているキャッシュされた ResourceManager インスタンスを返します。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MVVM_Refregator.Properties.Resources", typeof(Resources).Assembly);
@@ -51,12 +51,58 @@ namespace MVVM_Refregator.Properties {
         ///   現在のスレッドの CurrentUICulture プロパティをオーバーライドします。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   [
+        ///  {
+        ///    &quot;Food Group&quot;: 1,
+        ///    &quot;Item No.&quot;: 1001,
+        ///    &quot;Index No.&quot;: 1,
+        ///    &quot;Food and Description&quot;: &quot;アマランサス　玄穀　&quot;,
+        ///    &quot;Refuse&quot;: 0.0,
+        ///    &quot;Energy (kcal)&quot;: 358.0,
+        ///    &quot;Energy (kJ)&quot;: 1498.0,
+        ///    &quot;Water&quot;: 13.5,
+        ///    &quot;Protein, calculated from  reference nitrogen&quot;: 12.7,
+        ///    &quot;Protein, calculated as  the sum of amino acid residues&quot;: 12.5,
+        ///    &quot;Lipid&quot;: 6.0,
+        ///    &quot;Fatty acid, triacyl-glycerol equivalents&quot;: 5.0,
+        ///    &quot;Fatty acid, saturated&quot;: 1.18,
+        ///    &quot;Fatty acid, mono-unsaturated&quot;: 1.48,
+        ///    &quot;Fatty acid, p [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string food_composition_japanese {
+            get {
+                return ResourceManager.GetString("food_composition_japanese", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    - LiveCharts
+        /// - LiveCharts.Wpf
+        ///
+        ///The MIT License (MIT)
+        ///
+        ///Copyright (c) 2016 Alberto Rodriguez &amp; LiveCharts contributors
+        ///
+        ///Permission is hereby granted, free of charge, to any person obtaining a copy
+        ///of this software and associated documentation files (the &quot;Software&quot;), to deal
+        ///in the Software without restriction, including without limitation the rights
+        ///to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        ///copies of the Software, and to permit persons to whom the Software is
+        ///furn [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string license {
+            get {
+                return ResourceManager.GetString("license", resourceCulture);
             }
         }
     }

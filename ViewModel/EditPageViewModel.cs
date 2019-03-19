@@ -270,11 +270,11 @@ namespace MVVM_Refregator.ViewModel
             });
 
             // 次へコマンドの購読
-            this.Send_NextStep.Subscribe((navigationService) =>
+            this.Send_NextStep.Subscribe(async (navigationService) =>
             {
                 if (navigationService is NavigationService navigation)
                 {
-                    this._workStepModel.NextStep(navigation);
+                    await this._workStepModel.NextStepAsync(navigation);
                 }
             });
 

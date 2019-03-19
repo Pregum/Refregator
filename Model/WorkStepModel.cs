@@ -140,7 +140,7 @@ namespace MVVM_Refregator.Model
         /// <summary>
         /// 次のステップへ移ります
         /// </summary>
-        public void NextStep(NavigationService navigation)
+        public async System.Threading.Tasks.Task NextStepAsync(NavigationService navigation)
         {
             this._currentStep.Update();
             // 現在の作業が完了していなければ終了
@@ -162,19 +162,19 @@ namespace MVVM_Refregator.Model
                             FoodModel.IncrementId();
                             this._manipulateFood.Id = FoodModel.NextId;
                         }
-                        this._foodShelfModel.Create(this._manipulateFood);
+                        await this._foodShelfModel.CreateAsync(this._manipulateFood);
                         break;
                     // 更新作業
                     case WorkType.Update:
                         var food = this._manipulateFood;
-                        this._foodShelfModel.Update(this._temporalFood.Id, food.Name, food.LimitDate, food.UsedDate, food.KindType, food.Image, food.HasUsed); 
+                        await this._foodShelfModel.UpdateAsync(this._temporalFood.Id, food.Name, food.LimitDate, food.UsedDate, food.KindType, food.Image, food.HasUsed); 
                         break;
                     // 削除作業
                     case WorkType.Delete:
-                        this._foodShelfModel.Delete(this._manipulateFood.Id);
+                        await this._foodShelfModel.DeleteAsync(this._manipulateFood.Id);
                         break;
                     case WorkType.Use:
-                        this._foodShelfModel.SetUsed(this._manipulateFood);
+                        await this._foodShelfModel.SetUsedAsync(this._manipulateFood);
                         break;
                         // 未定義または読込作業またはデフォルト
                     case WorkType.StandBy:
@@ -330,9 +330,9 @@ namespace MVVM_Refregator.Model
         /// 食品を使用済みに設定します
         /// </summary>
         /// <param name="targetFood">対象の食品</param>
-        public void SetUsed(FoodModel targetFood)
+        public async System.Threading.Tasks.Task SetUsedAsync(FoodModel targetFood)
         {
-            this._foodShelfModel.SetUsed(targetFood);
+            await this._foodShelfModel.SetUsedAsync(targetFood);
         }
     }
 }

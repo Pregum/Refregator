@@ -97,6 +97,12 @@ namespace MVVM_Refregator.Model
             this.InitFoodCollection();
         }
 
+        public void LoadFoodComposition(Func<string, string> pathToTextFunc, string targetPath)
+        {
+            this.FoodCompositions = JsonManager.ReadJson(pathToTextFunc, targetPath);
+            this.InitFoodCollection();
+        }
+
         /// <summary>
         /// バインド用コレクションの初期化
         /// </summary>

@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Collections.ObjectModel;
 using System.Text;
+using System;
+using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace MVVM_Refregator.Common
 {
@@ -26,6 +29,38 @@ namespace MVVM_Refregator.Common
             return deserialized_object;
         }
 
+        public static T LoadJsonFrom<T>(Func<string, string> pathToTextFunc, string path)
+        {
+            T deserializedObject = JsonConvert.DeserializeObject<T>(pathToTextFunc(path));
+            return deserializedObject;
+        }
+
+        public static async Task<T> LoadJsonFromAsync<T>(string targetFilePath = @"food_data.json")
+        {
+            try
+            {
+                var storage = Windows.Storage.ApplicationData.Current.LocalFolder;
+                var file = await storage.GetFileAsync(targetFilePath);
+                var text = await Windows.Storage.FileIO.ReadTextAsync(file);
+
+                T deserializedObject;
+                if (string.IsNullOrWhiteSpace(text) == false)
+                {
+                    deserializedObject = JsonConvert.DeserializeObject<T>(text);
+                }
+                else
+                {
+                    deserializedObject = default(T);
+                }
+                return deserializedObject;
+            }
+            catch (Exception)
+            {
+                //System.Windows.MessageBox.Show("ファイルが破損しています。", "食材管理アプリ");
+                throw;
+            }
+        }
+
         /// <summary>
         /// 現在のオブジェクトをjsonファイルに保存します
         /// </summary>
@@ -40,6 +75,34 @@ namespace MVVM_Refregator.Common
             return destinationPath;
         }
 
+        public static void SaveJsonTo<T>(T sourceObject, Action<string, string> pathToTextFunc, string path)
+        {
+            var jsonString = JsonConvert.SerializeObject(sourceObject, Formatting.Indented);
+            pathToTextFunc(path, jsonString);
+        }
+
+        public static async Task<bool> SaveJsonToAsync<T>(T sourceObject, string path)
+        {
+            var jsonString = JsonConvert.SerializeObject(sourceObject, Formatting.Indented);
+            StorageFolder storage = Windows.Storage.ApplicationData.Current.LocalFolder;
+            try
+            {
+                StorageFile file = await storage.GetFileAsync(path);
+                await Windows.Storage.FileIO.WriteTextAsync(file, jsonString);
+            }
+            catch (Exception)
+            {
+            }
+
+            return true;
+        }
+
+        public static ObservableCollection<FoodComposition> ReadJson(Func<string, string> readToTextFunc, string targetPath)
+        {
+            JToken foodComposition = JToken.Parse(readToTextFunc(targetPath));
+            return ConvertToList(foodComposition);
+        }
+
         /// <summary>
         /// 食品栄養標準成分表を読み込む
         /// </summary>
@@ -47,7 +110,12 @@ namespace MVVM_Refregator.Common
         /// <returns></returns>
         public static ObservableCollection<FoodComposition> ReadJson(string targetPath = @"food_composition_japanese.json")
         {
-            var foodComposition = JToken.Parse(File.ReadAllText(targetPath, Encoding.GetEncoding("shift-jis")));
+            JToken foodComposition = JToken.Parse(File.ReadAllText(targetPath, Encoding.GetEncoding("shift-jis")));
+            return ConvertToList(foodComposition);
+        }
+
+        private static ObservableCollection<FoodComposition> ConvertToList(JToken foodComposition)
+        {
             IList<JToken> compositionList = foodComposition.Children().ToList();
             var list = new ObservableCollection<FoodComposition>();
             for (int i = 0; i < compositionList.Count; i++)
@@ -221,6 +289,7 @@ namespace MVVM_Refregator.Common
             }).ToList();
 
             return JsonManager.SaveJsonTo(seri, destinationPath);
+            //return await JsonManager.SaveJsonToAsync(seri, destinationPath);
         }
 
     }

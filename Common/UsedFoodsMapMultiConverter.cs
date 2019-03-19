@@ -18,7 +18,7 @@ namespace MVVM_Refregator.Common
             {
                 //System.Diagnostics.Debug.WriteLine($" updating Calendar.ItemsSource  ...");
 
-                var chunkItem = foodCollection.Where(x => x.UsedDate.Date == targetDate.Date).Take(4);
+                var chunkItem = foodCollection.Where(x => x.UsedDate.Date == targetDate.Date && x.HasUsed).Take(4);
 
                 if (chunkItem.Any())
                 {

@@ -16,7 +16,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
-        <TextBlock Text="バージョン : 0.3.0" FontSize="24" Margin="5" />
+        <TextBlock Text="バージョン : 0.5.1" FontSize="24" Margin="5" />
         <StackPanel Orientation="Horizontal" Grid.Row="1" VerticalAlignment="Center" >
             <TextBlock Text="通知設定" FontSize="24" Margin="5" />
             <RadioButton x:Name="OnNotification" GroupName="Notify" Content="有り" FontSize="18" VerticalContentAlignment="Center" VerticalAlignment="Center" Checked="RadioButton_Checked" Margin="5" />
@@ -26,6 +26,6 @@
         <ScrollViewer Grid.Row="3">
             <TextBlock Text="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" ScrollViewer.HorizontalScrollBarVisibility="Auto" Grid.Row="2" Margin="5,50,5,5" />
         </ScrollViewer>
-        <TextBlock Text="※栄養素で使用しているデータは、日本食品標準成分表2015年版（七訂）のデータを使用しております。" Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="14" />
+        <TextBlock Text="※栄養素ページで使用しているデータは、日本食品標準成分表2015年版（七訂）のデータを使用しております。" Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="14" />
     </Grid>
 </Page>
