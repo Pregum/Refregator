@@ -1,10 +1,13 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
-
+using System.Windows.Resources;
 using MVVM_Refregator.Model;
 using MVVM_Refregator.View;
 
+using Windows.Storage;
 using Notifications.Wpf;
 
 namespace MVVM_Refregator
@@ -14,6 +17,8 @@ namespace MVVM_Refregator
     /// </summary>
     public partial class App : Application
     {
+
+        private System.Threading.Mutex mutex = new System.Threading.Mutex(false, "FoodCalendar");
 
         private NotificationContent _notificationContent = new NotificationContent
         {
@@ -33,14 +38,38 @@ namespace MVVM_Refregator
 
         private bool canNotification = MVVM_Refregator.Properties.Settings.Default.WindowNotificationStatus;
 
-        private void Application_Startup(object sender, StartupEventArgs e)
+        private async void Application_StartupAsync(object sender, StartupEventArgs e)
         {
+            if (!mutex.WaitOne(0, false))
+            {
+                MessageBox.Show("食材管理アプリは既に起動しています。", "二重起動防止", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                mutex.Close();
+                mutex = null;
+                this.Shutdown();
+            }
+            // food
+            var folder = ApplicationData.Current.LocalFolder;
+            var foodDataPath = System.IO.Path.Combine(folder.Path, "food_data.json");
+            if (File.Exists(foodDataPath) == false)
+            {
+                StorageFile result = await folder.CreateFileAsync("food_data.json");
+            }
+            //var folder = System.Windows.Storage.ApplicationData.Current.LocalFolder;
+
             // 食材データを読み込む(既定値はfood_composition.json)
             var ins = FoodShelfModel.GetInstance();
-            ins.Load();
+            var isLoadSuccess = await ins.LoadAsync();
+            if (isLoadSuccess == false)
+            {
+                Application.Current.Shutdown();
+            }
 
             // 食品成分表の読み込みを行う(既定値food_composition_japanese.json)
-            AnalysisPageModel.GetInstance().LoadFoodComposition();
+            string hoge = MVVM_Refregator.Properties.Resources.food_composition_japanese;
+            //Assembly assembly = Assembly.GetExecutingAssembly();
+            //assembly.GetManifestResourceStream("MVVM_Refregator.App.food_composition_japanese.json");
+            //AnalysisPageModel.GetInstance().LoadFoodComposition();
+            AnalysisPageModel.GetInstance().LoadFoodComposition((string x) => x, hoge);
 
             if (this.canNotification)
             {
@@ -60,6 +89,15 @@ namespace MVVM_Refregator
 
             // Notification消すため
             Application.Current.Shutdown();
+        }
+
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+            if (mutex != null)
+            {
+                mutex.ReleaseMutex();
+                mutex.Close();
+            }
         }
     }
 }

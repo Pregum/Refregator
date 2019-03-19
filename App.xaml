@@ -5,7 +5,8 @@
              xmlns:v="clr-namespace:MVVM_Refregator.View"
              xmlns:m="clr-namespace:MVVM_Refregator.Model"
              xmlns:dra="clr-namespace:System.Windows.Media.Imaging"
-             Startup="Application_Startup">
+             Startup="Application_StartupAsync"
+             Exit="Application_Exit">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
