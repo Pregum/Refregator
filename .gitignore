@@ -350,3 +350,6 @@ ASALocalRun/
 Resources/食材画像/
 Resources/tmp/
 Icon1.ico
+doc/food_data.json
+Resources/food_data.json.txt
+hoge/
