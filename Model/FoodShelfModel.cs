@@ -79,7 +79,7 @@ namespace MVVM_Refregator.Model
             }
             catch (Exception)
             {
-                var result = MessageBox.Show("食材データの読み込みに失敗しました。食材データを初期化してもよろしいでしょうか?", "食材管理アプリ", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var result = MessageBox.Show("食材データの読み込みに失敗しました。食材データを初期化してもよろしいでしょうか?", "Food Calendar", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     var storage = Windows.Storage.ApplicationData.Current.LocalFolder;
@@ -88,7 +88,7 @@ namespace MVVM_Refregator.Model
                 }
                 else
                 {
-                    MessageBox.Show("アプリを終了します。");
+                    MessageBox.Show("アプリを終了します。", "Food Calendar", MessageBoxButton.OK, MessageBoxImage.Information);
                     return false;
                 }
             }

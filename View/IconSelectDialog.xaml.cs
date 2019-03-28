@@ -29,34 +29,9 @@ namespace MVVM_Refregator.View
 
         public void ReadFiles()
         {
-            //var directoryPath = @"..\..\Resources";
-            // var directoryPath = @"./Resources";
-            var envir = Environment.CurrentDirectory;
-
-            //foreach ( var item in Application.Current.Resources.Values)
-            //{
-
-            //}
-
-
-
-            //var files = System.IO.Directory.GetFiles(directoryPath, "*.png");
-
-            //for (int i = 0; i < files.Length; i++)
-            //{
-            //    var image = new BitmapImage();
-            //    image.BeginInit();
-            //    image.UriSource = new Uri(files[i], UriKind.Relative);
-            //    image.CacheOption = BitmapCacheOption.OnLoad;
-            //    image.EndInit();
-            //    this.IconVM.AllImages.Add(image);
-            //}
-            //BitmapImage image = (BitmapImage)App.Current.FindResource("Steak");
-            //this.IconVM.AllImages.Add(image);
-
             foreach (System.Collections.DictionaryEntry resource in Application.Current.Resources)
             {
-                var image = resource.Value as BitmapImage;
+                BitmapImage image = resource.Value as BitmapImage;
                 if (image != null)
                 {
                     this.IconVM.AllImages.Add(image);

@@ -163,7 +163,7 @@
                 </Grid>
             </Border>
             <Border Margin="5" BorderThickness="2" BorderBrush="#FF009B07">
-                <Frame x:Name="frame" DockPanel.Dock="Right" Source="{Binding SeletedContentPage.Value, Mode=TwoWay}" NavigationUIVisibility="Hidden" Background="#FFE9FFE9" />
+                <Frame x:Name="frame" DockPanel.Dock="Right" Source="{Binding SeletedContentPage.Value, Mode=TwoWay}" NavigationUIVisibility="Hidden" Background="#FFE9FFE9" Navigating="Frame_Navigating" />
             </Border>
         </DockPanel>
     </Grid>

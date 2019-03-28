@@ -32,5 +32,21 @@ namespace MVVM_Refregator.View
         {
             this.frame.Navigate(new Uri("/View/DashBoardPage.xaml", UriKind.Relative));
         }
+
+        private void Frame_Navigating(object sender, System.Windows.Navigation.NavigatingCancelEventArgs e)
+        {
+            if (e.NavigationMode == System.Windows.Navigation.NavigationMode.Back)
+            {
+                e.Cancel = true;
+            }
+            else if (e.NavigationMode == System.Windows.Navigation.NavigationMode.Forward)
+            {
+                e.Cancel = true;
+            }
+            else if (e.NavigationMode == System.Windows.Navigation.NavigationMode.Refresh)
+            {
+                e.Cancel = true;
+            }
+        }
     }
 }

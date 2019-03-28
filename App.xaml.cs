@@ -9,6 +9,7 @@ using MVVM_Refregator.View;
 
 using Windows.Storage;
 using Notifications.Wpf;
+using System.Windows.Input;
 
 namespace MVVM_Refregator
 {
@@ -22,14 +23,14 @@ namespace MVVM_Refregator
 
         private NotificationContent _notificationContent = new NotificationContent
         {
-            Title = "食材管理アプリ",
+            Title = "Food Calendar",
             Message = "期限が今日までの食材があります。",
             Type = NotificationType.Warning,
         };
 
         private NotificationContent oneDayLimitContent = new NotificationContent
         {
-            Title = "食材管理アプリ",
+            Title = "Food Calendar",
             Message = "期限が1週間以内の食材があります。",
             Type = NotificationType.Warning,
         };
@@ -42,11 +43,13 @@ namespace MVVM_Refregator
         {
             if (!mutex.WaitOne(0, false))
             {
-                MessageBox.Show("食材管理アプリは既に起動しています。", "二重起動防止", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show("Food Calendarは既に起動しています。", "Food Calendar", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 mutex.Close();
                 mutex = null;
                 this.Shutdown();
             }
+
+
             // food
             var folder = ApplicationData.Current.LocalFolder;
             var foodDataPath = System.IO.Path.Combine(folder.Path, "food_data.json");
@@ -54,7 +57,6 @@ namespace MVVM_Refregator
             {
                 StorageFile result = await folder.CreateFileAsync("food_data.json");
             }
-            //var folder = System.Windows.Storage.ApplicationData.Current.LocalFolder;
 
             // 食材データを読み込む(既定値はfood_composition.json)
             var ins = FoodShelfModel.GetInstance();
@@ -66,9 +68,6 @@ namespace MVVM_Refregator
 
             // 食品成分表の読み込みを行う(既定値food_composition_japanese.json)
             string hoge = MVVM_Refregator.Properties.Resources.food_composition_japanese;
-            //Assembly assembly = Assembly.GetExecutingAssembly();
-            //assembly.GetManifestResourceStream("MVVM_Refregator.App.food_composition_japanese.json");
-            //AnalysisPageModel.GetInstance().LoadFoodComposition();
             AnalysisPageModel.GetInstance().LoadFoodComposition((string x) => x, hoge);
 
             if (this.canNotification)

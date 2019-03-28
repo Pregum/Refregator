@@ -32,6 +32,42 @@
             <BitmapImage x:Key="salad"  CacheOption="OnLoad" UriSource="Resources/046-salad.png" />
             <BitmapImage x:Key="Info"  CacheOption="OnLoad" UriSource="Resources/information_image.png" />
 
+            <BitmapImage x:Key="apple" CacheOption="OnLoad" UriSource="Resources/apple.png" />
+            <BitmapImage x:Key="aubergine" CacheOption="OnLoad" UriSource="Resources/aubergine.png" />
+            <BitmapImage x:Key="beer" CacheOption="OnLoad" UriSource="Resources/beer.png" />
+            <BitmapImage x:Key="berry" CacheOption="OnLoad" UriSource="Resources/berry.png" />
+            <BitmapImage x:Key="bread-1" CacheOption="OnLoad" UriSource="Resources/bread-1.png" />
+            <BitmapImage x:Key="bread-2" CacheOption="OnLoad" UriSource="Resources/bread-2.png" />
+            <BitmapImage x:Key="bread" CacheOption="OnLoad" UriSource="Resources/bread.png" />
+            <BitmapImage x:Key="broccoli" CacheOption="OnLoad" UriSource="Resources/broccoli.png" />
+            <BitmapImage x:Key="can" CacheOption="OnLoad" UriSource="Resources/can.png" />
+            <BitmapImage x:Key="carotte" CacheOption="OnLoad" UriSource="Resources/carotte.png" />
+            <BitmapImage x:Key="cheese" CacheOption="OnLoad" UriSource="Resources/cheese.png" />
+            <BitmapImage x:Key="cherries" CacheOption="OnLoad" UriSource="Resources/cherries.png" />
+            <BitmapImage x:Key="chili" CacheOption="OnLoad" UriSource="Resources/chili.png" />
+            <BitmapImage x:Key="chocolate" CacheOption="OnLoad" UriSource="Resources/chocolate.png" />
+            <BitmapImage x:Key="corn" CacheOption="OnLoad" UriSource="Resources/corn.png" />
+            <BitmapImage x:Key="egg" CacheOption="OnLoad" UriSource="Resources/egg.png" />
+            <BitmapImage x:Key="food-1" CacheOption="OnLoad" UriSource="Resources/food-1.png" />
+            <BitmapImage x:Key="food" CacheOption="OnLoad" UriSource="Resources/food.png" />
+            <BitmapImage x:Key="fruit-1" CacheOption="OnLoad" UriSource="Resources/fruit-1.png" />
+            <BitmapImage x:Key="fruit-2" CacheOption="OnLoad" UriSource="Resources/fruit-2.png" />
+            <BitmapImage x:Key="fruit" CacheOption="OnLoad" UriSource="Resources/fruit.png" />
+            <BitmapImage x:Key="garlic" CacheOption="OnLoad" UriSource="Resources/garlic.png" />
+            <BitmapImage x:Key="glass" CacheOption="OnLoad" UriSource="Resources/glass.png" />
+            <BitmapImage x:Key="grape" CacheOption="OnLoad" UriSource="Resources/grape.png" />
+            <BitmapImage x:Key="lemon" CacheOption="OnLoad" UriSource="Resources/lemon.png" />
+            <BitmapImage x:Key="milk" CacheOption="OnLoad" UriSource="Resources/milk.png" />
+            <BitmapImage x:Key="pineapple" CacheOption="OnLoad" UriSource="Resources/pineapple.png" />
+            <BitmapImage x:Key="pizza" CacheOption="OnLoad" UriSource="Resources/pizza.png" />
+            <BitmapImage x:Key="potatoes" CacheOption="OnLoad" UriSource="Resources/potatoes.png" />
+            <BitmapImage x:Key="sandwich-1" CacheOption="OnLoad" UriSource="Resources/sandwich-1.png" />
+            <BitmapImage x:Key="sandwich" CacheOption="OnLoad" UriSource="Resources/sandwich.png" />
+            <BitmapImage x:Key="shrimp" CacheOption="OnLoad" UriSource="Resources/shrimp.png" />
+            <BitmapImage x:Key="spaguetti" CacheOption="OnLoad" UriSource="Resources/spaguetti.png" />
+            <BitmapImage x:Key="sushi" CacheOption="OnLoad" UriSource="Resources/sushi.png" />
+            <BitmapImage x:Key="tomato" CacheOption="OnLoad" UriSource="Resources/tomato.png" />
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

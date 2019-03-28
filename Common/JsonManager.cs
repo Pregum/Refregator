@@ -212,7 +212,6 @@ namespace MVVM_Refregator.Common
 
         public static string SaveFoodComposition(ObservableCollection<FoodComposition> foodCompositions, string destinationPath = @"food_composition_data.json")
         {
-            //foreach (var x in foodCompositions)
             var seri = foodCompositions.Select(x =>
             {
 
